@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Us - Webcrack Cargo')
+@section('title', 'Contact Us - Elite Exchange Delivery')
 
 @section('content')
 <!-- Page Header -->

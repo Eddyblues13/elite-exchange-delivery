@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Webcrack Cargo - Global Logistics & Shipping')</title>
+    <title>@yield('title', 'Elite Exchange Delivery - Global Logistics & Shipping')</title>
     <script src="https://cdn.tailwindcss.com/"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
         rel="stylesheet">
@@ -124,7 +124,7 @@
                 xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5-10-5-10 5z" />
             </svg>
-            <p class="mt-4 text-lg font-semibold text-gray-300">Webcrack Cargo</p>
+            <p class="mt-4 text-lg font-semibold text-gray-300">Elite Exchange Delivery</p>
         </div>
     </div>
 
@@ -139,7 +139,8 @@
                             xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5-10-5-10 5z" />
                         </svg>
-                        <span class="nav-text text-xl font-extrabold text-white whitespace-nowrap">Webcrack Cargo</span>
+                        <span class="nav-text text-xl font-extrabold text-white whitespace-nowrap">Elite Exchange
+                            Delivery</span>
                     </a>
                 </li>
                 <li>
@@ -190,7 +191,7 @@
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5-10-5-10 5z" />
                             </svg>
-                            <span class="text-xl font-extrabold text-white">Webcrack Cargo</span>
+                            <span class="text-xl font-extrabold text-white">Elite Exchange Delivery</span>
                         </div>
                     </div>
                 </div>
@@ -251,7 +252,7 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <h4 class="font-bold text-white mb-4">Webcrack Cargo</h4>
+                    <h4 class="font-bold text-white mb-4">Elite Exchange Delivery</h4>
                     <p class="text-sm text-text-secondary">Your trusted partner in global logistics. Delivering
                         excellence, one shipment at a time.</p>
                 </div>
@@ -289,7 +290,7 @@
                 </div>
             </div>
             <div class="mt-8 pt-8 border-t border-gray-700 text-center text-sm text-text-secondary">
-                <p>&copy; 2025 Webcrack Cargo. All Rights Reserved.</p>
+                <p>&copy; 2025 Elite Exchange Delivery. All Rights Reserved.</p>
             </div>
         </div>
     </footer>

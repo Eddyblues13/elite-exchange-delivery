@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Track Shipment - Webcrack Cargo')
+@section('title', 'Track Shipment - Elite Exchange Delivery')
 
 @section('content')
 <!-- Page Header -->
@@ -19,12 +19,36 @@
         <div class="max-w-2xl mx-auto">
             <div class="card p-8 rounded-2xl">
                 <h2 class="text-3xl font-bold text-white mb-6">Enter Tracking Number</h2>
-                <form action="#" method="GET" class="space-y-6">
+
+                @if(session('error'))
+                <div class="mb-6 p-4 bg-red-500/20 border border-red-500 rounded-xl">
+                    <p class="text-red-400 flex items-center gap-2">
+                        <i data-feather="alert-circle" class="h-5 w-5"></i>
+                        {{ session('error') }}
+                    </p>
+                </div>
+                @endif
+
+                @if(session('success'))
+                <div class="mb-6 p-4 bg-green-500/20 border border-green-500 rounded-xl">
+                    <p class="text-green-400 flex items-center gap-2">
+                        <i data-feather="check-circle" class="h-5 w-5"></i>
+                        {{ session('success') }}
+                    </p>
+                </div>
+                @endif
+
+                <form action="{{ route('package') }}" method="POST" class="space-y-6">
+                    @csrf
                     <div>
-                        <label for="tracking-number" class="block text-sm font-medium text-text-secondary mb-2">Tracking
+                        <label for="search" class="block text-sm font-medium text-text-secondary mb-2">Tracking
                             Number</label>
-                        <input type="text" name="tracking-number" id="tracking-number" placeholder="e.g., WCK-123456789"
-                            required class="form-input w-full rounded-md py-3 px-4 text-center text-lg tracking-widest">
+                        <input type="text" name="search" id="search" value="{{ old('search') }}"
+                            placeholder="e.g., WCK-123456789" required
+                            class="form-input w-full rounded-md py-3 px-4 text-center text-lg tracking-widest @error('search') border-red-500 @enderror">
+                        @error('search')
+                        <p class="text-red-400 text-sm mt-2">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <button type="submit"
@@ -34,88 +58,120 @@
                         </button>
                     </div>
                 </form>
+
+                <div class="mt-8 p-4 bg-gray-800 rounded-xl">
+                    <h4 class="text-white font-semibold mb-2 flex items-center gap-2">
+                        <i data-feather="help-circle" class="h-5 w-5 text-indigo-400"></i>
+                        Where to find your tracking number?
+                    </h4>
+                    <p class="text-text-secondary text-sm">
+                        Your tracking number can be found in your booking confirmation email, shipping receipt, or on
+                        the shipping label attached to your package.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Tracking Result Example (Initially Hidden) -->
-<section class="py-16 bg-gray-800 hidden" id="tracking-result">
+@if(isset($package) && $package)
+<section class="py-16 bg-gray-800" id="tracking-result">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto">
             <div class="card p-8 rounded-2xl">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
                     <div>
-                        <h2 class="text-2xl font-bold text-white">Shipment #WCK-123456789</h2>
-                        <p class="text-text-secondary">Estimated Delivery: <span class="text-white font-semibold">Dec
-                                28, 2024</span></p>
+                        <h2 class="text-2xl font-bold text-white">Shipment #{{ $package->tracking_number }}</h2>
+                        <p class="text-text-secondary">Status:
+                            <span class="text-white font-semibold capitalize">{{ $package->status ?? 'In Transit'
+                                }}</span>
+                        </p>
+                        @if($package->estimated_delivery)
+                        <p class="text-text-secondary">Estimated Delivery:
+                            <span class="text-white font-semibold">{{
+                                \Carbon\Carbon::parse($package->estimated_delivery)->format('M d, Y') }}</span>
+                        </p>
+                        @endif
                     </div>
-                    <div class="mt-4 md:mt-0 px-4 py-2 bg-green-500/20 rounded-full">
-                        <span class="text-green-400 font-semibold flex items-center gap-2"><i
-                                data-feather="check-circle" class="h-4 w-4"></i> In Transit</span>
+                    <div class="mt-4 md:mt-0 px-4 py-2 
+                        @if($package->status === 'delivered') bg-green-500/20 
+                        @elseif($package->status === 'in_transit') bg-blue-500/20 
+                        @elseif($package->status === 'pending') bg-yellow-500/20 
+                        @else bg-indigo-500/20 @endif rounded-full">
+                        <span class="
+                            @if($package->status === 'delivered') text-green-400 
+                            @elseif($package->status === 'in_transit') text-blue-400 
+                            @elseif($package->status === 'pending') text-yellow-400 
+                            @else text-indigo-400 @endif font-semibold flex items-center gap-2">
+                            <i data-feather="
+                                @if($package->status === 'delivered') check-circle 
+                                @elseif($package->status === 'in_transit') truck 
+                                @elseif($package->status === 'pending') clock 
+                                @else package @endif" class="h-4 w-4"></i>
+                            {{ ucfirst(str_replace('_', ' ', $package->status ?? 'In Transit')) }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Package Details -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-gray-800 p-4 rounded-xl">
+                        <h4 class="text-white font-semibold mb-2">Sender Information</h4>
+                        <p class="text-text-secondary text-sm">{{ $package->sender_name ?? 'N/A' }}</p>
+                        <p class="text-text-secondary text-sm">{{ $package->sender_address ?? 'N/A' }}</p>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-xl">
+                        <h4 class="text-white font-semibold mb-2">Receiver Information</h4>
+                        <p class="text-text-secondary text-sm">{{ $package->receiver_name ?? 'N/A' }}</p>
+                        <p class="text-text-secondary text-sm">{{ $package->receiver_address ?? 'N/A' }}</p>
                     </div>
                 </div>
 
                 <!-- Tracking Timeline -->
+                <h3 class="text-xl font-bold text-white mb-6">Tracking History</h3>
+                @if($package->trackingLocations && $package->trackingLocations->count() > 0)
                 <div class="space-y-6">
+                    @foreach($package->trackingLocations as $index => $location)
                     <div class="flex items-start">
                         <div class="flex flex-col items-center mr-4">
-                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <div class="w-0.5 h-16 bg-green-500 mt-1"></div>
+                            <div class="w-3 h-3 
+                                @if($location->is_current) bg-green-500 
+                                @elseif($index === 0) bg-gray-500 
+                                @else bg-blue-500 @endif rounded-full"></div>
+                            @if(!$loop->last)
+                            <div class="w-0.5 h-16 
+                                @if($location->is_current) bg-green-500 
+                                @else bg-gray-600 @endif mt-1"></div>
+                            @endif
                         </div>
                         <div class="flex-1 pb-8">
-                            <h4 class="font-semibold text-white">Shipment Picked Up</h4>
-                            <p class="text-text-secondary text-sm">Lagos, Nigeria</p>
-                            <p class="text-text-secondary text-sm">Dec 20, 2024 - 09:30 AM</p>
+                            <h4 class="font-semibold text-white">{{ $location->location_name }}</h4>
+                            <p class="text-text-secondary text-sm">{{ $location->description ?? 'Package processed' }}
+                            </p>
+                            <p class="text-text-secondary text-sm">
+                                {{ \Carbon\Carbon::parse($location->arrival_time)->format('M d, Y - h:i A') }}
+                            </p>
+                            @if($location->is_current)
+                            <span
+                                class="inline-block mt-2 px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">Current
+                                Location</span>
+                            @endif
                         </div>
                     </div>
-                    <div class="flex items-start">
-                        <div class="flex flex-col items-center mr-4">
-                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <div class="w-0.5 h-16 bg-green-500 mt-1"></div>
-                        </div>
-                        <div class="flex-1 pb-8">
-                            <h4 class="font-semibold text-white">Processing at Facility</h4>
-                            <p class="text-text-secondary text-sm">Ikeja Distribution Center</p>
-                            <p class="text-text-secondary text-sm">Dec 20, 2024 - 02:15 PM</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="flex flex-col items-center mr-4">
-                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                            <div class="w-0.5 h-16 bg-green-500 mt-1"></div>
-                        </div>
-                        <div class="flex-1 pb-8">
-                            <h4 class="font-semibold text-white">Departed Facility</h4>
-                            <p class="text-text-secondary text-sm">En route to Port of Lagos</p>
-                            <p class="text-text-secondary text-sm">Dec 21, 2024 - 08:45 AM</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="flex flex-col items-center mr-4">
-                            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-                            <div class="w-0.5 h-16 bg-gray-600 mt-1"></div>
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-white">Out for Delivery</h4>
-                            <p class="text-text-secondary text-sm">Estimated: Dec 28, 2024</p>
-                            <p class="text-text-secondary text-sm">London, United Kingdom</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="flex flex-col items-center mr-4">
-                            <div class="w-3 h-3 bg-gray-600 rounded-full"></div>
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-gray-400">Delivered</h4>
-                            <p class="text-text-secondary text-sm">Pending</p>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
+                @else
+                <div class="text-center py-8">
+                    <i data-feather="map-pin" class="h-12 w-12 text-gray-500 mx-auto mb-4"></i>
+                    <p class="text-text-secondary">No tracking history available yet.</p>
+                </div>
+                @endif
             </div>
         </div>
     </div>
 </section>
+@endif
 
 <!-- FAQ Section -->
 <section class="py-16 md:py-24">
@@ -147,18 +203,22 @@
 
 @push('scripts')
 <script>
-    // Example tracking functionality
     document.addEventListener('DOMContentLoaded', function() {
-        const trackingForm = document.querySelector('form');
-        const trackingResult = document.getElementById('tracking-result');
-        
-        if (trackingForm) {
-            trackingForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                trackingResult.classList.remove('hidden');
-                trackingResult.scrollIntoView({ behavior: 'smooth' });
-            });
+        // Auto-focus on search input
+        const searchInput = document.getElementById('search');
+        if (searchInput) {
+            searchInput.focus();
         }
+
+        // Smooth scroll to results if package data is present
+        @if(isset($package) && $package)
+            const trackingResult = document.getElementById('tracking-result');
+            if (trackingResult) {
+                setTimeout(() => {
+                    trackingResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 500);
+            }
+        @endif
     });
 </script>
 @endpush
