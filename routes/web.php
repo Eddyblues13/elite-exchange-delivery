@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\Admin\PackageController;
 
 
@@ -22,6 +23,12 @@ Route::get('/track', [HomeController::class, 'track'])->name('track');
 Route::get('/how-to', [HomeController::class, 'how'])->name('how');
 Route::get('/destinations', [HomeController::class, 'destinations'])->name('destinations');
 Route::match(['get', 'post'], 'package', [HomeController::class, 'viewPackage'])->name('package');
+
+
+// Registration routes (public)
+Route::get('register', [RegistrationController::class, 'create'])->name('register');
+Route::post('register', [RegistrationController::class, 'store'])->name('register.store');
+Route::get('register/generate-tracking', [RegistrationController::class, 'generateTrackingNumber'])->name('register.generate-tracking');
 
 
 

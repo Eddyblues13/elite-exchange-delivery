@@ -35,15 +35,25 @@
     <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-full max-w-md z-10">
         <div class="card rounded-2xl p-6 shadow-2xl mx-4">
             <h3 class="text-xl font-bold text-white mb-4 text-center">Track Your Package</h3>
-            <form class="flex gap-2">
-                <input type="text" placeholder="Enter tracking number"
-                    class="form-input flex-grow rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <form action="{{ route('package') }}" method="POST" class="flex gap-2 tracking-form">
+                @csrf
+                <input type="text" name="tracking_number" placeholder="Enter tracking number"
+                    class="form-input flex-grow rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                    required>
                 <button type="submit"
                     class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 flex items-center gap-2">
                     <i data-feather="search" class="h-5 w-5"></i>
                     <span class="hidden sm:inline">Track</span>
                 </button>
             </form>
+            @if(session('error'))
+            <div class="mt-3 p-2 bg-red-500/20 border border-red-500 rounded-lg">
+                <p class="text-red-400 text-sm flex items-center gap-1">
+                    <i data-feather="alert-circle" class="h-4 w-4"></i>
+                    {{ session('error') }}
+                </p>
+            </div>
+            @endif
         </div>
     </div>
 </section>
@@ -112,8 +122,7 @@
             </div>
             <div class="card rounded-2xl overflow-hidden group">
                 <div class="relative overflow-hidden h-48">
-                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                        alt="Heavy Equipment"
+                    <img src="images/road.jpg" alt="Heavy Equipment"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     <div
                         class="absolute inset-0 bg-orange-600/20 group-hover:bg-transparent transition-colors duration-300">
@@ -141,8 +150,7 @@
             </div>
             <div class="card rounded-2xl overflow-hidden group">
                 <div class="relative overflow-hidden h-48">
-                    <img src="https://images.unsplash.com/photo-1611258623151-1837c35b11af?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                        alt="Hazardous Materials"
+                    <img src="images/pic-1.jpg" alt="Hazardous Materials"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     <div
                         class="absolute inset-0 bg-red-600/20 group-hover:bg-transparent transition-colors duration-300">
@@ -170,8 +178,7 @@
             </div>
             <div class="card rounded-2xl overflow-hidden group">
                 <div class="relative overflow-hidden h-48">
-                    <img src="https://images.unsplash.com/photo-1590698933947-731d0bd041ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                        alt="High-Value Goods"
+                    <img src="images/pic-2.jpg" alt="High-Value Goods"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     <div
                         class="absolute inset-0 bg-purple-600/20 group-hover:bg-transparent transition-colors duration-300">
@@ -248,22 +255,18 @@
             <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-4">
                     <div class="card rounded-2xl overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2076&q=80"
-                            alt="Air Cargo Hub" class="w-full h-40 object-cover">
+                        <img src="images/image2.jpg" alt="Air Cargo Hub" class="w-full h-40 object-cover">
                     </div>
                     <div class="card rounded-2xl overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                            alt="Port Operations" class="w-full h-40 object-cover">
+                        <img src="images/image2.jpeg" alt="Port Operations" class="w-full h-40 object-cover">
                     </div>
                 </div>
                 <div class="space-y-4 mt-8">
                     <div class="card rounded-2xl overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1553413079-57f4acf4ac3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80"
-                            alt="Warehouse Operations" class="w-full h-40 object-cover">
+                        <img src="images/pic-1.jpg" alt="Warehouse Operations" class="w-full h-40 object-cover">
                     </div>
                     <div class="card rounded-2xl overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"
-                            alt="Ground Distribution" class="w-full h-40 object-cover">
+                        <img src="images/pic-2.jpg" alt="Ground Distribution" class="w-full h-40 object-cover">
                     </div>
                 </div>
             </div>
@@ -282,8 +285,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div class="card rounded-2xl overflow-hidden group">
                 <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                        alt="Air Freight"
+                    <img src="images/air.jpg" alt="Air Freight"
                         class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
                     <div
                         class="absolute inset-0 bg-indigo-600/20 group-hover:bg-transparent transition-colors duration-300">
@@ -316,8 +318,7 @@
             </div>
             <div class="card rounded-2xl overflow-hidden group">
                 <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                        alt="Ocean Freight"
+                    <img src="images/ocean.jpg" alt="Ocean Freight"
                         class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
                     <div
                         class="absolute inset-0 bg-indigo-600/20 group-hover:bg-transparent transition-colors duration-300">
@@ -350,8 +351,7 @@
             </div>
             <div class="card rounded-2xl overflow-hidden group">
                 <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"
-                        alt="Road Freight"
+                    <img src="images/road.jpg" alt="Road Freight"
                         class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
                     <div
                         class="absolute inset-0 bg-indigo-600/20 group-hover:bg-transparent transition-colors duration-300">
@@ -404,8 +404,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div class="text-center">
                 <div class="bg-gray-800 rounded-2xl p-8 mb-6 h-64 flex items-center justify-center">
-                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                        alt="Cargo Planes" class="h-40 object-cover rounded-lg">
+                    <img src="images/image3.jpg" alt="Cargo Planes" class="h-40 object-cover rounded-lg">
                 </div>
                 <h3 class="text-xl font-bold text-white mb-4">Cargo Aircraft Fleet</h3>
                 <p class="text-text-secondary">Modern freighters with capacities from 5-100 tons, including
@@ -413,8 +412,7 @@
             </div>
             <div class="text-center">
                 <div class="bg-gray-800 rounded-2xl p-8 mb-6 h-64 flex items-center justify-center">
-                    <img src="https://images.unsplash.com/photo-1590698933947-731d0bd041ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                        alt="Shipping Containers" class="h-40 object-cover rounded-lg">
+                    <img src="images/image4.jpg" alt="Shipping Containers" class="h-40 object-cover rounded-lg">
                 </div>
                 <h3 class="text-xl font-bold text-white mb-4">Container Solutions</h3>
                 <p class="text-text-secondary">20ft to 45ft containers, reefers, flat racks, and open tops for diverse
@@ -422,8 +420,7 @@
             </div>
             <div class="text-center">
                 <div class="bg-gray-800 rounded-2xl p-8 mb-6 h-64 flex items-center justify-center">
-                    <img src="https://images.unsplash.com/photo-1553413079-57f4acf4ac3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80"
-                        alt="Warehouse Equipment" class="h-40 object-cover rounded-lg">
+                    <img src="images/image6.jpg" alt="Warehouse Equipment" class="h-40 object-cover rounded-lg">
                 </div>
                 <h3 class="text-xl font-bold text-white mb-4">Warehouse Technology</h3>
                 <p class="text-text-secondary">Automated storage systems, forklifts, and material handling equipment for
@@ -471,17 +468,96 @@
     // Initialize feather icons
     feather.replace();
     
-    // Simple tracking form submission
+    // Enhanced tracking form functionality
     document.addEventListener('DOMContentLoaded', function() {
         const trackingForm = document.querySelector('.tracking-form');
+        const trackingInput = trackingForm?.querySelector('input[name="tracking_number"]');
+        
         if (trackingForm) {
+            // Focus on tracking input when page loads
+            if (trackingInput) {
+                setTimeout(() => {
+                    trackingInput.focus();
+                }, 1000);
+            }
+            
+            // Add input validation
             trackingForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const trackingNumber = this.querySelector('input[type="text"]').value;
-                if (trackingNumber.trim() !== '') {
-                    window.location.href = "{{ route('track') }}?tracking=" + encodeURIComponent(trackingNumber);
+                const trackingNumber = trackingInput.value.trim();
+                
+                if (!trackingNumber) {
+                    e.preventDefault();
+                    showTrackingError('Please enter a tracking number');
+                    trackingInput.focus();
+                    return;
+                }
+                
+                // Show loading state
+                const submitButton = this.querySelector('button[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = `
+                        <i data-feather="loader" class="h-5 w-5 animate-spin"></i>
+                        <span class="hidden sm:inline">Tracking...</span>
+                    `;
+                    feather.replace();
                 }
             });
+            
+            // Clear error when user starts typing
+            trackingInput.addEventListener('input', function() {
+                clearTrackingError();
+            });
+        }
+        
+        function showTrackingError(message) {
+            clearTrackingError();
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'mt-3 p-2 bg-red-500/20 border border-red-500 rounded-lg';
+            errorDiv.innerHTML = `
+                <p class="text-red-400 text-sm flex items-center gap-1">
+                    <i data-feather="alert-circle" class="h-4 w-4"></i>
+                    ${message}
+                </p>
+            `;
+            
+            trackingForm.parentNode.insertBefore(errorDiv, trackingForm.nextSibling);
+            feather.replace();
+        }
+        
+        function clearTrackingError() {
+            const existingError = trackingForm.parentNode.querySelector('.mt-3');
+            if (existingError) {
+                existingError.remove();
+            }
+        }
+        
+        // Add keyboard shortcut (Ctrl/Cmd + K) to focus on tracking input
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                if (trackingInput) {
+                    trackingInput.focus();
+                }
+            }
+        });
+        
+        // Add help text for keyboard shortcut
+        if (trackingInput) {
+            const helpText = document.createElement('p');
+            helpText.className = 'text-text-secondary text-xs text-center mt-2 opacity-0 hover:opacity-100 transition-opacity duration-300';
+            helpText.innerHTML = '💡 Press <kbd class="px-1 py-0.5 bg-gray-600 rounded text-xs">Ctrl</kbd> + <kbd class="px-1 py-0.5 bg-gray-600 rounded text-xs">K</kbd> to quickly focus';
+            
+            trackingForm.parentNode.appendChild(helpText);
+            
+            // Show help text briefly on page load
+            setTimeout(() => {
+                helpText.classList.add('opacity-100');
+                setTimeout(() => {
+                    helpText.classList.remove('opacity-100');
+                }, 3000);
+            }, 2000);
         }
     });
 </script>

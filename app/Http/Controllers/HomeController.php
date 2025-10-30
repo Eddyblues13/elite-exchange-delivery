@@ -46,7 +46,11 @@ class HomeController extends Controller
 
         return view('home.destination');
     }
+    public function register()
+    {
 
+        return view('home.register');
+    }
     public function viewPackage(Request $request)
     {
         $search = $request->input('search');
