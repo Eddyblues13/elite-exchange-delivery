@@ -273,11 +273,11 @@
                     <h4 class="font-bold text-white mb-4">Contact Info</h4>
                     <ul class="space-y-2 text-sm text-text-secondary">
                         <li class="flex items-start"><i data-feather="map-pin" class="h-4 w-4 mr-2 mt-1"></i><span>123
-                                Logic Drive, Ikeja, Lagos, Nigeria</span></li>
+                                Logic Drive, </span></li>
                         <li class="flex items-center"><i data-feather="phone" class="h-4 w-4 mr-2"></i><span>+234 800
                                 123 4567</span></li>
                         <li class="flex items-center"><i data-feather="mail"
-                                class="h-4 w-4 mr-2"></i><span>contact@webcrackcargo.com</span></li>
+                                class="h-4 w-4 mr-2"></i><span>contact@elite-exchange-delivery.com</span></li>
                     </ul>
                 </div>
                 <div>

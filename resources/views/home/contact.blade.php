@@ -45,7 +45,7 @@
                                 class="h-6 w-6 text-indigo-400"></i></div>
                         <div>
                             <h4 class="font-semibold text-white">Email</h4>
-                            <p class="text-text-secondary">contact@webcrackcargo.com</p>
+                            <p class="text-text-secondary">contact@elite-exchange-delivery.com</p>
                         </div>
                     </div>
                     <div class="flex items-start">
