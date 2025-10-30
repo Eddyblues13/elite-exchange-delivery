@@ -75,6 +75,21 @@
                             </div>
                         </div>
 
+
+                        <!--  Shipping From -->
+                        <div class="space-y-4">
+                            <label for="shipping_from" class="block text-sm font-medium text-text-secondary mb-2">
+                                Shipping From <span class="text-red-400">*</span>
+                            </label>
+                            <input type="text" name="shipping_from" id="shipping_from"
+                                value="{{ old('shipping_from') }}" placeholder="Enter origin location"
+                                class="form-input w-full rounded-md py-3 px-4 @error('shipping_from') border-red-500 @enderror">
+                            @error('shipping_from')
+                            <p class="text-red-400 text-sm mt-2">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+
                         <!-- Receiver Information -->
                         <div class="space-y-4">
                             <h3 class="text-xl font-bold text-white border-b border-gray-600 pb-2">Receiver Information

@@ -26,6 +26,7 @@ class RegistrationController extends Controller
             $validated = $request->validate([
                 // Sender Information
                 'sender_name' => 'required|string|max:255',
+                'shipping_from' => 'required|string|max:255',
 
                 // Receiver Information
                 'receiver_name' => 'required|string|max:255',
@@ -75,7 +76,7 @@ class RegistrationController extends Controller
                 'total_weight' => 1.0,
                 'number_of_boxes' => 1,
                 'box_weight' => 1.0,
-                'shipping_from' => 'Unknown',
+                'shipping_from' => $validated['shipping_from'],
                 'shipping_to' => $validated['receiver_country'],
                 'shipping_date' => now(),
                 'estimated_delivery_date' => now()->addDays(7),
