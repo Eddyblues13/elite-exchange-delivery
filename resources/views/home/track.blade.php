@@ -18,7 +18,7 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-2xl mx-auto">
             <div class="card p-8 rounded-2xl">
-                <h2 class="text-3xl font-bold text-white mb-6">Enter Tracking Number</h2>
+                <h2 class="text-3xl font-bold text-white mb-6">Enter Tracking Code</h2>
 
                 @if(session('error'))
                 <div class="mb-6 p-4 bg-red-500/20 border border-red-500 rounded-xl">
@@ -62,10 +62,10 @@
                 <div class="mt-8 p-4 bg-gray-800 rounded-xl">
                     <h4 class="text-white font-semibold mb-2 flex items-center gap-2">
                         <i data-feather="help-circle" class="h-5 w-5 text-indigo-400"></i>
-                        Where to find your tracking number?
+                        Where to find your tracking code?
                     </h4>
                     <p class="text-text-secondary text-sm">
-                        Your tracking number can be found in your booking confirmation email, shipping receipt, or on
+                        Your tracking code can be found in your booking confirmation email, shipping receipt, or on
                         the shipping label attached to your package.
                     </p>
                 </div>
@@ -180,8 +180,8 @@
             <h2 class="text-3xl font-bold text-white text-center mb-12">Tracking FAQs</h2>
             <div class="space-y-6">
                 <div class="card p-6 rounded-2xl">
-                    <h3 class="text-lg font-semibold text-white mb-2">Where can I find my tracking number?</h3>
-                    <p class="text-text-secondary text-sm">Your tracking number is provided in the confirmation email
+                    <h3 class="text-lg font-semibold text-white mb-2">Where can I find my tracking code?</h3>
+                    <p class="text-text-secondary text-sm">Your tracking code is provided in the confirmation email
                         and on the shipping receipt when you booked the shipment.</p>
                 </div>
                 <div class="card p-6 rounded-2xl">

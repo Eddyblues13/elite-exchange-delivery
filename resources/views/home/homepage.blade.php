@@ -37,7 +37,7 @@
             <h3 class="text-xl font-bold text-white mb-4 text-center">Track Your Package</h3>
             <form action="{{ route('package') }}" method="POST" class="flex gap-2 tracking-form">
                 @csrf
-                <input type="text" name="tracking_number" placeholder="Enter tracking number"
+                <input type="text" name="search" placeholder="Enter tracking code"
                     class="form-input flex-grow rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 border-gray-600 text-white placeholder-gray-400"
                     required>
                 <button type="submit"
@@ -487,7 +487,7 @@
                 
                 if (!trackingNumber) {
                     e.preventDefault();
-                    showTrackingError('Please enter a tracking number');
+                    showTrackingError('Please enter a tracking code');
                     trackingInput.focus();
                     return;
                 }
