@@ -451,7 +451,7 @@
                         class="bg-white text-indigo-600 font-semibold px-8 py-4 rounded-xl hover:bg-gray-200 transition-colors duration-300">
                         Get a Free Quote
                     </a>
-                    <a href="tel:+2348001234567"
+                    <a href="tel:+13154893120"
                         class="bg-transparent border-2 border-white text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/10 transition-colors duration-300">
                         <i data-feather="phone" class="h-5 w-5 inline mr-2"></i>
                         Call Us Now

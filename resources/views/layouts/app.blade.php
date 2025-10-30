@@ -470,7 +470,7 @@
                     <ul class="space-y-2 text-text-secondary">
                         <li class="flex items-center space-x-2">
                             <i data-feather="phone" class="h-4 w-4"></i>
-                            <span>+1 (555) 123-4567</span>
+                            <span>+13154893120</span>
                         </li>
                         <li class="flex items-center space-x-2">
                             <i data-feather="mail" class="h-4 w-4"></i>
