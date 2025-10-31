@@ -124,15 +124,10 @@
                                     class="block text-sm font-medium text-text-secondary mb-2">
                                     Country <span class="text-red-400">*</span>
                                 </label>
-                                <select name="receiver_country" id="receiver_country"
-                                    class="form-select w-full rounded-md py-3 px-4 @error('receiver_country') border-red-500 @enderror">
-                                    <option value="">Select Country</option>
-                                    @foreach(config('countries', []) as $code => $name)
-                                    <option value="{{ $name }}" {{ old('receiver_country')==$name ? 'selected' : '' }}>
-                                        {{ $name }}
-                                    </option>
-                                    @endforeach
-                                </select>
+                                <input type="text" name="receiver_country" id="receiver_country"
+                                    class="form-input w-full rounded-md py-3 px-4 @error('receiver_country') border-red-500 @enderror"
+                                    value="{{ old('receiver_country') }}" placeholder="Enter Country">
+
                                 @error('receiver_country')
                                 <p class="text-red-400 text-sm mt-2">{{ $message }}</p>
                                 @enderror

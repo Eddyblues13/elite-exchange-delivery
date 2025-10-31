@@ -90,18 +90,13 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label>Country</label>
-                                                                <select name="sender_country" class="form-control">
-                                                                    <option value="">Select Country</option>
-                                                                    @foreach(config('countries') as $code => $name)
-                                                                    <option value="{{ $name }}" {{
-                                                                        old('sender_country')==$name ? 'selected' : ''
-                                                                        }}>
-                                                                        {{ $name }}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
+                                                                <input type="text" name="sender_country"
+                                                                    class="form-control"
+                                                                    value="{{ old('sender_country') }}"
+                                                                    placeholder="Enter Country">
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6">
@@ -172,18 +167,13 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label>Country</label>
-                                                                <select name="receiver_country" class="form-control">
-                                                                    <option value="">Select Country</option>
-                                                                    @foreach(config('countries') as $code => $name)
-                                                                    <option value="{{ $name }}" {{
-                                                                        old('receiver_country')==$name ? 'selected' : ''
-                                                                        }}>
-                                                                        {{ $name }}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
+                                                                <input type="text" name="receiver_country"
+                                                                    class="form-control"
+                                                                    value="{{ old('receiver_country') }}"
+                                                                    placeholder="Enter Country">
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6">

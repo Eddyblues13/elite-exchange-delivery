@@ -567,7 +567,8 @@
                                 <div class="step-icon mx-auto">
                                     <i class="fas fa-clipboard-check"></i>
                                 </div>
-                                <h6 class="mb-1">{{ $package->step1_name ?? 'Order Received' }}</h6>
+                                {{-- <h6 class="mb-1">{{ $package->step1_name ?? 'Order Received' }}</h6> --}}
+                                <h6 class="mb-1">Order Received</h6>
                                 <small class="text-muted">
                                     @if($package->step1_date)
                                     {{ $package->step1_date->format('M d, Y') }}
@@ -595,7 +596,8 @@
                                 <div class="step-icon mx-auto">
                                     <i class="fas fa-shipping-fast"></i>
                                 </div>
-                                <h6 class="mb-1">{{ $package->step3_name ?? 'In Transit' }}</h6>
+                                {{-- <h6 class="mb-1">{{ $package->step3_name ?? 'In Transit' }}</h6> --}}
+                                <h6 class="mb-1">In Transit</h6>
                                 <small class="text-muted">
                                     @if($package->step3_date)
                                     {{ $package->step3_date->format('M d, Y') }}
@@ -609,7 +611,8 @@
                                 <div class="step-icon mx-auto">
                                     <i class="fas fa-check-circle"></i>
                                 </div>
-                                <h6 class="mb-1">{{ $package->step4_name ?? 'Delivered' }}</h6>
+                                {{-- <h6 class="mb-1">{{ $package->step4_name ?? 'Delivered' }}</h6> --}}
+                                <h6 class="mb-1">Delivered</h6>
                                 <small class="text-muted">
                                     @if($package->step4_date)
                                     {{ $package->step4_date->format('M d, Y') }}
@@ -654,30 +657,61 @@
                                 <i class="fas fa-user"></i> Sender Information
                             </div>
                             <div class="info-card-body">
+                                @if($package->sender_name && $package->sender_name !== 'Not Provided')
                                 <div class="detail-item">
                                     <div class="detail-label">Name</div>
                                     <div>{{ $package->sender_name }}</div>
                                 </div>
+                                @endif
+
+                                @if($package->sender_address && $package->sender_address !== 'Not Provided')
                                 <div class="detail-item">
                                     <div class="detail-label">Address</div>
                                     <div>{{ $package->sender_address }}</div>
                                 </div>
+                                @endif
+
+                                @if(($package->sender_city && $package->sender_city !== 'Not Provided') ||
+                                ($package->sender_state && $package->sender_state !== 'Not Provided') ||
+                                ($package->sender_zip && $package->sender_zip !== 'Not Provided'))
                                 <div class="detail-item">
                                     <div class="detail-label">City/State/Zip</div>
-                                    <div>{{ $package->sender_city }}, {{ $package->sender_state }} {{
-                                        $package->sender_zip }}</div>
+                                    <div>
+                                        @if($package->sender_city && $package->sender_city !== 'Not Provided')
+                                        {{ $package->sender_city }},
+                                        @endif
+                                        @if($package->sender_state && $package->sender_state !== 'Not Provided')
+                                        {{ $package->sender_state }}
+                                        @endif
+                                        @if($package->sender_zip && $package->sender_zip !== 'Not Provided')
+                                        {{ $package->sender_zip }}
+                                        @endif
+                                    </div>
                                 </div>
+                                @endif
+
+                                @if($package->sender_country && $package->sender_country !== 'Not Provided')
                                 <div class="detail-item">
                                     <div class="detail-label">Country</div>
                                     <div>{{ $package->sender_country }}</div>
                                 </div>
+                                @endif
+
+                                @if(($package->sender_phone && $package->sender_phone !== 'Not Provided') ||
+                                ($package->sender_email && $package->sender_email !== 'not-provided@example.com'))
                                 <div class="detail-item">
                                     <div class="detail-label">Contact</div>
                                     <div>
+                                        @if($package->sender_phone && $package->sender_phone !== 'Not Provided')
                                         <div>{{ $package->sender_phone }}</div>
+                                        @endif
+                                        @if($package->sender_email && $package->sender_email !==
+                                        'not-provided@example.com')
                                         <div>{{ $package->sender_email }}</div>
+                                        @endif
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -689,30 +723,61 @@
                                 <i class="fas fa-user-tag"></i> Receiver Information
                             </div>
                             <div class="info-card-body">
+                                @if($package->receiver_name)
                                 <div class="detail-item">
                                     <div class="detail-label">Name</div>
                                     <div>{{ $package->receiver_name }}</div>
                                 </div>
+                                @endif
+
+                                @if($package->receiver_address)
                                 <div class="detail-item">
                                     <div class="detail-label">Address</div>
                                     <div>{{ $package->receiver_address }}</div>
                                 </div>
+                                @endif
+
+                                @if(($package->receiver_city && $package->receiver_city !== 'Not Provided') ||
+                                ($package->receiver_state && $package->receiver_state !== 'Not Provided') ||
+                                ($package->receiver_zip && $package->receiver_zip !== 'Not Provided'))
                                 <div class="detail-item">
                                     <div class="detail-label">City/State/Zip</div>
-                                    <div>{{ $package->receiver_city }}, {{ $package->receiver_state }} {{
-                                        $package->receiver_zip }}</div>
+                                    <div>
+                                        @if($package->receiver_city && $package->receiver_city !== 'Not Provided')
+                                        {{ $package->receiver_city }},
+                                        @endif
+                                        @if($package->receiver_state && $package->receiver_state !== 'Not Provided')
+                                        {{ $package->receiver_state }}
+                                        @endif
+                                        @if($package->receiver_zip && $package->receiver_zip !== 'Not Provided')
+                                        {{ $package->receiver_zip }}
+                                        @endif
+                                    </div>
                                 </div>
+                                @endif
+
+                                @if($package->receiver_country)
                                 <div class="detail-item">
                                     <div class="detail-label">Country</div>
                                     <div>{{ $package->receiver_country }}</div>
                                 </div>
+                                @endif
+
+                                @if($package->receiver_phone || ($package->receiver_email && $package->receiver_email
+                                !== 'not-provided@example.com'))
                                 <div class="detail-item">
                                     <div class="detail-label">Contact</div>
                                     <div>
+                                        @if($package->receiver_phone)
                                         <div>{{ $package->receiver_phone }}</div>
+                                        @endif
+                                        @if($package->receiver_email && $package->receiver_email !==
+                                        'not-provided@example.com')
                                         <div>{{ $package->receiver_email }}</div>
+                                        @endif
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -724,34 +789,38 @@
                                 <i class="fas fa-truck"></i> Shipping Information
                             </div>
                             <div class="info-card-body">
+                                @if($package->shipping_from)
                                 <div class="detail-item">
                                     <div class="detail-label">From</div>
                                     <div>{{ $package->shipping_from }}</div>
                                 </div>
+                                @endif
+
+                                @if($package->shipping_to)
                                 <div class="detail-item">
                                     <div class="detail-label">To</div>
                                     <div>{{ $package->shipping_to }}</div>
                                 </div>
+                                @endif
+
+                                @if($package->shipping_date)
                                 <div class="detail-item">
                                     <div class="detail-label">Shipped Date</div>
                                     <div>
-                                        @if($package->shipping_date)
                                         {{ $package->shipping_date->format('M d, Y') }}
-                                        @else
-                                        Pending
-                                        @endif
                                     </div>
                                 </div>
+                                @endif
+
+                                @if($package->estimated_delivery_date)
                                 <div class="detail-item">
                                     <div class="detail-label">Est. Delivery</div>
                                     <div>
-                                        @if($package->estimated_delivery_date)
                                         {{ $package->estimated_delivery_date->format('M d, Y') }}
-                                        @else
-                                        To be determined
-                                        @endif
                                     </div>
                                 </div>
+                                @endif
+
                                 <div class="detail-item">
                                     <div class="detail-label">Carrier</div>
                                     <div>FedEx Express</div>
@@ -771,26 +840,48 @@
                                 <i class="fas fa-box-open"></i> Package Details
                             </div>
                             <div class="info-card-body">
+                                @if($package->item_description)
                                 <div class="detail-item">
                                     <div class="detail-label">Description</div>
                                     <div>{{ $package->item_description }}</div>
                                 </div>
+                                @endif
+
+                                @if($package->item_quantity)
                                 <div class="detail-item">
                                     <div class="detail-label">Quantity</div>
                                     <div>{{ $package->item_quantity }}</div>
                                 </div>
+                                @endif
+
+                                @if($package->declared_value)
                                 <div class="detail-item">
                                     <div class="detail-label">Declared Value</div>
                                     <div>${{ number_format($package->declared_value, 2) }}</div>
                                 </div>
+                                @endif
+
+                                @if($package->total_weight)
                                 <div class="detail-item">
                                     <div class="detail-label">Total Weight</div>
                                     <div>{{ $package->total_weight }} kg</div>
                                 </div>
+                                @endif
+
+                                @if($package->number_of_boxes || $package->box_weight)
                                 <div class="detail-item">
                                     <div class="detail-label">Boxes</div>
-                                    <div>{{ $package->number_of_boxes }} ({{ $package->box_weight }} kg each)</div>
+                                    <div>
+                                        @if($package->number_of_boxes)
+                                        {{ $package->number_of_boxes }}
+                                        @endif
+                                        @if($package->box_weight)
+                                        ({{ $package->box_weight }} kg each)
+                                        @endif
+                                    </div>
                                 </div>
+                                @endif
+
                                 <div class="detail-item">
                                     <div class="detail-label">Dimensions</div>
                                     <div>30 × 20 × 15 cm (each)</div>
@@ -904,60 +995,80 @@
     let routeLine = L.polyline([originCoords], {color: '#3498db', weight: 5}).addTo(map);
 
     // Smooth animation
-    let progress = 0; // 0% → 100%
-    function animateTruck() {
-        if (progress >= 100) return;
-
-        progress += 0.5; // speed (increase for faster movement)
-        const lat = originCoords[0] + (destCoords[0] - originCoords[0]) * (progress / 100);
-        const lng = originCoords[1] + (destCoords[1] - originCoords[1]) * (progress / 100);
-
-        vehicleMarker.setLatLng([lat, lng]);
-
-        // Extend route line gradually
-        routeLine.addLatLng([lat, lng]);
-
-        requestAnimationFrame(animateTruck);
+    let progress = 0; // 0 to 1
+    function animateVehicle() {
+        if (progress <= 1) {
+            const lat = originCoords[0] + (destCoords[0] - originCoords[0]) * progress;
+            const lng = originCoords[1] + (destCoords[1] - originCoords[1]) * progress;
+            const newLatLng = L.latLng(lat, lng);
+            vehicleMarker.setLatLng(newLatLng);
+            routeLine.addLatLng(newLatLng);
+            progress += 0.005;
+            setTimeout(animateVehicle, 50);
+        }
     }
+    animateVehicle();
 
-    animateTruck(); // start animation
-});
-    </script>
+    // Fit map to show all markers
+    const group = new L.featureGroup([origin, destination, vehicleMarker]);
+    map.fitBounds(group.getBounds().pad(0.1));
 
-    <style>
-        /* Pulsing marker effect */
+    // Print functionality
+    document.getElementById('printBtn').addEventListener('click', function() {
+        window.print();
+    });
+
+    // Refresh functionality
+    document.getElementById('refreshBtn').addEventListener('click', function() {
+        const btn = this;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Refreshing...';
+        btn.disabled = true;
+
+        // Simulate API call
+        setTimeout(function() {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+
+            // Show notification
+            const toast = document.createElement('div');
+            toast.className = 'alert alert-success notification-toast';
+            toast.innerHTML = '<i class="fas fa-check-circle me-2"></i> Tracking information updated successfully!';
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }, 1500);
+    });
+
+    // Add CSS for pulsing effect
+    const style = document.createElement('style');
+    style.textContent = `
         .pulse-marker {
             width: 20px;
             height: 20px;
-            background: rgba(52, 152, 219, 0.4);
             border-radius: 50%;
-            position: relative;
+            background: #e74c3c;
+            border: 3px solid white;
+            box-shadow: 0 0 0 0 rgba(231, 76, 60, 1);
+            animation: pulse 2s infinite;
         }
-
-        .pulse-marker::after {
-            content: '';
-            width: 20px;
-            height: 20px;
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(52, 152, 219, 0.7);
-            animation: pulse 1.5s infinite;
-        }
-
         @keyframes pulse {
             0% {
-                transform: scale(1);
-                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7);
             }
-
+            70% {
+                box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+            }
             100% {
-                transform: scale(2);
-                opacity: 0;
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
             }
         }
-    </style>
-
-
+    `;
+    document.head.appendChild(style);
+});
+    </script>
 </body>
 
 </html>
