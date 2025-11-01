@@ -568,7 +568,7 @@
                                     <i class="fas fa-clipboard-check"></i>
                                 </div>
                                 {{-- <h6 class="mb-1">{{ $package->step1_name ?? 'Order Received' }}</h6> --}}
-                                <h6 class="mb-1">Order Received</h6>
+                                <h6 class="mb-1">Send Out For Delivery</h6>
                                 <small class="text-muted">
                                     @if($package->step1_date)
                                     {{ $package->step1_date->format('M d, Y') }}
@@ -612,7 +612,7 @@
                                     <i class="fas fa-check-circle"></i>
                                 </div>
                                 {{-- <h6 class="mb-1">{{ $package->step4_name ?? 'Delivered' }}</h6> --}}
-                                <h6 class="mb-1">Delivered</h6>
+                                <h6 class="mb-1">Close to Arriving Destination</h6>
                                 <small class="text-muted">
                                     @if($package->step4_date)
                                     {{ $package->step4_date->format('M d, Y') }}
