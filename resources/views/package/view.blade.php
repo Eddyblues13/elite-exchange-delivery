@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <!-- Leaflet Routing Machine CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css">
 
     <style>
         :root {
@@ -179,7 +181,7 @@
         }
 
         .map-container {
-            height: 300px;
+            height: 400px;
             border-radius: 10px;
             overflow: hidden;
             background-color: #eaeaea;
@@ -197,6 +199,17 @@
             position: absolute;
             top: 10px;
             right: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            z-index: 2;
+        }
+
+        .map-controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
             background: white;
             padding: 10px;
             border-radius: 8px;
@@ -439,7 +452,7 @@
             }
 
             .map-container {
-                height: 200px;
+                height: 300px;
             }
 
             .step-icon {
@@ -457,10 +470,62 @@
         .leaflet-popup-content-wrapper {
             border-radius: 8px;
         }
+
+        /* Enhanced marker styles */
+        .pulse-marker {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e74c3c;
+            border: 3px solid white;
+            box-shadow: 0 0 0 0 rgba(231, 76, 60, 1);
+            animation: pulse 2s infinite;
+        }
+
+        .truck-marker {
+            font-size: 24px;
+            color: #e74c3c;
+            filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+            animation: moveTruck 3s ease-in-out infinite;
+        }
+
+        @keyframes moveTruck {
+
+            0%,
+            100% {
+                transform: translateX(-2px);
+            }
+
+            50% {
+                transform: translateX(2px);
+            }
+        }
+
+        .origin-marker {
+            background-color: #2ecc71;
+            border: 3px solid white;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+        }
+
+        .destination-marker {
+            background-color: #e74c3c;
+            border: 3px solid white;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+        }
+
+        .route-info {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            font-size: 12px;
+            max-width: 200px;
+        }
     </style>
-
-
-
 </head>
 
 <body>
@@ -534,6 +599,18 @@
                                 <span class="live-indicator"></span>
                                 <span class="small">Live Tracking</span>
                             </div>
+                            <div class="map-controls">
+                                <button class="btn btn-sm btn-outline-primary mb-1" id="centerMap">
+                                    <i class="fas fa-crosshairs"></i> Center
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary" id="toggleRoute">
+                                    <i class="fas fa-route"></i> Route
+                                </button>
+                            </div>
+                        </div>
+                        <div id="routeInfo" class="alert alert-info d-none">
+                            <i class="fas fa-route me-2"></i>
+                            <span id="routeDistance"></span> • <span id="routeTime"></span>
                         </div>
                     </div>
                 </div>
@@ -567,7 +644,6 @@
                                 <div class="step-icon mx-auto">
                                     <i class="fas fa-clipboard-check"></i>
                                 </div>
-                                {{-- <h6 class="mb-1">{{ $package->step1_name ?? 'Order Received' }}</h6> --}}
                                 <h6 class="mb-1">Send Out For Delivery</h6>
                                 <small class="text-muted">
                                     @if($package->step1_date)
@@ -596,7 +672,6 @@
                                 <div class="step-icon mx-auto">
                                     <i class="fas fa-shipping-fast"></i>
                                 </div>
-                                {{-- <h6 class="mb-1">{{ $package->step3_name ?? 'In Transit' }}</h6> --}}
                                 <h6 class="mb-1">In Transit</h6>
                                 <small class="text-muted">
                                     @if($package->step3_date)
@@ -611,7 +686,6 @@
                                 <div class="step-icon mx-auto">
                                     <i class="fas fa-check-circle"></i>
                                 </div>
-                                {{-- <h6 class="mb-1">{{ $package->step4_name ?? 'Delivered' }}</h6> --}}
                                 <h6 class="mb-1">Close to Arriving Destination</h6>
                                 <small class="text-muted">
                                     @if($package->step4_date)
@@ -944,130 +1018,348 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Leaflet Routing Machine -->
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-    // Initialize world view
-    const map = L.map('map').setView([20, 0], 2);
+            // Initialize map with better settings
+            const map = L.map('map', {
+                zoomControl: true,
+                preferCanvas: true
+            }).setView([20, 0], 2);
 
-    // Add OpenStreetMap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+            // Add multiple tile layers for better performance and options
+            const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            });
 
-    // Origin and destination markers
-    const originCoords = [37.7749, -122.4194];   // Replace with {{ $package->origin_lat }}, {{ $package->origin_lng }}
-    const destCoords   = [40.7128, -74.0060];    // Replace with {{ $package->destination_lat }}, {{ $package->destination_lng }}
+            const satelliteLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                attribution: '&copy; Google'
+            });
 
-    const origin = L.marker(originCoords).addTo(map)
-        .bindPopup('Origin: {{ $package->shipping_from }}').openPopup();
+            const darkLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                maxZoom: 19
+            });
 
-    const destination = L.marker(destCoords).addTo(map)
-        .bindPopup('Destination: {{ $package->shipping_to }}');
+            // Add default layer
+            osmLayer.addTo(map);
 
-    // Pulsing current location (if available)
-    @if($currentLocation = $package->trackingLocations->where('is_current', true)->first())
-        const currentCoords = [39.8283, -98.5795]; // Replace with {{ $currentLocation->lat }}, {{ $currentLocation->lng }}
+            // Add layer control
+            const baseMaps = {
+                "Street Map": osmLayer,
+                "Satellite": satelliteLayer,
+                "Dark Mode": darkLayer
+            };
+            L.control.layers(baseMaps).addTo(map);
 
-        const pulsingIcon = L.divIcon({
-            html: '<div class="pulse-marker"></div>',
-            className: '',
-            iconSize: [20, 20],
-            iconAnchor: [10, 10]
+            // Geocoding function to get coordinates from location names
+            async function geocodeLocation(locationName) {
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationName)}&limit=1`);
+                    const data = await response.json();
+                    
+                    if (data && data.length > 0) {
+                        return {
+                            lat: parseFloat(data[0].lat),
+                            lng: parseFloat(data[0].lon),
+                            display_name: data[0].display_name
+                        };
+                    }
+                    return null;
+                } catch (error) {
+                    console.error('Geocoding error:', error);
+                    return null;
+                }
+            }
+
+            // Function to initialize map with real coordinates
+            async function initializeMapWithRealLocations() {
+                let originCoords, destCoords, currentCoords;
+
+                // Try to geocode shipping_from and shipping_to
+                const originLocation = await geocodeLocation('{{ $package->shipping_from }}');
+                const destLocation = await geocodeLocation('{{ $package->shipping_to }}');
+
+                // Set coordinates with fallbacks
+                if (originLocation) {
+                    originCoords = [originLocation.lat, originLocation.lng];
+                } else {
+                    // Fallback to US coordinates if geocoding fails
+                    originCoords = [37.7749, -122.4194]; // San Francisco
+                }
+
+                if (destLocation) {
+                    destCoords = [destLocation.lat, destLocation.lng];
+                } else {
+                    // Fallback to US coordinates if geocoding fails
+                    destCoords = [40.7128, -74.0060]; // New York
+                }
+
+                // Create custom icons
+                const originIcon = L.divIcon({
+                    html: '<div class="origin-marker"></div>',
+                    className: '',
+                    iconSize: [15, 15],
+                    iconAnchor: [7, 7]
+                });
+
+                const destinationIcon = L.divIcon({
+                    html: '<div class="destination-marker"></div>',
+                    className: '',
+                    iconSize: [15, 15],
+                    iconAnchor: [7, 7]
+                });
+
+                const truckIcon = L.divIcon({
+                    html: '<i class="fas fa-truck truck-marker"></i>',
+                    className: '',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                });
+
+                const pulsingIcon = L.divIcon({
+                    html: '<div class="pulse-marker"></div>',
+                    className: '',
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                });
+
+                // Create markers with real location names
+                const originMarker = L.marker(originCoords, {icon: originIcon}).addTo(map)
+                    .bindPopup(`
+                        <div class="route-info">
+                            <strong>Origin</strong><br>
+                            {{ $package->shipping_from }}<br>
+                            ${originLocation ? originLocation.display_name : 'Location approximate'}
+                        </div>
+                    `);
+
+                const destinationMarker = L.marker(destCoords, {icon: destinationIcon}).addTo(map)
+                    .bindPopup(`
+                        <div class="route-info">
+                            <strong>Destination</strong><br>
+                            {{ $package->shipping_to }}<br>
+                            ${destLocation ? destLocation.display_name : 'Location approximate'}
+                        </div>
+                    `);
+
+                // Handle current location
+                @if($currentLocation = $package->trackingLocations->where('is_current', true)->first())
+                    const currentLocation = await geocodeLocation('{{ $currentLocation->location_name }}');
+                    if (currentLocation) {
+                        currentCoords = [currentLocation.lat, currentLocation.lng];
+                    } else {
+                        // Calculate intermediate point based on progress
+                        const progressPercentage = {{ $package->progress_percentage ?? 50 }} / 100;
+                        currentCoords = [
+                            originCoords[0] + (destCoords[0] - originCoords[0]) * progressPercentage,
+                            originCoords[1] + (destCoords[1] - originCoords[1]) * progressPercentage
+                        ];
+                    }
+                @else
+                    // Calculate current position based on progress percentage
+                    const progressPercentage = {{ $package->progress_percentage ?? 50 }} / 100;
+                    currentCoords = [
+                        originCoords[0] + (destCoords[0] - originCoords[0]) * progressPercentage,
+                        originCoords[1] + (destCoords[1] - originCoords[1]) * progressPercentage
+                    ];
+                @endif
+
+                // Create vehicle marker
+                const vehicleMarker = L.marker(currentCoords, {icon: truckIcon}).addTo(map)
+                    .bindPopup(`
+                        <div class="route-info">
+                            <strong>Current Location</strong><br>
+                            @if($currentLocation = $package->trackingLocations->where('is_current', true)->first())
+                                {{ $package->status }} in {{ $currentLocation->location_name }}
+                            @else
+                                In transit to {{ $package->shipping_to }}
+                            @endif
+                            <br>Progress: {{ $package->progress_percentage }}%
+                        </div>
+                    `)
+                    .openPopup();
+
+                // Create routing control
+                const routingControl = L.Routing.control({
+                    waypoints: [
+                        L.latLng(originCoords[0], originCoords[1]),
+                        L.latLng(destCoords[0], destCoords[1])
+                    ],
+                    routeWhileDragging: false,
+                    showAlternatives: false,
+                    fitSelectedRoutes: false,
+                    show: false,
+                    createMarker: function() { return null; },
+                    lineOptions: {
+                        styles: [
+                            {
+                                color: '#3498db',
+                                opacity: 0.7,
+                                weight: 6
+                            }
+                        ]
+                    }
+                }).addTo(map);
+
+                // Update route to show path traveled
+                const traveledRoute = L.polyline([originCoords, currentCoords], {
+                    color: '#2ecc71',
+                    weight: 4,
+                    opacity: 0.8,
+                    dashArray: '5, 10'
+                }).addTo(map);
+
+                const remainingRoute = L.polyline([currentCoords, destCoords], {
+                    color: '#e74c3c',
+                    weight: 4,
+                    opacity: 0.5,
+                    dashArray: '5, 10'
+                }).addTo(map);
+
+                // Fit map to show all markers with padding
+                const bounds = L.latLngBounds([originCoords, destCoords, currentCoords]);
+                map.fitBounds(bounds.pad(0.1));
+
+                // Get route information
+                routingControl.on('routesfound', function(e) {
+                    const routes = e.routes;
+                    const route = routes[0];
+                    const distance = (route.summary.totalDistance / 1000).toFixed(1);
+                    const time = Math.round(route.summary.totalTime / 60);
+                    
+                    document.getElementById('routeDistance').textContent = `${distance} km`;
+                    document.getElementById('routeTime').textContent = `${time} minutes`;
+                    document.getElementById('routeInfo').classList.remove('d-none');
+                });
+
+                // Toggle route display
+                let routeVisible = true;
+                document.getElementById('toggleRoute').addEventListener('click', function() {
+                    routeVisible = !routeVisible;
+                    if (routeVisible) {
+                        routingControl.addTo(map);
+                        traveledRoute.addTo(map);
+                        remainingRoute.addTo(map);
+                        this.innerHTML = '<i class="fas fa-route"></i> Route';
+                    } else {
+                        map.removeControl(routingControl);
+                        map.removeLayer(traveledRoute);
+                        map.removeLayer(remainingRoute);
+                        this.innerHTML = '<i class="fas fa-eye-slash"></i> Show Route';
+                    }
+                });
+
+                // Center map button
+                document.getElementById('centerMap').addEventListener('click', function() {
+                    map.fitBounds(bounds.pad(0.1));
+                });
+
+                return { originCoords, destCoords, currentCoords, vehicleMarker };
+            }
+
+            // Initialize the enhanced map
+            initializeMapWithRealLocations().then(({ vehicleMarker, currentCoords }) => {
+                // Simulate vehicle movement for demo purposes
+                let simulationInterval;
+                let currentPosition = currentCoords;
+                let simulationActive = false;
+
+                function startSimulation() {
+                    if (simulationActive) return;
+                    simulationActive = true;
+                    
+                    simulationInterval = setInterval(() => {
+                        // Move vehicle slightly towards destination
+                        const destCoords = [40.7128, -74.0060]; // NY
+                        const moveStep = 0.0001;
+                        
+                        currentPosition = [
+                            currentPosition[0] + (destCoords[0] - currentPosition[0]) * moveStep,
+                            currentPosition[1] + (destCoords[1] - currentPosition[1]) * moveStep
+                        ];
+                        
+                        vehicleMarker.setLatLng(currentPosition);
+                        
+                        // Stop simulation when close to destination
+                        const distance = Math.sqrt(
+                            Math.pow(destCoords[0] - currentPosition[0], 2) + 
+                            Math.pow(destCoords[1] - currentPosition[1], 2)
+                        );
+                        
+                        if (distance < 0.01) {
+                            stopSimulation();
+                        }
+                    }, 100);
+                }
+
+                function stopSimulation() {
+                    simulationActive = false;
+                    clearInterval(simulationInterval);
+                }
+
+                // Add simulation controls for demo
+                const simulationControl = L.control({position: 'bottomleft'});
+                simulationControl.onAdd = function(map) {
+                    const div = L.DomUtil.create('div', 'map-controls');
+                    div.innerHTML = `
+                        <button class="btn btn-sm btn-warning mb-1" id="startSimulation">
+                            <i class="fas fa-play"></i> Demo
+                        </button>
+                    `;
+                    return div;
+                };
+                simulationControl.addTo(map);
+
+                document.getElementById('startSimulation').addEventListener('click', function() {
+                    if (!simulationActive) {
+                        startSimulation();
+                        this.innerHTML = '<i class="fas fa-stop"></i> Stop';
+                        this.classList.remove('btn-warning');
+                        this.classList.add('btn-danger');
+                    } else {
+                        stopSimulation();
+                        this.innerHTML = '<i class="fas fa-play"></i> Demo';
+                        this.classList.remove('btn-danger');
+                        this.classList.add('btn-warning');
+                    }
+                });
+            });
+
+            // Print functionality
+            document.getElementById('printBtn').addEventListener('click', function() {
+                window.print();
+            });
+
+            // Refresh functionality
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                const btn = this;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Refreshing...';
+                btn.disabled = true;
+
+                // Simulate API call
+                setTimeout(function() {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+
+                    // Show notification
+                    const toast = document.createElement('div');
+                    toast.className = 'alert alert-success notification-toast';
+                    toast.innerHTML = '<i class="fas fa-check-circle me-2"></i> Tracking information updated successfully!';
+                    document.body.appendChild(toast);
+
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 3000);
+                }, 1500);
+            });
         });
-
-        L.marker(currentCoords, {icon: pulsingIcon})
-            .addTo(map)
-            .bindPopup('Current Location: {{ $currentLocation->location_name }}')
-            .openPopup();
-    @endif
-
-    // Truck icon
-    const movingIcon = L.divIcon({
-        html: '<i class="fas fa-truck fa-2x" style="color: #e74c3c;"></i>',
-        className: '',
-        iconSize: [30, 30],
-        iconAnchor: [15, 15]
-    });
-    let vehicleMarker = L.marker(originCoords, {icon: movingIcon}).addTo(map);
-
-    // Animated route line
-    let routeLine = L.polyline([originCoords], {color: '#3498db', weight: 5}).addTo(map);
-
-    // Smooth animation
-    let progress = 0; // 0 to 1
-    function animateVehicle() {
-        if (progress <= 1) {
-            const lat = originCoords[0] + (destCoords[0] - originCoords[0]) * progress;
-            const lng = originCoords[1] + (destCoords[1] - originCoords[1]) * progress;
-            const newLatLng = L.latLng(lat, lng);
-            vehicleMarker.setLatLng(newLatLng);
-            routeLine.addLatLng(newLatLng);
-            progress += 0.005;
-            setTimeout(animateVehicle, 50);
-        }
-    }
-    animateVehicle();
-
-    // Fit map to show all markers
-    const group = new L.featureGroup([origin, destination, vehicleMarker]);
-    map.fitBounds(group.getBounds().pad(0.1));
-
-    // Print functionality
-    document.getElementById('printBtn').addEventListener('click', function() {
-        window.print();
-    });
-
-    // Refresh functionality
-    document.getElementById('refreshBtn').addEventListener('click', function() {
-        const btn = this;
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Refreshing...';
-        btn.disabled = true;
-
-        // Simulate API call
-        setTimeout(function() {
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-
-            // Show notification
-            const toast = document.createElement('div');
-            toast.className = 'alert alert-success notification-toast';
-            toast.innerHTML = '<i class="fas fa-check-circle me-2"></i> Tracking information updated successfully!';
-            document.body.appendChild(toast);
-
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }, 1500);
-    });
-
-    // Add CSS for pulsing effect
-    const style = document.createElement('style');
-    style.textContent = `
-        .pulse-marker {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #e74c3c;
-            border: 3px solid white;
-            box-shadow: 0 0 0 0 rgba(231, 76, 60, 1);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
-            }
-        }
-    `;
-    document.head.appendChild(style);
-});
     </script>
 </body>
 
