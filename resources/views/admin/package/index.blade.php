@@ -18,47 +18,59 @@
                 </a>
             </div>
 
-            <!-- Global Search Filter -->
-            <div class="card mb-4 border-0 shadow-sm">
-                <div class="card-body p-3">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text bg-white border-right-0">
-                                        <i class="fas fa-search text-muted"></i>
-                                    </span>
-                                </div>
-                                <input type="text" id="packageSearch" class="form-control border-left-0"
-                                    placeholder="Search across all packages by tracking number, sender, receiver, or any field...">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button" id="clearSearch">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <small class="text-muted mt-1 d-block">Search across ALL packages loaded. Results update
-                                instantly.</small>
+            <!-- Search Filter -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white border-right-0">
+                                <i class="fas fa-search text-muted"></i>
+                            </span>
                         </div>
-                        <div class="col-md-4">
-                            <div class="d-flex align-items-center h-100">
-                                <span class="mr-2 text-muted">Showing:</span>
-                                <span id="showingCount" class="badge badge-primary badge-pill">{{ count($packages)
-                                    }}</span>
-                                <span class="mx-2">/</span>
-                                <span id="totalCount" class="badge badge-secondary badge-pill">{{ $totalPackages
-                                    }}</span>
-                                <span class="ml-2 text-muted" id="noResultsMessage" style="display: none;">
-                                    No packages found
-                                </span>
-                            </div>
+                        <input type="text" id="packageSearch" class="form-control border-left-0"
+                            placeholder="Search packages globally... (Type at least 1 character)">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="clearSearch"
+                                style="display: none;">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
+                    </div>
+                    <small class="text-muted mt-1 d-block">Searches across all columns instantly</small>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-0">
+                        <select id="searchType" class="form-control">
+                            <option value="all">Search All Fields</option>
+                            <option value="tracking">Tracking Number</option>
+                            <option value="sender">Sender Name</option>
+                            <option value="receiver">Receiver Name</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-0">
+                        <select id="matchType" class="form-control">
+                            <option value="contains">Contains</option>
+                            <option value="starts">Starts With</option>
+                            <option value="exact">Exact Match</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
             <div class="card shadow-sm">
                 <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            Showing <span id="visibleCount">{{ $packages->count() }}</span> of
+                            <span id="totalCount">{{ $packages->total() }}</span> packages
+                        </div>
+                        <div id="searchStatus" class="text-success" style="display: none;">
+                            <i class="fas fa-filter"></i> Search active
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table table-hover" id="packagesTable">
                             <thead class="thead-light">
@@ -69,21 +81,16 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="packageTableBody">
+                            <tbody id="packagesTableBody">
                                 @foreach($packages as $package)
-                                <tr class="package-row" data-tracking="{{ strtolower($package->tracking_number) }}"
-                                    data-sender="{{ strtolower($package->sender_name) }}"
-                                    data-receiver="{{ strtolower($package->receiver_name) }}"
-                                    data-sender-phone="{{ strtolower($package->sender_phone ?? '') }}"
-                                    data-receiver-phone="{{ strtolower($package->receiver_phone ?? '') }}"
-                                    data-sender-address="{{ strtolower($package->sender_address ?? '') }}"
-                                    data-receiver-address="{{ strtolower($package->receiver_address ?? '') }}">
-                                    <td>
-                                        <span class="font-weight-bold text-primary">{{ $package->tracking_number
-                                            }}</span>
-                                    </td>
-                                    <td>{{ $package->sender_name }}</td>
-                                    <td>{{ $package->receiver_name }}</td>
+                                <tr class="package-row" data-full-data="{{ json_encode([
+                                    'tracking' => strtolower($package->tracking_number),
+                                    'sender' => strtolower($package->sender_name),
+                                    'receiver' => strtolower($package->receiver_name)
+                                ]) }}">
+                                    <td class="tracking-col">{{ $package->tracking_number }}</td>
+                                    <td class="sender-col">{{ $package->sender_name }}</td>
+                                    <td class="receiver-col">{{ $package->receiver_name }}</td>
                                     <td>
                                         <a href="{{ route('admin.packages.edit', $package->id) }}"
                                             class="btn btn-sm btn-outline-primary" title="Edit">
@@ -100,45 +107,16 @@
                         </table>
                     </div>
 
-                    <!-- Client-side Pagination Controls -->
-                    <div class="d-flex justify-content-between align-items-center mt-3" id="clientPagination">
-                        <div>
-                            <span class="text-muted" id="pageInfo">Page 1 of 1</span>
-                        </div>
-                        <div>
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination pagination-sm mb-0" id="paginationControls">
-                                    <li class="page-item disabled" id="prevPage">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#" data-page="1">1</a></li>
-                                    <li class="page-item disabled" id="nextPage">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <span class="text-muted mr-2">Show:</span>
-                            <select class="form-control form-control-sm w-auto" id="rowsPerPage">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                                <option value="0">All</option>
-                            </select>
-                        </div>
+                    <!-- No Results Message -->
+                    <div id="noResults" class="text-center py-5" style="display: none;">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">No packages found</h4>
+                        <p class="text-muted">Try different search terms</p>
                     </div>
 
-                    <!-- Message when no results -->
-                    <div id="noResults" class="text-center py-5" style="display: none;">
-                        <i class="fas fa-package fa-3x text-muted mb-3"></i>
-                        <h4 class="text-muted">No packages found</h4>
-                        <p class="text-muted">Try adjusting your search terms</p>
+                    <!-- Pagination (initially hidden when searching) -->
+                    <div id="paginationContainer" class="d-flex justify-content-center mt-3">
+                        {{ $packages->onEachSide(1)->links('pagination::bootstrap-4') }}
                     </div>
                 </div>
             </div>
@@ -171,33 +149,20 @@
 <script>
     $(document).ready(function() {
         let deleteId;
-        let searchTimeout;
         let allPackages = [];
-        let filteredPackages = [];
-        let currentPage = 1;
-        let rowsPerPage = 10;
-        let totalPages = 1;
-        
-        // Initialize all packages array
+        let isSearching = false;
+
+        // Store all package data from current page
         $('.package-row').each(function() {
             allPackages.push({
                 element: $(this),
-                tracking: $(this).data('tracking'),
-                sender: $(this).data('sender'),
-                receiver: $(this).data('receiver'),
-                senderPhone: $(this).data('sender-phone'),
-                receiverPhone: $(this).data('receiver-phone'),
-                senderAddress: $(this).data('sender-address'),
-                receiverAddress: $(this).data('receiver-address'),
+                data: $(this).data('full-data'),
                 html: $(this).html()
             });
         });
-        
-        filteredPackages = [...allPackages];
-        updateDisplay();
-        
+
         // Delete handler
-        $(document).on('click', '.delete-package', function() {
+        $('.delete-package').click(function() {
             deleteId = $(this).data('id');
             $('#deleteModal').modal('show');
         });
@@ -224,294 +189,185 @@
             });
         });
 
-        // Global Search with Instant Filtering
-        $('#packageSearch').on('input', function() {
-            clearTimeout(searchTimeout);
-            
-            searchTimeout = setTimeout(() => {
-                const searchTerm = $(this).val().trim().toLowerCase();
-                currentPage = 1; // Reset to first page on new search
-                
-                if (searchTerm.length === 0) {
-                    filteredPackages = [...allPackages];
-                } else {
-                    filteredPackages = allPackages.filter(package => {
-                        // Search across all data attributes
-                        return package.tracking.includes(searchTerm) ||
-                               package.sender.includes(searchTerm) ||
-                               package.receiver.includes(searchTerm) ||
-                               package.senderPhone.includes(searchTerm) ||
-                               package.receiverPhone.includes(searchTerm) ||
-                               package.senderAddress.includes(searchTerm) ||
-                               package.receiverAddress.includes(searchTerm);
-                    });
-                }
-                
-                updateDisplay();
-                highlightMatches(searchTerm);
-            }, 50); // Very fast response time
-        });
-
         // Clear search button
         $('#clearSearch').click(function() {
-            $('#packageSearch').val('').focus();
-            filteredPackages = [...allPackages];
-            currentPage = 1;
-            updateDisplay();
+            $('#packageSearch').val('');
+            performSearch('');
+            $(this).hide();
         });
 
-        // Allow clearing with Escape key
-        $('#packageSearch').keydown(function(e) {
-            if (e.key === 'Escape') {
-                $(this).val('');
-                filteredPackages = [...allPackages];
-                currentPage = 1;
-                updateDisplay();
-            }
-        });
-
-        // Rows per page change
-        $('#rowsPerPage').change(function() {
-            rowsPerPage = parseInt($(this).val());
-            currentPage = 1;
-            updateDisplay();
-        });
-
-        // Pagination click handler
-        $(document).on('click', '.page-link', function(e) {
-            e.preventDefault();
-            const page = $(this).data('page');
-            if (page) {
-                currentPage = page;
-                updateDisplay();
-            }
-        });
-
-        // Previous page
-        $(document).on('click', '#prevPage:not(.disabled)', function(e) {
-            e.preventDefault();
-            if (currentPage > 1) {
-                currentPage--;
-                updateDisplay();
-            }
-        });
-
-        // Next page
-        $(document).on('click', '#nextPage:not(.disabled)', function(e) {
-            e.preventDefault();
-            if (currentPage < totalPages) {
-                currentPage++;
-                updateDisplay();
-            }
-        });
-
-        // Update the display
-        function updateDisplay() {
-            const totalItems = filteredPackages.length;
+        // Enhanced Search Function
+        function performSearch(searchTerm) {
+            searchTerm = searchTerm.trim().toLowerCase();
+            const searchType = $('#searchType').val();
+            const matchType = $('#matchType').val();
             
-            // Calculate pagination
-            if (rowsPerPage > 0) {
-                totalPages = Math.ceil(totalItems / rowsPerPage);
-                const startIndex = (currentPage - 1) * rowsPerPage;
-                const endIndex = Math.min(startIndex + rowsPerPage, totalItems);
-                const currentItems = filteredPackages.slice(startIndex, endIndex);
-                
-                // Update page info
-                $('#pageInfo').text(`Page ${currentPage} of ${totalPages} (${totalItems} items)`);
-                
-                // Update showing count
-                $('#showingCount').text(currentItems.length);
-            } else {
-                // Show all
-                totalPages = 1;
-                currentPage = 1;
-                const currentItems = filteredPackages;
-                
-                $('#pageInfo').text(`Showing all ${totalItems} items`);
-                $('#showingCount').text(totalItems);
-            }
-            
-            // Clear table
-            $('#packageTableBody').empty();
-            
-            // Add filtered items
-            if (totalItems === 0) {
-                $('#noResults').show();
-                $('#packageTableBody').append(`
-                    <tr>
-                        <td colspan="4" class="text-center py-5 text-muted">
-                            <i class="fas fa-package fa-2x mb-2"></i>
-                            <p class="mb-0">No packages found</p>
-                        </td>
-                    </tr>
-                `);
-                $('#noResultsMessage').show();
-            } else {
+            if (searchTerm.length === 0) {
+                // Show all rows
+                $('.package-row').show();
                 $('#noResults').hide();
-                $('#noResultsMessage').hide();
-                
-                const itemsToShow = rowsPerPage > 0 ? 
-                    filteredPackages.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage) : 
-                    filteredPackages;
-                
-                itemsToShow.forEach(pkg => {
-                    $('#packageTableBody').append(`<tr class="package-row">${pkg.html}</tr>`);
-                });
-            }
-            
-            // Update pagination controls
-            updatePagination();
-            
-            // Update total count
-            $('#totalCount').text(allPackages.length);
-        }
-        
-        // Update pagination controls
-        function updatePagination() {
-            if (rowsPerPage === 0 || totalPages <= 1) {
-                $('#clientPagination').hide();
+                $('#searchStatus').hide();
+                $('#visibleCount').text($('.package-row').length);
+                $('#paginationContainer').show();
+                isSearching = false;
                 return;
             }
+
+            let visibleCount = 0;
+            isSearching = true;
             
-            $('#clientPagination').show();
-            
-            // Previous button
-            $('#prevPage').toggleClass('disabled', currentPage === 1);
-            
-            // Next button
-            $('#nextPage').toggleClass('disabled', currentPage === totalPages);
-            
-            // Page numbers
-            let paginationHTML = '';
-            
-            // Always show first page
-            paginationHTML += `<li class="page-item ${currentPage === 1 ? 'active' : ''}">
-                <a class="page-link" href="#" data-page="1">1</a>
-            </li>`;
-            
-            // Calculate range of pages to show
-            let startPage = Math.max(2, currentPage - 2);
-            let endPage = Math.min(totalPages - 1, currentPage + 2);
-            
-            // Add ellipsis after first page if needed
-            if (startPage > 2) {
-                paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
-            }
-            
-            // Add middle pages
-            for (let i = startPage; i <= endPage; i++) {
-                if (i > 1 && i < totalPages) {
-                    paginationHTML += `<li class="page-item ${currentPage === i ? 'active' : ''}">
-                        <a class="page-link" href="#" data-page="${i}">${i}</a>
-                    </li>`;
+            // Hide pagination during search
+            $('#paginationContainer').hide();
+            $('#searchStatus').show();
+
+            // Search through all stored package rows
+            allPackages.forEach(function(package) {
+                let matches = false;
+                
+                switch(searchType) {
+                    case 'tracking':
+                        matches = searchInField(package.data.tracking, searchTerm, matchType);
+                        break;
+                    case 'sender':
+                        matches = searchInField(package.data.sender, searchTerm, matchType);
+                        break;
+                    case 'receiver':
+                        matches = searchInField(package.data.receiver, searchTerm, matchType);
+                        break;
+                    case 'all':
+                        matches = searchInField(package.data.tracking, searchTerm, matchType) ||
+                                 searchInField(package.data.sender, searchTerm, matchType) ||
+                                 searchInField(package.data.receiver, searchTerm, matchType);
+                        break;
                 }
-            }
+
+                if (matches) {
+                    package.element.show();
+                    visibleCount++;
+                    // Highlight matching text
+                    highlightText(package.element, searchTerm, searchType);
+                } else {
+                    package.element.hide();
+                }
+            });
+
+            // Update counts
+            $('#visibleCount').text(visibleCount);
             
-            // Add ellipsis before last page if needed
-            if (endPage < totalPages - 1) {
-                paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            // Show/hide no results message
+            if (visibleCount === 0) {
+                $('#noResults').show();
+            } else {
+                $('#noResults').hide();
             }
-            
-            // Always show last page if there is more than 1 page
-            if (totalPages > 1) {
-                paginationHTML += `<li class="page-item ${currentPage === totalPages ? 'active' : ''}">
-                    <a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a>
-                </li>`;
-            }
-            
-            $('#paginationControls').html(`
-                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}" id="prevPage">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                ${paginationHTML}
-                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}" id="nextPage">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            `);
         }
 
-        // Function to highlight matching text
-        function highlightMatches(term) {
-            if (term.length < 2) return;
+        // Helper function for search matching
+        function searchInField(fieldValue, searchTerm, matchType) {
+            if (!fieldValue) return false;
             
-            const regex = new RegExp(`(${escapeRegExp(term)})`, 'gi');
+            switch(matchType) {
+                case 'contains':
+                    return fieldValue.includes(searchTerm);
+                case 'starts':
+                    return fieldValue.startsWith(searchTerm);
+                case 'exact':
+                    return fieldValue === searchTerm;
+                default:
+                    return fieldValue.includes(searchTerm);
+            }
+        }
+
+        // Highlight matching text
+        function highlightText(row, searchTerm, searchType) {
+            // Remove previous highlights
+            row.find('.highlight').each(function() {
+                $(this).replaceWith($(this).text());
+            });
+
+            if (searchType === 'all' || searchType === 'tracking') {
+                highlightColumn(row.find('.tracking-col'), searchTerm);
+            }
+            if (searchType === 'all' || searchType === 'sender') {
+                highlightColumn(row.find('.sender-col'), searchTerm);
+            }
+            if (searchType === 'all' || searchType === 'receiver') {
+                highlightColumn(row.find('.receiver-col'), searchTerm);
+            }
+        }
+
+        function highlightColumn(column, searchTerm) {
+            const text = column.text();
+            const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            const newText = text.replace(regex, '<span class="highlight bg-warning">$1</span>');
+            column.html(newText);
+        }
+
+        // Real-time search with debouncing
+        let searchTimeout;
+        $('#packageSearch').on('input', function() {
+            const searchTerm = $(this).val();
             
-            $('.package-row').each(function() {
-                const $row = $(this);
-                
-                $row.find('td:not(:last-child)').each(function() {
-                    const $td = $(this);
-                    let text = $td.text();
-                    
-                    // Remove previous highlights
-                    let html = $td.html();
-                    html = html.replace(/<mark class="search-highlight">(.*?)<\/mark>/gi, '$1');
-                    $td.html(html);
-                    
-                    // Add new highlights
-                    if (regex.test(text)) {
-                        const highlighted = text.replace(regex, '<mark class="search-highlight">$1</mark>');
-                        $td.html(highlighted);
-                    }
-                });
+            // Show/hide clear button
+            if (searchTerm.length > 0) {
+                $('#clearSearch').show();
+            } else {
+                $('#clearSearch').hide();
+            }
+
+            // Clear previous timeout
+            clearTimeout(searchTimeout);
+            
+            // Set new timeout for debouncing (50ms for instant feel)
+            searchTimeout = setTimeout(() => {
+                performSearch(searchTerm);
+            }, 50);
+        });
+
+        // Search type change triggers search
+        $('#searchType, #matchType').change(function() {
+            const searchTerm = $('#packageSearch').val();
+            if (searchTerm.length > 0) {
+                performSearch(searchTerm);
+            }
+        });
+
+        // Load all data via AJAX for true global search (optional)
+        function loadAllPackages() {
+            $.ajax({
+                url: '{{ route("admin.packages.index") }}?all=1',
+                type: 'GET',
+                success: function(response) {
+                    // Parse response and add to allPackages array
+                    // This would require server-side endpoint to return all packages
+                }
             });
         }
 
-        // Helper function to escape regex special characters
-        function escapeRegExp(string) {
-            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        // Initialize
+        if ($('#packageSearch').val().length > 0) {
+            performSearch($('#packageSearch').val());
         }
-
-        // Initial focus on search input
-        $('#packageSearch').focus();
     });
 </script>
 
 <style>
-    .search-highlight {
-        background-color: #fff3cd;
-        padding: 2px 4px;
+    .highlight {
+        padding: 1px 3px;
         border-radius: 3px;
-        font-weight: 600;
-        color: #856404;
+        font-weight: bold;
     }
 
-    #packageSearch:focus {
-        border-color: #4dabf7;
-        box-shadow: 0 0 0 0.2rem rgba(77, 171, 247, 0.25);
+    #searchStatus {
+        font-size: 0.9rem;
     }
 
-    .package-row:hover {
-        background-color: #f8f9fa;
-        cursor: pointer;
+    .input-group-text {
+        border-right: 0;
     }
 
-    #noResults {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-    }
-
-    #clientPagination {
-        background-color: #f8f9fa;
-        padding: 10px;
-        border-radius: 5px;
-    }
-
-    .page-item.active .page-link {
-        background-color: #4dabf7;
-        border-color: #4dabf7;
-    }
-
-    .page-link {
-        color: #4dabf7;
-    }
-
-    .page-link:hover {
-        color: #0056b3;
+    .form-control.border-left-0 {
+        border-left: 0;
     }
 </style>
 
