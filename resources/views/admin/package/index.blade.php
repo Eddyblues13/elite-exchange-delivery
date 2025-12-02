@@ -18,7 +18,7 @@
                 </a>
             </div>
 
-            <!-- Enhanced Search Filter -->
+            <!-- Global Search Filter -->
             <div class="card mb-4 border-0 shadow-sm">
                 <div class="card-body p-3">
                     <div class="row">
@@ -30,20 +30,23 @@
                                     </span>
                                 </div>
                                 <input type="text" id="packageSearch" class="form-control border-left-0"
-                                    placeholder="Search by tracking number, sender, receiver, or any related field...">
+                                    placeholder="Search across all packages by tracking number, sender, receiver, or any field...">
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button" id="clearSearch">
                                         <i class="fas fa-times"></i>
                                     </button>
                                 </div>
                             </div>
-                            <small class="text-muted mt-1 d-block">Start typing to filter results instantly. Search is
-                                case-insensitive.</small>
+                            <small class="text-muted mt-1 d-block">Search across ALL packages loaded. Results update
+                                instantly.</small>
                         </div>
                         <div class="col-md-4">
                             <div class="d-flex align-items-center h-100">
-                                <span class="mr-2 text-muted">Results:</span>
-                                <span id="resultCount" class="badge badge-primary badge-pill">{{ count($packages)
+                                <span class="mr-2 text-muted">Showing:</span>
+                                <span id="showingCount" class="badge badge-primary badge-pill">{{ count($packages)
+                                    }}</span>
+                                <span class="mx-2">/</span>
+                                <span id="totalCount" class="badge badge-secondary badge-pill">{{ $totalPackages
                                     }}</span>
                                 <span class="ml-2 text-muted" id="noResultsMessage" style="display: none;">
                                     No packages found
@@ -68,15 +71,13 @@
                             </thead>
                             <tbody id="packageTableBody">
                                 @foreach($packages as $package)
-                                <tr class="package-row" data-searchable="{{ strtolower(implode(' ', [
-                                    $package->tracking_number,
-                                    $package->sender_name,
-                                    $package->receiver_name,
-                                    $package->sender_phone ?? '',
-                                    $package->receiver_phone ?? '',
-                                    $package->sender_address ?? '',
-                                    $package->receiver_address ?? ''
-                                ])) }}">
+                                <tr class="package-row" data-tracking="{{ strtolower($package->tracking_number) }}"
+                                    data-sender="{{ strtolower($package->sender_name) }}"
+                                    data-receiver="{{ strtolower($package->receiver_name) }}"
+                                    data-sender-phone="{{ strtolower($package->sender_phone ?? '') }}"
+                                    data-receiver-phone="{{ strtolower($package->receiver_phone ?? '') }}"
+                                    data-sender-address="{{ strtolower($package->sender_address ?? '') }}"
+                                    data-receiver-address="{{ strtolower($package->receiver_address ?? '') }}">
                                     <td>
                                         <span class="font-weight-bold text-primary">{{ $package->tracking_number
                                             }}</span>
@@ -99,9 +100,38 @@
                         </table>
                     </div>
 
-                    <!-- Original pagination (hidden when filtering) -->
-                    <div id="originalPagination" class="d-flex justify-content-center mt-3">
-                        {{ $packages->onEachSide(1)->links('pagination::bootstrap-4') }}
+                    <!-- Client-side Pagination Controls -->
+                    <div class="d-flex justify-content-between align-items-center mt-3" id="clientPagination">
+                        <div>
+                            <span class="text-muted" id="pageInfo">Page 1 of 1</span>
+                        </div>
+                        <div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-sm mb-0" id="paginationControls">
+                                    <li class="page-item disabled" id="prevPage">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#" data-page="1">1</a></li>
+                                    <li class="page-item disabled" id="nextPage">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="text-muted mr-2">Show:</span>
+                            <select class="form-control form-control-sm w-auto" id="rowsPerPage">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="0">All</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Message when no results -->
@@ -142,14 +172,32 @@
     $(document).ready(function() {
         let deleteId;
         let searchTimeout;
-        const allPackages = $('.package-row').length;
-
-        // Store original rows
-        const originalRows = $('#packageTableBody').html();
-        const originalPagination = $('#originalPagination').html();
-
+        let allPackages = [];
+        let filteredPackages = [];
+        let currentPage = 1;
+        let rowsPerPage = 10;
+        let totalPages = 1;
+        
+        // Initialize all packages array
+        $('.package-row').each(function() {
+            allPackages.push({
+                element: $(this),
+                tracking: $(this).data('tracking'),
+                sender: $(this).data('sender'),
+                receiver: $(this).data('receiver'),
+                senderPhone: $(this).data('sender-phone'),
+                receiverPhone: $(this).data('receiver-phone'),
+                senderAddress: $(this).data('sender-address'),
+                receiverAddress: $(this).data('receiver-address'),
+                html: $(this).html()
+            });
+        });
+        
+        filteredPackages = [...allPackages];
+        updateDisplay();
+        
         // Delete handler
-        $('.delete-package').click(function() {
+        $(document).on('click', '.delete-package', function() {
             deleteId = $(this).data('id');
             $('#deleteModal').modal('show');
         });
@@ -176,94 +224,235 @@
             });
         });
 
-        // Enhanced Sensitive Search with Debouncing
+        // Global Search with Instant Filtering
         $('#packageSearch').on('input', function() {
             clearTimeout(searchTimeout);
             
             searchTimeout = setTimeout(() => {
-                performSearch($(this).val().trim());
-            }, 150); // Reduced debounce time for more responsiveness
+                const searchTerm = $(this).val().trim().toLowerCase();
+                currentPage = 1; // Reset to first page on new search
+                
+                if (searchTerm.length === 0) {
+                    filteredPackages = [...allPackages];
+                } else {
+                    filteredPackages = allPackages.filter(package => {
+                        // Search across all data attributes
+                        return package.tracking.includes(searchTerm) ||
+                               package.sender.includes(searchTerm) ||
+                               package.receiver.includes(searchTerm) ||
+                               package.senderPhone.includes(searchTerm) ||
+                               package.receiverPhone.includes(searchTerm) ||
+                               package.senderAddress.includes(searchTerm) ||
+                               package.receiverAddress.includes(searchTerm);
+                    });
+                }
+                
+                updateDisplay();
+                highlightMatches(searchTerm);
+            }, 50); // Very fast response time
         });
 
         // Clear search button
         $('#clearSearch').click(function() {
             $('#packageSearch').val('').focus();
-            performSearch('');
+            filteredPackages = [...allPackages];
+            currentPage = 1;
+            updateDisplay();
         });
 
         // Allow clearing with Escape key
         $('#packageSearch').keydown(function(e) {
             if (e.key === 'Escape') {
                 $(this).val('');
-                performSearch('');
+                filteredPackages = [...allPackages];
+                currentPage = 1;
+                updateDisplay();
             }
         });
 
-        // Perform the actual search
-        function performSearch(searchTerm) {
-            const term = searchTerm.toLowerCase();
-            
-            if (term.length === 0) {
-                // Show all rows and original pagination
-                $('.package-row').show();
-                $('#originalPagination').show();
-                $('#noResults').hide();
-                $('#resultCount').text(allPackages);
-                $('#noResultsMessage').hide();
-                return;
+        // Rows per page change
+        $('#rowsPerPage').change(function() {
+            rowsPerPage = parseInt($(this).val());
+            currentPage = 1;
+            updateDisplay();
+        });
+
+        // Pagination click handler
+        $(document).on('click', '.page-link', function(e) {
+            e.preventDefault();
+            const page = $(this).data('page');
+            if (page) {
+                currentPage = page;
+                updateDisplay();
             }
+        });
 
-            // Hide original pagination during search
-            $('#originalPagination').hide();
+        // Previous page
+        $(document).on('click', '#prevPage:not(.disabled)', function(e) {
+            e.preventDefault();
+            if (currentPage > 1) {
+                currentPage--;
+                updateDisplay();
+            }
+        });
 
-            let visibleCount = 0;
+        // Next page
+        $(document).on('click', '#nextPage:not(.disabled)', function(e) {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateDisplay();
+            }
+        });
+
+        // Update the display
+        function updateDisplay() {
+            const totalItems = filteredPackages.length;
             
-            // Search through each row
-            $('.package-row').each(function() {
-                const searchableText = $(this).data('searchable');
-                const isVisible = searchableText.includes(term);
+            // Calculate pagination
+            if (rowsPerPage > 0) {
+                totalPages = Math.ceil(totalItems / rowsPerPage);
+                const startIndex = (currentPage - 1) * rowsPerPage;
+                const endIndex = Math.min(startIndex + rowsPerPage, totalItems);
+                const currentItems = filteredPackages.slice(startIndex, endIndex);
                 
-                $(this).toggle(isVisible);
-                if (isVisible) visibleCount++;
-            });
-
-            // Update result count
-            $('#resultCount').text(visibleCount);
+                // Update page info
+                $('#pageInfo').text(`Page ${currentPage} of ${totalPages} (${totalItems} items)`);
+                
+                // Update showing count
+                $('#showingCount').text(currentItems.length);
+            } else {
+                // Show all
+                totalPages = 1;
+                currentPage = 1;
+                const currentItems = filteredPackages;
+                
+                $('#pageInfo').text(`Showing all ${totalItems} items`);
+                $('#showingCount').text(totalItems);
+            }
             
-            // Show/hide no results message
-            if (visibleCount === 0) {
+            // Clear table
+            $('#packageTableBody').empty();
+            
+            // Add filtered items
+            if (totalItems === 0) {
                 $('#noResults').show();
+                $('#packageTableBody').append(`
+                    <tr>
+                        <td colspan="4" class="text-center py-5 text-muted">
+                            <i class="fas fa-package fa-2x mb-2"></i>
+                            <p class="mb-0">No packages found</p>
+                        </td>
+                    </tr>
+                `);
                 $('#noResultsMessage').show();
             } else {
                 $('#noResults').hide();
                 $('#noResultsMessage').hide();
+                
+                const itemsToShow = rowsPerPage > 0 ? 
+                    filteredPackages.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage) : 
+                    filteredPackages;
+                
+                itemsToShow.forEach(pkg => {
+                    $('#packageTableBody').append(`<tr class="package-row">${pkg.html}</tr>`);
+                });
             }
-
-            // Highlight matching text
-            highlightMatches(term);
+            
+            // Update pagination controls
+            updatePagination();
+            
+            // Update total count
+            $('#totalCount').text(allPackages.length);
+        }
+        
+        // Update pagination controls
+        function updatePagination() {
+            if (rowsPerPage === 0 || totalPages <= 1) {
+                $('#clientPagination').hide();
+                return;
+            }
+            
+            $('#clientPagination').show();
+            
+            // Previous button
+            $('#prevPage').toggleClass('disabled', currentPage === 1);
+            
+            // Next button
+            $('#nextPage').toggleClass('disabled', currentPage === totalPages);
+            
+            // Page numbers
+            let paginationHTML = '';
+            
+            // Always show first page
+            paginationHTML += `<li class="page-item ${currentPage === 1 ? 'active' : ''}">
+                <a class="page-link" href="#" data-page="1">1</a>
+            </li>`;
+            
+            // Calculate range of pages to show
+            let startPage = Math.max(2, currentPage - 2);
+            let endPage = Math.min(totalPages - 1, currentPage + 2);
+            
+            // Add ellipsis after first page if needed
+            if (startPage > 2) {
+                paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            }
+            
+            // Add middle pages
+            for (let i = startPage; i <= endPage; i++) {
+                if (i > 1 && i < totalPages) {
+                    paginationHTML += `<li class="page-item ${currentPage === i ? 'active' : ''}">
+                        <a class="page-link" href="#" data-page="${i}">${i}</a>
+                    </li>`;
+                }
+            }
+            
+            // Add ellipsis before last page if needed
+            if (endPage < totalPages - 1) {
+                paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+            }
+            
+            // Always show last page if there is more than 1 page
+            if (totalPages > 1) {
+                paginationHTML += `<li class="page-item ${currentPage === totalPages ? 'active' : ''}">
+                    <a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a>
+                </li>`;
+            }
+            
+            $('#paginationControls').html(`
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}" id="prevPage">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                ${paginationHTML}
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}" id="nextPage">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            `);
         }
 
         // Function to highlight matching text
         function highlightMatches(term) {
-            if (term.length < 2) return; // Don't highlight for very short terms
+            if (term.length < 2) return;
             
-            $('.package-row:visible').each(function() {
+            const regex = new RegExp(`(${escapeRegExp(term)})`, 'gi');
+            
+            $('.package-row').each(function() {
                 const $row = $(this);
                 
-                // Remove previous highlights
-                $row.find('td').each(function() {
-                    const $td = $(this);
-                    let html = $td.html();
-                    html = html.replace(/<mark class="search-highlight">(.*?)<\/mark>/gi, '$1');
-                    $td.html(html);
-                });
-
-                // Add new highlights
                 $row.find('td:not(:last-child)').each(function() {
                     const $td = $(this);
                     let text = $td.text();
-                    const regex = new RegExp(`(${escapeRegExp(term)})`, 'gi');
                     
+                    // Remove previous highlights
+                    let html = $td.html();
+                    html = html.replace(/<mark class="search-highlight">(.*?)<\/mark>/gi, '$1');
+                    $td.html(html);
+                    
+                    // Add new highlights
                     if (regex.test(text)) {
                         const highlighted = text.replace(regex, '<mark class="search-highlight">$1</mark>');
                         $td.html(highlighted);
@@ -304,6 +493,25 @@
     #noResults {
         background-color: #f8f9fa;
         border-radius: 8px;
+    }
+
+    #clientPagination {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .page-item.active .page-link {
+        background-color: #4dabf7;
+        border-color: #4dabf7;
+    }
+
+    .page-link {
+        color: #4dabf7;
+    }
+
+    .page-link:hover {
+        color: #0056b3;
     }
 </style>
 
