@@ -87,6 +87,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::put('/packages/{package}', [App\Http\Controllers\ManagePackageController::class, 'update'])->name('admin.packages.update');
     Route::get('/packages/{package}', [App\Http\Controllers\ManagePackageController::class, 'show'])->name('admin.packages.show');
     Route::delete('/packages/{package}', [App\Http\Controllers\ManagePackageController::class, 'destroy'])->name('admin.packages.destroy');
+    Route::post('/packages/{package}/quick-update', [App\Http\Controllers\ManagePackageController::class, 'quickUpdate'])->name('admin.packages.quick-update');
 });;
 
 // // Admin Package Routes

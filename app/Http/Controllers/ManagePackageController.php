@@ -11,26 +11,68 @@ use Illuminate\Support\Facades\Validator;
 
 class ManagePackageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $packages = Package::with('trackingLocations')
-                ->latest()
-                ->paginate(10);
+            $query = Package::with('trackingLocations');
+
+            // Add search functionality
+            if ($request->has('search') && !empty($request->search)) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('tracking_number', 'LIKE', "%{$search}%")
+                        ->orWhere('sender_name', 'LIKE', "%{$search}%")
+                        ->orWhere('receiver_name', 'LIKE', "%{$search}%")
+                        ->orWhere('sender_email', 'LIKE', "%{$search}%")
+                        ->orWhere('receiver_email', 'LIKE', "%{$search}%");
+                });
+            }
+
+            $packages = $query->latest()->paginate(10);
+
+            // If it's an AJAX request for search, return JSON with table data
+            if ($request->ajax()) {
+                $tableHtml = view('admin.package.index', compact('packages'))->render();
+                return response()->json([
+                    'html' => $tableHtml,
+                    'pagination' => (string) $packages->links('pagination::bootstrap-4'),
+                    'total' => $packages->total()
+                ]);
+            }
 
             return view('admin.package.index', compact('packages'));
         } catch (\Exception $e) {
             Log::error('Error fetching packages: ' . $e->getMessage());
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'An error occurred while searching packages.'
+                ], 500);
+            }
+
             return back()->with('error', 'An error occurred while fetching packages.');
         }
     }
 
-    public function showIndex()
+    public function showIndex(Request $request)
     {
         try {
-            $packages = Package::with('trackingLocations')
-                ->latest()
-                ->paginate(10);
+            $query = Package::with('trackingLocations');
+
+            // Add search functionality
+            if ($request->has('search') && !empty($request->search)) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('tracking_number', 'LIKE', "%{$search}%")
+                        ->orWhere('sender_name', 'LIKE', "%{$search}%")
+                        ->orWhere('receiver_name', 'LIKE', "%{$search}%")
+                        ->orWhere('sender_email', 'LIKE', "%{$search}%")
+                        ->orWhere('receiver_email', 'LIKE', "%{$search}%");
+                });
+            }
+
+            $packages = $query->latest()->paginate(10);
 
             return view('admin.package.show.index', compact('packages'));
         } catch (\Exception $e) {
