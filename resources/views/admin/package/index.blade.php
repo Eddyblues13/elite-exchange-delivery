@@ -18,61 +18,50 @@
                 </a>
             </div>
 
-            <!-- Search Filter -->
-            <div class="mb-3">
-                <div class="input-group">
-                    <input type="text" id="packageSearch" class="form-control"
-                        placeholder="Search by sender, receiver, tracking number, or email..."
-                        value="{{ request('search') }}">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" id="clearSearch" title="Clear search">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <small class="form-text text-muted">Global search across all packages</small>
-            </div>
+            <!-- Global Search Filter (SERVER-SIDE) -->
+            <form method="GET" action="{{ route('admin.packages.index') }}" class="mb-3">
+                <input type="text" name="search" value="{{ request('search') }}" class="form-control"
+                    placeholder="Search by sender, receiver or tracking number..." oninput="this.form.submit()">
+            </form>
 
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <!-- Table container for AJAX updates -->
-                    <div id="packagesTableContainer">
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="packagesTable">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Tracking #</th>
-                                        <th>Sender</th>
-                                        <th>Receiver</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($packages as $package)
-                                    <tr>
-                                        <td>{{ $package->tracking_number }}</td>
-                                        <td>{{ $package->sender_name }}</td>
-                                        <td>{{ $package->receiver_name }}</td>
-                                        <td>
-                                            <a href="{{ route('admin.packages.edit', $package->id) }}"
-                                                class="btn btn-sm btn-outline-primary" title="Edit">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn btn-sm btn-outline-danger delete-package"
-                                                data-id="{{ $package->id }}" title="Delete">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="packagesTable">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Tracking #</th>
+                                    <th>Sender</th>
+                                    <th>Receiver</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($packages as $package)
+                                <tr>
+                                    <td>{{ $package->tracking_number }}</td>
+                                    <td>{{ $package->sender_name }}</td>
+                                    <td>{{ $package->receiver_name }}</td>
 
-                        <!-- Pagination -->
-                        <div class="d-flex justify-content-center mt-3">
-                            {{ $packages->onEachSide(1)->links('pagination::bootstrap-4') }}
-                        </div>
+                                    <td>
+                                        <a href="{{ route('admin.packages.edit', $package->id) }}"
+                                            class="btn btn-sm btn-outline-primary" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-outline-danger delete-package"
+                                            data-id="{{ $package->id }}" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-center mt-3">
+                        {{ $packages->onEachSide(1)->links('pagination::bootstrap-4') }}
                     </div>
                 </div>
             </div>
@@ -107,15 +96,10 @@
         let deleteId;
 
         // Delete handler
-        function attachDeleteHandlers() {
-            $('.delete-package').off('click').on('click', function() {
-                deleteId = $(this).data('id');
-                $('#deleteModal').modal('show');
-            });
-        }
-
-        // Initial attachment
-        attachDeleteHandlers();
+        $('.delete-package').click(function() {
+            deleteId = $(this).data('id');
+            $('#deleteModal').modal('show');
+        });
 
         $('#confirmDelete').click(function() {
             $.ajax({
@@ -128,8 +112,9 @@
                     if (response.status === 'success') {
                         toastr.success(response.message);
                         $('#deleteModal').modal('hide');
-                        // Refresh the table after delete
-                        performSearch($('#packageSearch').val());
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000);
                     }
                 },
                 error: function() {
@@ -138,89 +123,7 @@
             });
         });
 
-        // Global search function
-        function performSearch(searchTerm) {
-            $.ajax({
-                url: '{{ route("admin.packages.index") }}',
-                type: 'GET',
-                data: {
-                    search: searchTerm,
-                    ajax: true
-                },
-                beforeSend: function() {
-                    $('#packagesTableContainer').html(
-                        '<div class="text-center p-5"><div class="spinner-border text-primary" role="status">' +
-                        '<span class="sr-only">Loading...</span></div><p class="mt-2">Searching packages...</p></div>'
-                    );
-                },
-                success: function(response) {
-                    if (response.html) {
-                        $('#packagesTableContainer').html(response.html);
-                        // Re-attach delete handlers to new elements
-                        attachDeleteHandlers();
-                    }
-                },
-                error: function() {
-                    $('#packagesTableContainer').html(
-                        '<div class="alert alert-danger">Error loading packages. Please try again.</div>'
-                    );
-                }
-            });
-        }
-
-        // Search with delay to avoid too many requests
-        let searchTimeout;
-        $('#packageSearch').on('keyup', function() {
-            clearTimeout(searchTimeout);
-            const searchTerm = $(this).val();
-            
-            // If search is empty or at least 2 characters, perform search
-            if (searchTerm.length === 0 || searchTerm.length >= 2) {
-                searchTimeout = setTimeout(function() {
-                    performSearch(searchTerm);
-                }, 500); // 500ms delay
-            }
-        });
-
-        // Clear search
-        $('#clearSearch').click(function() {
-            $('#packageSearch').val('');
-            performSearch('');
-        });
-
-        // Handle pagination clicks (for AJAX pagination)
-        $(document).on('click', '.pagination a', function(e) {
-            e.preventDefault();
-            const page = $(this).attr('href').split('page=')[1];
-            const searchTerm = $('#packageSearch').val();
-            
-            $.ajax({
-                url: '{{ route("admin.packages.index") }}',
-                type: 'GET',
-                data: {
-                    search: searchTerm,
-                    page: page,
-                    ajax: true
-                },
-                beforeSend: function() {
-                    $('#packagesTableContainer').html(
-                        '<div class="text-center p-5"><div class="spinner-border text-primary" role="status">' +
-                        '<span class="sr-only">Loading...</span></div><p class="mt-2">Loading page...</p></div>'
-                    );
-                },
-                success: function(response) {
-                    if (response.html) {
-                        $('#packagesTableContainer').html(response.html);
-                        attachDeleteHandlers();
-                    }
-                },
-                error: function() {
-                    $('#packagesTableContainer').html(
-                        '<div class="alert alert-danger">Error loading page. Please try again.</div>'
-                    );
-                }
-            });
-        });
+        // ❌ Removed local table filtering JS (global search now)
     });
 </script>
 
