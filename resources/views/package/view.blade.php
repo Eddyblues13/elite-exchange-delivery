@@ -542,7 +542,7 @@
                 <div class="d-flex justify-content-between align-items-center py-3">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-shipping-fast fa-2x text-white me-2"></i>
-                        <a href="{{route('homepage')}}" class="logo"> <img src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}" alt="Elite Exchange Delivery Logo" style="height: 50px; width: auto;"></a>
+                        <a href="{{route('homepage')}}" class="logo"> <img src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}" alt="Elite Exchange Delivery Logo" style="height: 100px; margin-top: -25px; margin-bottom: -25px; width: auto; object-fit: contain;"></a>
                     </div>
                     <div>
                         <span class="text-white-50">{{ date('l, F j, Y') }}</span>

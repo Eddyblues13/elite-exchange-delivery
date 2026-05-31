@@ -171,7 +171,7 @@
                     <!-- Logo -->
                     <div class="flex-shrink-0 flex items-center">
                         <a href="{{ route('homepage') }}" class="flex items-center">
-                            <img src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}" alt="Elite Exchange Delivery" class="h-12 w-auto">
+                            <img src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}" alt="Elite Exchange Delivery" class="h-24 w-auto -my-6 object-contain">
                         </a>
                     </div>
 
@@ -362,7 +362,7 @@
                 <!-- Company Info -->
                 <div class="lg:col-span-2">
                     <div class="mb-6">
-                        <img src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}" alt="Elite Exchange Delivery" class="h-12 w-auto mb-4 filter brightness-0 invert">
+                        <img src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}" alt="Elite Exchange Delivery" class="h-24 w-auto -my-6 object-contain mb-4 filter brightness-0 invert">
                     </div>
                     <h3 class="text-xl font-semibold mb-4 text-white">Elite Exchange Delivery</h3>
                     <p class="text-gray-300 mb-6 leading-relaxed">
