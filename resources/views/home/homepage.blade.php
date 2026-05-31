@@ -1,564 +1,590 @@
-@extends('layouts.app')
+@extends('layouts.home')
 
-@section('title', 'Elite Exchange Delivery - Global Logistics & Shipping')
+@section('title', 'Welcome to Elite Exchange Delivery - Premium Global Shipping Solutions')
 
 @section('content')
 <!-- Hero Section -->
-<section class="hero-bg min-h-[70vh] md:min-h-screen flex items-center relative overflow-hidden"
-    style="background-image: url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
-    <div class="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-gray-900/70 z-1"></div>
-    <div class="hero-content container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div class="max-w-3xl mx-auto">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">
-                Global Logistics, <span class="text-indigo-400">Simplified.</span>
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden" x-data="{ currentSlide: 0, slides: 4 }" x-init="setInterval(() => { currentSlide = (currentSlide + 1) % slides }, 5000)">
+    <!-- Background Video/Images -->
+    <div class="absolute inset-0 z-0">
+        <!-- Video Background for first slide -->
+        <div x-show="currentSlide === 0" x-cloak x-transition:enter="transition-opacity duration-1000" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-1000" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0">
+            <video autoplay muted loop class="w-full h-full object-cover">
+                <source src="{{ asset('temp/custom/images/slider/airplane_takeoff.mp4') }}" type="video/mp4">
+            </video>
+        </div>
+        
+        <!-- Image backgrounds for other slides -->
+        <div x-show="currentSlide === 1" x-cloak x-transition:enter="transition-opacity duration-1000" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-1000" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/slider/trucks.jpg') }}');"></div>
+        
+        <div x-show="currentSlide === 2" x-cloak x-transition:enter="transition-opacity duration-1000" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-1000" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/slider/home-main.jpg') }}');"></div>
+        
+        <div x-show="currentSlide === 3" x-cloak x-transition:enter="transition-opacity duration-1000" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-1000" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/slider/slide3.jpg') }}');"></div>
+        
+        <!-- Dark overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+        <div class="animate-fade-in">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <span x-show="currentSlide === 0" x-cloak x-transition:enter="transition-all duration-1000 delay-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+                    Leading Global<br><span class="text-primary-400">Logistics Service</span>
+                </span>
+                <span x-show="currentSlide === 1" x-cloak x-transition:enter="transition-all duration-1000 delay-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+                    Fastest & Reliable<br><span class="text-primary-400">Courier Service</span>
+                </span>
+                <span x-show="currentSlide === 2" x-cloak x-transition:enter="transition-all duration-1000 delay-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+                    Professional<br><span class="text-primary-400">Freight Solutions</span>
+                </span>
+                <span x-show="currentSlide === 3" x-cloak x-transition:enter="transition-all duration-1000 delay-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+                    Industry Standard<br><span class="text-primary-400">Warehousing</span>
+                </span>
             </h1>
-            <p class="text-lg md:text-xl text-text-primary mb-8">
-                Navigating the complexities of global trade with speed, reliability, and unparalleled service. Your
-                business, delivered.
+            
+            <p class="text-xl md:text-2xl mb-8 text-gray-200 max-w-3xl mx-auto leading-relaxed">
+                <span x-show="currentSlide === 0" x-cloak>We offer a full range of global freight services with unmatched reliability and speed.</span>
+                <span x-show="currentSlide === 1" x-cloak>We offer a full range of global, ocean-freight services including FCL, LCL and consolidation.</span>
+                <span x-show="currentSlide === 2" x-cloak>Professional shipping solutions tailored to meet your business needs worldwide.</span>
+                <span x-show="currentSlide === 3" x-cloak>Comprehensive and scalable warehousing solutions for modern businesses.</span>
             </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="{{ route('track') }}"
-                    class="bg-indigo-600 text-white font-semibold px-8 py-4 rounded-xl hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-300 shadow-lg hover:shadow-indigo-500/50 flex items-center justify-center gap-2">
-                    <i data-feather="compass" class="h-5 w-5"></i>
-                    <span>Track Your Shipment</span>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="{{ route('about') }}" class="bg-primary-600 text-white px-8 py-4 rounded-lg hover:bg-primary-700 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    Learn More
                 </a>
-                <a href="{{ route('contact') }}#quote-form"
-                    class="bg-gray-700/50 backdrop-blur-sm border border-gray-600 text-white font-semibold px-8 py-4 rounded-xl hover:bg-gray-700 transition-colors duration-300 flex items-center justify-center gap-2">
-                    <i data-feather="file-text" class="h-5 w-5"></i>
-                    <span>Request a Quote</span>
+                <a href="{{ route('contact') }}" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-gray-900 transition-all duration-300 font-semibold text-lg">
+                    Contact Us <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Tracking Widget -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-full max-w-md z-10">
-        <div class="card rounded-2xl p-6 shadow-2xl mx-4">
-            <h3 class="text-xl font-bold text-white mb-4 text-center">Track Your Package</h3>
-            <form action="{{ route('package') }}" method="POST" class="flex gap-2 tracking-form">
+    <!-- Slide Indicators -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+        <template x-for="i in slides" :key="i">
+            <button @click="currentSlide = i - 1" :class="currentSlide === (i - 1) ? 'bg-primary-500' : 'bg-white bg-opacity-50'" class="w-3 h-3 rounded-full transition-all duration-300"></button>
+        </template>
+    </div>
+
+    <!-- Scroll Down Indicator -->
+    <div class="absolute bottom-8 left-8 text-white animate-bounce">
+        <div class="flex flex-col items-center">
+            <span class="text-sm mb-2">Scroll Down</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+</section>
+
+<!-- Track & Trace Section -->
+<section class="relative -mt-16 z-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 md:p-12">
+                        
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Track & Trace Your Shipment</h2>
+                <p class="text-gray-600 text-lg">Enter your tracking number to get real-time updates on your package</p>
+            </div>
+            
+            <form method="POST" action="{{ route('package') }}" class="max-w-2xl mx-auto">
                 @csrf
-                <input type="text" name="search" placeholder="Enter tracking code"
-                    class="form-input flex-grow rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-                    required>
-                <button type="submit"
-                    class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 flex items-center gap-2">
-                    <i data-feather="search" class="h-5 w-5"></i>
-                    <span class="hidden sm:inline">Track</span>
-                </button>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="flex-1">
+                        <input type="text" name="search" placeholder="Enter your tracking number..." class="w-full px-6 py-4 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" required>
+                    </div>
+                    <button type="submit" class="bg-primary-600 text-white px-8 py-4 rounded-lg hover:bg-primary-700 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl whitespace-nowrap">
+                        <i class="fas fa-search mr-2"></i>Track Shipment
+                    </button>
+                </div>
             </form>
-            @if(session('error'))
-            <div class="mt-3 p-2 bg-red-500/20 border border-red-500 rounded-lg">
-                <p class="text-red-400 text-sm flex items-center gap-1">
-                    <i data-feather="alert-circle" class="h-4 w-4"></i>
-                    {{ session('error') }}
-                </p>
-            </div>
-            @endif
-        </div>
-    </div>
-</section>
-
-<!-- Stats Section -->
-<section class="bg-gray-800 py-12">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-                <h3 class="text-3xl md:text-4xl font-bold text-white">1.2M+</h3>
-                <p class="text-text-secondary">Parcels Delivered</p>
-            </div>
-            <div>
-                <h3 class="text-3xl md:text-4xl font-bold text-white">150+</h3>
-                <p class="text-text-secondary">Countries Reached</p>
-            </div>
-            <div>
-                <h3 class="text-3xl md:text-4xl font-bold text-white">99.7%</h3>
-                <p class="text-text-secondary">On-Time Delivery</p>
-            </div>
-            <div>
-                <h3 class="text-3xl md:text-4xl font-bold text-white">25k+</h3>
-                <p class="text-text-secondary">Satisfied Clients</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Cargo Specialization Section -->
-<section class="py-16 md:py-24 bg-gray-900">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-white">Specialized Cargo Handling</h2>
-            <p class="mt-4 text-text-secondary">Advanced solutions for diverse cargo types with specialized handling
-                requirements</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="card rounded-2xl overflow-hidden group">
-                <div class="relative overflow-hidden h-48">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                        alt="Temperature Controlled"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div
-                        class="absolute inset-0 bg-blue-600/20 group-hover:bg-transparent transition-colors duration-300">
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-white mb-2">Temperature Controlled</h3>
-                    <p class="text-text-secondary text-sm">Advanced refrigeration for pharmaceuticals, food, and
-                        sensitive materials with real-time monitoring.</p>
-                    <ul class="mt-3 text-text-secondary text-xs space-y-1">
-                        <li class="flex items-center">
-                            <i data-feather="check" class="h-3 w-3 mr-2 text-green-400"></i>
-                            -20°C to +25°C range
-                        </li>
-                        <li class="flex items-center">
-                            <i data-feather="check" class="h-3 w-3 mr-2 text-green-400"></i>
-                            24/7 temperature monitoring
-                        </li>
-                        <li class="flex items-center">
-                            <i data-feather="check" class="h-3 w-3 mr-2 text-green-400"></i>
-                            Pharmaceutical compliance
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card rounded-2xl overflow-hidden group">
-                <div class="relative overflow-hidden h-48">
-                    <img src="images/road.jpg" alt="Heavy Equipment"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div
-                        class="absolute inset-0 bg-orange-600/20 group-hover:bg-transparent transition-colors duration-300">
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-white mb-2">Heavy Equipment</h3>
-                    <p class="text-text-secondary text-sm">Specialized handling for machinery, industrial equipment, and
-                        oversized cargo with custom solutions.</p>
-                    <ul class="mt-3 text-text-secondary text-xs space-y-1">
-                        <li class="flex items-center">
-                            <i data-feather="check" class="h-3 w-3 mr-2 text-green-400"></i>
-                            Up to 100-ton capacity
-                        </li>
-                        <li class="flex items-center">
-                            <i data-feather="check" class="h-3 w-3 mr-2 text-green-400"></i>
-                            Custom rigging solutions
-                        </li>
-                        <li class="flex items-center">
-                            <i data-feather="check" class="h-3 w-3 mr-2 text-green-400"></i>
-                            Project cargo specialists
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card rounded-2xl overflow-hidden group">
-                <div class="relative overflow-hidden h-48">
-                    <img src="images/pic-1.jpg" alt="Hazardous Materials"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div
-                        class="absolute inset-0 bg-red-600/20 group-hover:bg-transparent transition-colors duration-300">
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-white mb-2">Hazardous Materials</h3>
-                    <p class="text-text-secondary text-sm">Certified handling of dangerous goods with full compliance to
-                        international safety regulations.</p>
-                    <ul class="mt-3 text-text-secondary text-xs space-y-1">
-                        <li class="flex items-center">
-                            <i data-feather="check" class="h-3 w-3 mr-2 text-green-400"></i>
-                            ADR/IATA/IMDG certified
-                        </li>
-                        <li class="flex items-center">
-                            <i data-feather="check" class="h-3 w-3 mr-2 text-green-400"></i>
-                            Emergency response planning
-                        </li>
-                        <li class="flex items-center">
-                            <i data-feather="check" class="h-3 w-3 mr-2 text-green-400"></i>
-                            Class 1-9 compliance
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card rounded-2xl overflow-hidden group">
-                <div class="relative overflow-hidden h-48">
-                    <img src="images/pic-2.jpg" alt="High-Value Goods"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div
-                        class="absolute inset-0 bg-purple-600/20 group-hover:bg-transparent transition-colors duration-300">
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-white mb-2">High-Value Goods</h3>
-                    <p class="text-text-secondary text-sm">Secure transport for luxury items, artwork, electronics, and
-                        sensitive documents with enhanced security.</p>
-                    <ul class="mt-3 text-text-secondary text-xs space-y-1">
-                        <li class="flex items-center">
-                            <i data-feather="check" class="h-3 w-3 mr-2 text-green-400"></i>
-                            GPS tracking & monitoring
-                        </li>
-                        <li class="flex items-center">
-                            <i data-feather="check" class="h-3 w-3 mr-2 text-green-400"></i>
-                            Armed escort available
-                        </li>
-                        <li class="flex items-center">
-                            <i data-feather="check" class="h-3 w-3 mr-2 text-green-400"></i>
-                            Insurance coverage
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Global Operations Section -->
-<section class="py-16 md:py-24">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Global Operations Network</h2>
-                <p class="text-text-secondary mb-6">
-                    With strategically located hubs across 6 continents, we provide seamless end-to-end logistics
-                    solutions
-                    that connect your business to global markets efficiently and reliably.
-                </p>
-                <div class="space-y-4">
-                    <div class="flex items-start">
-                        <div class="bg-indigo-600 rounded-full p-2 mr-4 mt-1">
-                            <i data-feather="globe" class="h-5 w-5 text-white"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-white mb-1">Worldwide Coverage</h4>
-                            <p class="text-text-secondary text-sm">150+ countries with local expertise and customs
-                                clearance support</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="bg-indigo-600 rounded-full p-2 mr-4 mt-1">
-                            <i data-feather="clock" class="h-5 w-5 text-white"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-white mb-1">24/7 Operations</h4>
-                            <p class="text-text-secondary text-sm">Round-the-clock monitoring and customer support
-                                across all time zones</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="bg-indigo-600 rounded-full p-2 mr-4 mt-1">
-                            <i data-feather="shield" class="h-5 w-5 text-white"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-white mb-1">Secure Facilities</h4>
-                            <p class="text-text-secondary text-sm">ISO-certified warehouses with advanced security
-                                systems and climate control</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="space-y-4">
-                    <div class="card rounded-2xl overflow-hidden">
-                        <img src="images/image2.jpg" alt="Air Cargo Hub" class="w-full h-40 object-cover">
-                    </div>
-                    <div class="card rounded-2xl overflow-hidden">
-                        <img src="images/image2.jpeg" alt="Port Operations" class="w-full h-40 object-cover">
-                    </div>
-                </div>
-                <div class="space-y-4 mt-8">
-                    <div class="card rounded-2xl overflow-hidden">
-                        <img src="images/pic-1.jpg" alt="Warehouse Operations" class="w-full h-40 object-cover">
-                    </div>
-                    <div class="card rounded-2xl overflow-hidden">
-                        <img src="images/pic-2.jpg" alt="Ground Distribution" class="w-full h-40 object-cover">
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
 
 <!-- Services Section -->
-<section class="py-16 md:py-24 bg-gray-900">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-white">Our Core Services</h2>
-            <p class="mt-4 text-text-secondary">We provide a full spectrum of logistics services to ensure your supply
-                chain is efficient, robust, and reliable.</p>
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Services</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Comprehensive shipping and logistics solutions tailored to your business needs
+            </p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="card rounded-2xl overflow-hidden group">
-                <div class="relative overflow-hidden">
-                    <img src="images/air.jpg" alt="Air Freight"
-                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                    <div
-                        class="absolute inset-0 bg-indigo-600/20 group-hover:bg-transparent transition-colors duration-300">
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-white mb-2">Air Freight</h3>
-                    <p class="text-text-secondary text-sm">When time is critical, our global air freight services
-                        provide the speed and reliability you need.</p>
-                    <div class="mt-4 flex justify-between text-text-secondary text-xs">
-                        <span class="flex items-center">
-                            <i data-feather="clock" class="h-3 w-3 mr-1"></i>
-                            1-3 days
-                        </span>
-                        <span class="flex items-center">
-                            <i data-feather="package" class="h-3 w-3 mr-1"></i>
-                            Up to 100kg
-                        </span>
-                        <span class="flex items-center">
-                            <i data-feather="map-pin" class="h-3 w-3 mr-1"></i>
-                            Global
-                        </span>
-                    </div>
-                    <a href="{{ route('services') }}"
-                        class="inline-flex items-center text-indigo-400 font-semibold mt-4 hover:text-indigo-300 transition-colors duration-300">
-                        <span>Learn More</span>
-                        <i data-feather="arrow-right" class="h-4 w-4 ml-1"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="card rounded-2xl overflow-hidden group">
-                <div class="relative overflow-hidden">
-                    <img src="images/ocean.jpg" alt="Ocean Freight"
-                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                    <div
-                        class="absolute inset-0 bg-indigo-600/20 group-hover:bg-transparent transition-colors duration-300">
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-white mb-2">Ocean Freight</h3>
-                    <p class="text-text-secondary text-sm">Cost-effective and comprehensive ocean freight solutions for
-                        large-volume shipments.</p>
-                    <div class="mt-4 flex justify-between text-text-secondary text-xs">
-                        <span class="flex items-center">
-                            <i data-feather="clock" class="h-3 w-3 mr-1"></i>
-                            15-45 days
-                        </span>
-                        <span class="flex items-center">
-                            <i data-feather="package" class="h-3 w-3 mr-1"></i>
-                            Up to 20 tons
-                        </span>
-                        <span class="flex items-center">
-                            <i data-feather="map-pin" class="h-3 w-3 mr-1"></i>
-                            Major ports
-                        </span>
-                    </div>
-                    <a href="{{ route('services') }}"
-                        class="inline-flex items-center text-indigo-400 font-semibold mt-4 hover:text-indigo-300 transition-colors duration-300">
-                        <span>Learn More</span>
-                        <i data-feather="arrow-right" class="h-4 w-4 ml-1"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="card rounded-2xl overflow-hidden group">
-                <div class="relative overflow-hidden">
-                    <img src="images/road.jpg" alt="Road Freight"
-                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                    <div
-                        class="absolute inset-0 bg-indigo-600/20 group-hover:bg-transparent transition-colors duration-300">
-                    </div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-white mb-2">Road Freight</h3>
-                    <p class="text-text-secondary text-sm">Efficient and flexible road transport solutions connecting
-                        regional hubs and local destinations.</p>
-                    <div class="mt-4 flex justify-between text-text-secondary text-xs">
-                        <span class="flex items-center">
-                            <i data-feather="clock" class="h-3 w-3 mr-1"></i>
-                            1-7 days
-                        </span>
-                        <span class="flex items-center">
-                            <i data-feather="package" class="h-3 w-3 mr-1"></i>
-                            Up to 25 tons
-                        </span>
-                        <span class="flex items-center">
-                            <i data-feather="map-pin" class="h-3 w-3 mr-1"></i>
-                            Regional
-                        </span>
-                    </div>
-                    <a href="{{ route('services') }}"
-                        class="inline-flex items-center text-indigo-400 font-semibold mt-4 hover:text-indigo-300 transition-colors duration-300">
-                        <span>Learn More</span>
-                        <i data-feather="arrow-right" class="h-4 w-4 ml-1"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="text-center mt-12">
-            <a href="{{ route('services') }}"
-                class="inline-flex items-center text-indigo-400 font-semibold hover:text-indigo-300 transition-colors duration-300">
-                <span>View All Services</span>
-                <i data-feather="arrow-right" class="h-5 w-5 ml-2"></i>
-            </a>
-        </div>
-    </div>
-</section>
 
-<!-- Cargo Equipment Section -->
-<section class="py-16 md:py-24">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-white">Advanced Cargo Equipment</h2>
-            <p class="mt-4 text-text-secondary">State-of-the-art equipment and technology for safe and efficient cargo
-                handling</p>
-        </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="text-center">
-                <div class="bg-gray-800 rounded-2xl p-8 mb-6 h-64 flex items-center justify-center">
-                    <img src="images/image3.jpg" alt="Cargo Planes" class="h-40 object-cover rounded-lg">
+            <!-- Air Freight -->
+            <div class="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative h-64 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/services/service1.jpg') }}');">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                    <div class="absolute top-4 left-4">
+                        <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-plane text-white text-xl"></i>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-4">Cargo Aircraft Fleet</h3>
-                <p class="text-text-secondary">Modern freighters with capacities from 5-100 tons, including
-                    temperature-controlled options</p>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Air Freight</h3>
+                    <p class="text-gray-600 mb-4">
+                        Elite Exchange Delivery, as an IATA-endorsed air forwarder, offers professional and reliable global air-freight solutions.
+                    </p>
+                    <a href="{{ route('services') }}" class="text-primary-600 hover:text-primary-700 font-medium inline-flex items-center">
+                        Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
+                </div>
             </div>
-            <div class="text-center">
-                <div class="bg-gray-800 rounded-2xl p-8 mb-6 h-64 flex items-center justify-center">
-                    <img src="images/image4.jpg" alt="Shipping Containers" class="h-40 object-cover rounded-lg">
+
+            <!-- Sea/Ocean Freight -->
+            <div class="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative h-64 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/services/service2.jpg') }}');">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                    <div class="absolute top-4 left-4">
+                        <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-ship text-white text-xl"></i>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-4">Container Solutions</h3>
-                <p class="text-text-secondary">20ft to 45ft containers, reefers, flat racks, and open tops for diverse
-                    cargo requirements</p>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Sea/Ocean Freight</h3>
+                    <p class="text-gray-600 mb-4">
+                        International ocean freight shipping import and export services. FCL, LCL shipments, port to port or door to door.
+                    </p>
+                    <a href="{{ route('services') }}" class="text-primary-600 hover:text-primary-700 font-medium inline-flex items-center">
+                        Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
+                </div>
             </div>
-            <div class="text-center">
-                <div class="bg-gray-800 rounded-2xl p-8 mb-6 h-64 flex items-center justify-center">
-                    <img src="images/image6.jpg" alt="Warehouse Equipment" class="h-40 object-cover rounded-lg">
+
+            <!-- Road Transportation -->
+            <div class="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative h-64 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/services/service3.jpg') }}');">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                    <div class="absolute top-4 left-4">
+                        <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-truck text-white text-xl"></i>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-4">Warehouse Technology</h3>
-                <p class="text-text-secondary">Automated storage systems, forklifts, and material handling equipment for
-                    efficient operations</p>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Road Transportation</h3>
+                    <p class="text-gray-600 mb-4">
+                        Highly experienced and dependable, Elite Exchange Delivery is a trusted partner in domestic road transportation.
+                    </p>
+                    <a href="{{ route('services') }}" class="text-primary-600 hover:text-primary-700 font-medium inline-flex items-center">
+                        Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Diplomatic Services -->
+            <div class="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative h-64 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/services/service4.jpg') }}');">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                    <div class="absolute top-4 left-4">
+                        <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-white text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Diplomatic Bag & Secure Logistics</h3>
+                    <p class="text-gray-600 mb-4">
+                        Global secure mail and equipment delivery service with complete confidence and security.
+                    </p>
+                    <a href="{{ route('diplomatic') }}" class="text-primary-600 hover:text-primary-700 font-medium inline-flex items-center">
+                        Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Warehousing -->
+            <div class="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative h-64 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/services/service5.jpg') }}');">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                    <div class="absolute top-4 left-4">
+                        <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-warehouse text-white text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Warehousing</h3>
+                    <p class="text-gray-600 mb-4">
+                        Shared and dedicated warehousing solutions supported by state-of-the-art technology and warehouse services.
+                    </p>
+                    <a href="{{ route('services') }}" class="text-primary-600 hover:text-primary-700 font-medium inline-flex items-center">
+                        Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Packaging & Storage -->
+            <div class="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="relative h-64 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/services/service6.jpg') }}');">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                    <div class="absolute top-4 left-4">
+                        <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-box text-white text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Packaging & Storage</h3>
+                    <p class="text-gray-600 mb-4">
+                        Professional packaging and storage solutions for raw materials, electronics, and finished goods with cargo insurance.
+                    </p>
+                    <a href="{{ route('services') }}" class="text-primary-600 hover:text-primary-700 font-medium inline-flex items-center">
+                        Learn More <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CTA Section -->
-<section class="py-20">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-            class="bg-indigo-600 rounded-2xl p-10 text-center shadow-2xl shadow-indigo-500/30 relative overflow-hidden">
-            <div
-                class="absolute top-0 right-0 w-64 h-64 bg-indigo-700 rounded-full -translate-y-32 translate-x-32 opacity-20">
-            </div>
-            <div
-                class="absolute bottom-0 left-0 w-64 h-64 bg-indigo-700 rounded-full translate-y-32 -translate-x-32 opacity-20">
+<!-- Why Choose Us Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose Us</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Trusted by thousands of customers worldwide for reliable and professional logistics solutions
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Track & Trace -->
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-search-location text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Track & Trace</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Fast and reliable way to check the real-time status of your shipment with our advanced tracking system.
+                </p>
             </div>
 
-            <div class="relative z-10">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Ship with Confidence?</h2>
-                <p class="text-indigo-200 max-w-2xl mx-auto mb-8">Get a free, no-obligation quote for your next shipment
-                    and experience the Elite Exchange Delivery difference.</p>
-                <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="{{ route('contact') }}#quote-form"
-                        class="bg-white text-indigo-600 font-semibold px-8 py-4 rounded-xl hover:bg-gray-200 transition-colors duration-300">
-                        Get a Free Quote
-                    </a>
-                    <a href="tel:+13154893120"
-                        class="bg-transparent border-2 border-white text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/10 transition-colors duration-300">
-                        <i data-feather="phone" class="h-5 w-5 inline mr-2"></i>
-                        Call Us Now
-                    </a>
+            <!-- Secure Warehousing -->
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-shield-alt text-white text-2xl"></i>
                 </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Secure Warehousing</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    We leverage a network of operational warehousing facilities with state-of-the-art security systems.
+                </p>
+            </div>
+
+            <!-- Express Delivery -->
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-shipping-fast text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Express Delivery</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    We service your shipments via a diverse operating infrastructure for fastest delivery times.
+                </p>
+            </div>
+
+            <!-- Domestic Services -->
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-truck text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Domestic Services</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Next business day delivery for time-sensitive parcels with comprehensive domestic coverage.
+                </p>
+            </div>
+
+            <!-- Global Coverage -->
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-globe text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Global Coverage</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    US, Europe & Worldwide coverage by sea & air. We offer a broad range of international freight services.
+                </p>
+            </div>
+
+            <!-- Dedicated Support -->
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-headset text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">24/7 Support</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Get excellent 24/7 online support and expert advice from our dedicated customer service team.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats & Achievements Section -->
+<section class="py-20 bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Impact & Achievements</h2>
+            <p class="text-xl text-primary-200 max-w-2xl mx-auto">Delivering excellence across the globe with industry-leading standards</p>
+        </div>
+
+        <!-- Main Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+            <!-- Delivered Packages -->
+            <div class="text-center p-4 bg-white/10 backdrop-blur-sm rounded-xl hover:bg-white/15 transition-all duration-300">
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-box text-white text-xl"></i>
+                </div>
+                <div class="stat-number text-3xl md:text-4xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-700" style="transition-delay: 200ms;">
+                    101,273+
+                </div>
+                <div class="text-primary-200 text-sm font-medium">Delivered Packages</div>
+            </div>
+
+            <!-- KM Per Year -->
+            <div class="text-center p-4 bg-white/10 backdrop-blur-sm rounded-xl hover:bg-white/15 transition-all duration-300">
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-road text-white text-xl"></i>
+                </div>
+                <div class="stat-number text-3xl md:text-4xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-700" style="transition-delay: 400ms;">
+                    673,754+
+                </div>
+                <div class="text-primary-200 text-sm font-medium">KM Per Year</div>
+            </div>
+
+            <!-- Years Experience -->
+            <div class="text-center p-4 bg-white/10 backdrop-blur-sm rounded-xl hover:bg-white/15 transition-all duration-300">
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-calendar-alt text-white text-xl"></i>
+                </div>
+                <div class="stat-number text-3xl md:text-4xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-700" style="transition-delay: 600ms;">
+                    11+
+                </div>
+                <div class="text-primary-200 text-sm font-medium">Years Experience</div>
+            </div>
+
+            <!-- Happy Clients -->
+            <div class="text-center p-4 bg-white/10 backdrop-blur-sm rounded-xl hover:bg-white/15 transition-all duration-300">
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-smile text-white text-xl"></i>
+                </div>
+                <div class="stat-number text-3xl md:text-4xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-700" style="transition-delay: 800ms;">
+                    16,714+
+                </div>
+                <div class="text-primary-200 text-sm font-medium">Happy Clients</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Experience -->
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/15 transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-4">
+                        <i class="fas fa-check-circle text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold">Delivery Precision</h3>
+                </div>
+                <div class="flex items-center mb-2">
+                    <div class="text-3xl font-bold mr-2">99.8%</div>
+                    <div class="text-primary-200">On-Time Delivery</div>
+                </div>
+                <p class="text-sm text-primary-200">Industry-leading on-time delivery performance across all shipping methods</p>
+            </div>
+
+            <!-- Tracking Precision -->
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/15 transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-4">
+                        <i class="fas fa-search-location text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold">Tracking Precision</h3>
+                </div>
+                <div class="flex items-center mb-2">
+                    <div class="text-3xl font-bold mr-2">Real-time</div>
+                    <div class="text-primary-200">GPS Accuracy</div>
+                </div>
+                <p class="text-sm text-primary-200">Advanced tracking systems with minute-by-minute updates and GPS precision</p>
+            </div>
+
+            <!-- Customer Satisfaction -->
+            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/15 transition-all duration-300">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-4">
+                        <i class="fas fa-star text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold">Client Satisfaction</h3>
+                </div>
+                <div class="flex items-center mb-2">
+                    <div class="text-3xl font-bold mr-2">4.9/5</div>
+                    <div class="text-primary-200">Average Rating</div>
+                </div>
+                <p class="text-sm text-primary-200">Outstanding client satisfaction across all our logistics services</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Pure JavaScript Intersection Observer for stats animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.remove('translate-y-4', 'opacity-0');
+                        entry.target.classList.add('translate-y-0', 'opacity-100');
+                    }
+                });
+            }, {
+                threshold: 0.5,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            statNumbers.forEach(stat => {
+                observer.observe(stat);
+            });
+        });
+    </script>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Our Clients Say</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Hear from our satisfied customers about their experience with our logistics solutions
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Testimonial 1 -->
+            <div class="bg-white rounded-xl shadow-lg p-8 transform transition-all duration-500 hover:scale-105">
+                <div class="flex items-center mb-4">
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <blockquote class="text-gray-600 mb-6 leading-relaxed">
+                    "Given my past experiences with other logistics companies, I can say without exception that the services provided by Elite Exchange Delivery greatly exceed industry standards."
+                </blockquote>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-semibold mr-4">
+                        MP
+                    </div>
+                    <div>
+                        <div class="font-semibold text-gray-900">Monique Pete</div>
+                        <div class="text-sm text-gray-500">Logistics Manager, Martrax Inc.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="bg-white rounded-xl shadow-lg p-8 transform transition-all duration-500 hover:scale-105">
+                <div class="flex items-center mb-4">
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <blockquote class="text-gray-600 mb-6 leading-relaxed">
+                    "More than once, Elite Exchange Delivery has 'saved the day', delivering our cargo on time with short notice. They have won my gratitude and loyalty with their 'can do' approach."
+                </blockquote>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-semibold mr-4">
+                        SA
+                    </div>
+                    <div>
+                        <div class="font-semibold text-gray-900">Steve Anderson</div>
+                        <div class="text-sm text-gray-500">President/Owner, Duplication Factory</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="bg-white rounded-xl shadow-lg p-8 transform transition-all duration-500 hover:scale-105">
+                <div class="flex items-center mb-4">
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <blockquote class="text-gray-600 mb-6 leading-relaxed">
+                    "I am very pleased with the service provided by Elite Exchange Delivery. They find good carriers and use them regularly so we get a high level of service. Their communication is outstanding."
+                </blockquote>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-semibold mr-4">
+                        CB
+                    </div>
+                    <div>
+                        <div class="font-semibold text-gray-900">Cathy Beckman</div>
+                        <div class="text-sm text-gray-500">Logistics Team, Oxea Chemicals</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partners Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Trusted Partners</h2>
+            <p class="text-gray-600">Working with industry leaders to provide the best logistics solutions</p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center opacity-60 hover:opacity-100 transition-opacity duration-300">
+            <div class="flex justify-center">
+                <img src="{{ asset('temp/custom/images/content/partner-01.png') }}" alt="Partner Logo" class="h-12 object-contain filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex justify-center">
+                <img src="{{ asset('temp/custom/images/content/partner-02.png') }}" alt="Partner Logo" class="h-12 object-contain filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex justify-center">
+                <img src="{{ asset('temp/custom/images/content/partner-03.png') }}" alt="Partner Logo" class="h-12 object-contain filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex justify-center">
+                <img src="{{ asset('temp/custom/images/content/partner-04.png') }}" alt="Partner Logo" class="h-12 object-contain filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex justify-center">
+                <img src="{{ asset('temp/custom/images/content/partner-05.png') }}" alt="Partner Logo" class="h-12 object-contain filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-20 bg-gradient-to-r from-primary-600 to-primary-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                Ready to Ship with Confidence?
+            </h2>
+            <p class="text-xl text-primary-100 mb-8 leading-relaxed">
+                Get started with our professional logistics services today. Contact us for a free quote and experience the difference.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{{ route('contact') }}" class="bg-white text-primary-600 px-8 py-4 rounded-lg hover:bg-gray-100 transition-all duration-300 font-semibold text-lg shadow-lg">
+                    Get Free Quote
+                </a>
+                <a href="{{ route('track') }}" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-primary-600 transition-all duration-300 font-semibold text-lg">
+                    Track Shipment
+                </a>
             </div>
         </div>
     </div>
 </section>
 @endsection
-
-@push('scripts')
-<script>
-    // Initialize feather icons
-    feather.replace();
-    
-    // Enhanced tracking form functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const trackingForm = document.querySelector('.tracking-form');
-        const trackingInput = trackingForm?.querySelector('input[name="tracking_number"]');
-        
-        if (trackingForm) {
-            // Focus on tracking input when page loads
-            if (trackingInput) {
-                setTimeout(() => {
-                    trackingInput.focus();
-                }, 1000);
-            }
-            
-            // Add input validation
-            trackingForm.addEventListener('submit', function(e) {
-                const trackingNumber = trackingInput.value.trim();
-                
-                if (!trackingNumber) {
-                    e.preventDefault();
-                    showTrackingError('Please enter a tracking code');
-                    trackingInput.focus();
-                    return;
-                }
-                
-                // Show loading state
-                const submitButton = this.querySelector('button[type="submit"]');
-                if (submitButton) {
-                    submitButton.disabled = true;
-                    submitButton.innerHTML = `
-                        <i data-feather="loader" class="h-5 w-5 animate-spin"></i>
-                        <span class="hidden sm:inline">Tracking...</span>
-                    `;
-                    feather.replace();
-                }
-            });
-            
-            // Clear error when user starts typing
-            trackingInput.addEventListener('input', function() {
-                clearTrackingError();
-            });
-        }
-        
-        function showTrackingError(message) {
-            clearTrackingError();
-            
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'mt-3 p-2 bg-red-500/20 border border-red-500 rounded-lg';
-            errorDiv.innerHTML = `
-                <p class="text-red-400 text-sm flex items-center gap-1">
-                    <i data-feather="alert-circle" class="h-4 w-4"></i>
-                    ${message}
-                </p>
-            `;
-            
-            trackingForm.parentNode.insertBefore(errorDiv, trackingForm.nextSibling);
-            feather.replace();
-        }
-        
-        function clearTrackingError() {
-            const existingError = trackingForm.parentNode.querySelector('.mt-3');
-            if (existingError) {
-                existingError.remove();
-            }
-        }
-        
-        // Add keyboard shortcut (Ctrl/Cmd + K) to focus on tracking input
-        document.addEventListener('keydown', function(e) {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                e.preventDefault();
-                if (trackingInput) {
-                    trackingInput.focus();
-                }
-            }
-        });
-        
-        // Add help text for keyboard shortcut
-        if (trackingInput) {
-            const helpText = document.createElement('p');
-            helpText.className = 'text-text-secondary text-xs text-center mt-2 opacity-0 hover:opacity-100 transition-opacity duration-300';
-            helpText.innerHTML = '💡 Press <kbd class="px-1 py-0.5 bg-gray-600 rounded text-xs">Ctrl</kbd> + <kbd class="px-1 py-0.5 bg-gray-600 rounded text-xs">K</kbd> to quickly focus';
-            
-            trackingForm.parentNode.appendChild(helpText);
-            
-            // Show help text briefly on page load
-            setTimeout(() => {
-                helpText.classList.add('opacity-100');
-                setTimeout(() => {
-                    helpText.classList.remove('opacity-100');
-                }, 3000);
-            }, 2000);
-        }
-    });
-</script>
-@endpush

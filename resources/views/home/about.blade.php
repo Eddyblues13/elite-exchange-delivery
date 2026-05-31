@@ -1,116 +1,404 @@
-@extends('layouts.app')
+@extends('layouts.home')
 
 @section('title', 'About Us - Elite Exchange Delivery')
 
 @section('content')
-<!-- Page Header -->
-<section class="page-header-bg min-h-[40vh] flex items-end py-16"
-    style="background-image: url('https://placehold.co/1920x800/111827/374151?text=About+Us');">
-    <div class="page-header-content container mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-4xl md:text-5xl font-extrabold text-white">About Elite Exchange Delivery</h1>
-        <p class="mt-2 text-lg text-text-secondary max-w-2xl">Connecting businesses to the world with passion,
-            precision, and partnership.</p>
+<!-- Hero Section -->
+<section class="relative h-96 flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/about-page-bg.jpg') }}');"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-primary-900/80 to-primary-700/60"></div>
+    
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 animate-fade-in">About Us</h1>
+        <nav class="flex justify-center" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2 text-primary-200">
+                <li><a href="{{ route('homepage') }}" class="hover:text-white transition-colors">Home</a></li>
+                <li><i class="fas fa-chevron-right text-xs"></i></li>
+                <li class="text-white">About Us</li>
+            </ol>
+        </nav>
     </div>
 </section>
 
-<!-- Our Story Section -->
-<section class="py-16 md:py-24">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div class="pr-0 md:pr-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Our Story</h2>
-                <p class="text-text-secondary mb-4">Founded in 2010, Elite Exchange Delivery began with a simple
-                    mission: to make
-                    global logistics accessible and stress-free for businesses of all sizes. From a small team with a
-                    single warehouse, we have grown into a trusted international logistics partner, powered by
-                    technology and a relentless commitment to our clients.</p>
-                <p class="text-text-secondary">We believe that in today's interconnected world, a reliable supply chain
-                    is the backbone of any successful enterprise. That's why we've invested in building a robust
-                    network, a team of seasoned experts, and a culture of continuous innovation to stay ahead of the
-                    curve and deliver exceptional value.</p>
-            </div>
-            <div class="h-80 md:h-96 rounded-2xl overflow-hidden shadow-lg">
-                <img src="https://www.timeshighereducation.com/student/sites/default/files/open_road.jpg"
-                    alt="A long, open road representing a journey" class="w-full h-full object-cover">
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Mission and Vision -->
-<section class="py-16 md:py-24 bg-gray-800">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="card p-8 rounded-2xl">
-                <div class="flex items-center mb-4">
-                    <i data-feather="crosshair" class="h-8 w-8 text-indigo-400 mr-4"></i>
-                    <h3 class="text-2xl font-bold text-white">Our Mission</h3>
+<!-- Company Profile Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <!-- Company Description -->
+            <div class="space-y-6">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Company Profile</h2>
+                    <h3 class="text-xl font-semibold text-primary-600 mb-6">
+                        Elite Exchange Delivery is a privately owned, premier international freight forwarder, delivery and logistics service provider.
+                    </h3>
                 </div>
-                <p class="text-text-secondary">To provide seamless, intelligent, and reliable logistics solutions that
-                    empower our clients to thrive in the global marketplace, fostering growth and connectivity through
-                    exceptional service and innovative technology.</p>
-            </div>
-            <div class="card p-8 rounded-2xl">
-                <div class="flex items-center mb-4">
-                    <i data-feather="eye" class="h-8 w-8 text-indigo-400 mr-4"></i>
-                    <h3 class="text-2xl font-bold text-white">Our Vision</h3>
+                
+                <div class="space-y-4 text-gray-600 leading-relaxed">
+                    <p>
+                        Elite Exchange Delivery has extensive experience handling and delivery sensitive domestic and industrial products including consumer technology products like networking equipment, desktop and mobile computers, servers, cell phones and more.
+                    </p>
+                    
+                    <p>
+                        Elite Exchange Delivery delivers real-time, actionable information reliably and ensures optimal efficiency and on-time activities by utilizing advanced, custom software systems. Fully EDI capable, Elite Exchange Delivery's systems interface with your trading partners to provide unprecedented product visibility throughout the entire supply chain.
+                    </p>
+                    
+                    <p>
+                        Our global regional hubs offer a wide range of mission-critical technology, logistic, IT and security services to clients and its partners overseas. Through our secure services to more than 250 offices, across 160 countries, we support staff globally with state-of-the-art logistics solutions.
+                    </p>
                 </div>
-                <p class="text-text-secondary">To be the world's most client-centric logistics company, setting new
-                    standards for transparency, efficiency, and sustainability in the supply chain industry.</p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <a href="{{ route('contact') }}" class="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors font-medium inline-flex items-center justify-center">
+                        Get In Touch
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="{{ route('services') }}" class="border border-primary-600 text-primary-600 px-6 py-3 rounded-lg hover:bg-primary-50 transition-colors font-medium inline-flex items-center justify-center">
+                        Our Services
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Company Images Slider -->
+            <div class="relative" x-data="{ currentImage: 0, images: 3 }" x-init="setInterval(() => { currentImage = (currentImage + 1) % images }, 4000)">
+                <div class="relative h-96 rounded-2xl overflow-hidden shadow-2xl">
+                    <div x-show="currentImage === 0" x-cloak x-transition:enter="transition-opacity duration-1000" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-1000" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0">
+                        <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Company Image 1" class="w-full h-full object-cover">
+                    </div>
+                    <div x-show="currentImage === 1" x-cloak x-transition:enter="transition-opacity duration-1000" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-1000" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0">
+                        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Company Image 2" class="w-full h-full object-cover">
+                    </div>
+                    <div x-show="currentImage === 2" x-cloak x-transition:enter="transition-opacity duration-1000" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-1000" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0">
+                        <img src="https://images.unsplash.com/photo-1519003303723-6f91b0f2749f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Company Image 3" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <!-- Image Indicators -->
+                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                    <template x-for="i in images" :key="i">
+                        <button @click="currentImage = i - 1" :class="currentImage === (i - 1) ? 'bg-white' : 'bg-white bg-opacity-50'" class="w-3 h-3 rounded-full transition-all duration-300"></button>
+                    </template>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Team Section -->
-<section class="py-16 md:py-24">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-white">Meet Our Leadership</h2>
-            <p class="mt-4 text-text-secondary">The driving force behind our success is a team of passionate and
-                experienced professionals dedicated to your success.</p>
+<!-- Mission, Vision & Values -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Foundation</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Built on strong values and clear vision, driving excellence in logistics
+            </p>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="text-center">
-                <img src="https://images.pexels.com/photos/532220/pexels-photo-532220.jpeg?auto=compress&cs=tinysrgb&w=600"
-                    alt="CEO" class="w-40 h-40 rounded-full mx-auto mb-4 shadow-lg object-cover">
-                <h4 class="text-lg font-bold text-white">Patrick David</h4>
-                <p class="text-sm text-indigo-400">Founder & CEO</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Mission -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="h-64 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/about_our_mission.jpg') }}');"></div>
+                <div class="p-8">
+                    <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-bullseye text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Our Mission</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Connecting people, businesses and communities to a better future – through logistics.
+                    </p>
+                </div>
             </div>
-            <div class="text-center">
-                <img src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600"
-                    alt="COO" class="w-40 h-40 rounded-full mx-auto mb-4 shadow-lg object-cover">
-                <h4 class="text-lg font-bold text-white">Jane Smith</h4>
-                <p class="text-sm text-indigo-400">Chief Operations Officer</p>
+            
+            <!-- Vision -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="h-64 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/about_our_vision.jpg') }}');"></div>
+                <div class="p-8">
+                    <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-eye text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Our Vision</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        To become the world's preferred supply chain logistics company – applying insights, service quality and innovation to create sustainable growth for business and society.
+                    </p>
+                </div>
             </div>
-            <div class="text-center">
-                <img src="https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=600"
-                    alt="CFO" class="w-40 h-40 rounded-full mx-auto mb-4 shadow-lg object-cover">
-                <h4 class="text-lg font-bold text-white">Samuel Chen</h4>
-                <p class="text-sm text-indigo-400">Chief Financial Officer</p>
-            </div>
-            <div class="text-center">
-                <img src="https://images.pexels.com/photos/3775164/pexels-photo-3775164.jpeg?auto=compress&cs=tinysrgb&w=600"
-                    alt="CTO" class="w-40 h-40 rounded-full mx-auto mb-4 shadow-lg object-cover">
-                <h4 class="text-lg font-bold text-white">Amina Okoro</h4>
-                <p class="text-sm text-indigo-400">Chief Technology Officer</p>
+            
+            <!-- Values -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div class="h-64 bg-cover bg-center" style="background-image: url('{{ asset('temp/custom/images/about_core_values.jpg') }}');"></div>
+                <div class="p-8">
+                    <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-heart text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Core Values</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Value Creation – Openness – Integrity – Commitment – Excellence – Mutual Respect – Customer Orientation
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CTA Section -->
-<section class="py-20">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-indigo-600 rounded-2xl p-10 text-center shadow-2xl shadow-indigo-500/30">
-            <h2 class="text-3xl font-bold text-white mb-4">Join Our Growing List of Partners</h2>
-            <p class="text-indigo-200 max-w-2xl mx-auto mb-8">Experience the Elite Exchange Delivery difference. Let's
-                work
-                together to build a more efficient and resilient supply chain for your business.</p>
-            <a href="{{ route('contact') }}"
-                class="bg-white text-indigo-600 font-semibold px-8 py-4 rounded-xl hover:bg-gray-200 transition-colors duration-300">
-                Become a Partner
-            </a>
+<!-- Safety & Security -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <!-- Safety -->
+            <div class="space-y-6">
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Safety First</h2>
+                </div>
+                
+                <div class="space-y-4 text-gray-600 leading-relaxed">
+                    <p>
+                        At Elite Exchange Delivery, ensuring the safety of our customers, employees and our communities is our priority. We understand the importance of continuous training and are proud of our safety knowledge, experienced staff and ability to exceed industry standards year after year.
+                    </p>
+                    <p>
+                        We have established and continually maintain excellent motor carrier safety ratings and low accident frequencies. As a company, we have a solid safety performance history and will continue to be a leader in the area of safety and compliance.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 pt-4">
+                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                        <div class="text-2xl font-bold text-green-600">99.9%</div>
+                        <div class="text-sm text-gray-600">Safety Rating</div>
+                    </div>
+                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                        <div class="text-2xl font-bold text-green-600">24/7</div>
+                        <div class="text-sm text-gray-600">Monitoring</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security -->
+            <div class="space-y-6">
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-lock text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900">Advanced Security</h2>
+                </div>
+                
+                <div class="space-y-4 text-gray-600 leading-relaxed">
+                    <p>
+                        At Elite Exchange Delivery, we offer industry-leading asset protection and security compliance programs. We understand that our customers may have important and unique needs related to homeland security regulatory compliance, high-risk products, or brand protection.
+                    </p>
+                    <p>
+                        By leveraging modern and proven technologies, we provide for the integrity of customer assets while in-transit or at one of our facilities. We offer consultation and proactive partnership to ensure that our customers' security needs are met.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 pt-4">
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600">256-bit</div>
+                        <div class="text-sm text-gray-600">Encryption</div>
+                    </div>
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600">ISO</div>
+                        <div class="text-sm text-gray-600">Certified</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-20 bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Achievements</h2>
+            <p class="text-xl text-primary-200">Numbers that speak for our excellence</p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+            <div class="text-center">
+                <div class="stat-number text-3xl md:text-4xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-700" style="transition-delay: 200ms;">
+                    101,273+
+                </div>
+                <div class="text-primary-200 text-sm md:text-base font-medium">
+                    Delivered Packages
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="stat-number text-3xl md:text-4xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-700" style="transition-delay: 400ms;">
+                    673,754+
+                </div>
+                <div class="text-primary-200 text-sm md:text-base font-medium">
+                    KM Per Year
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="stat-number text-3xl md:text-4xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-700" style="transition-delay: 600ms;">
+                    11+
+                </div>
+                <div class="text-primary-200 text-sm md:text-base font-medium">
+                    Years Experience
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="stat-number text-3xl md:text-4xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-700" style="transition-delay: 800ms;">
+                    16,714+
+                </div>
+                <div class="text-primary-200 text-sm md:text-base font-medium">
+                    Happy Clients
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="stat-number text-3xl md:text-4xl font-bold mb-2 transform translate-y-4 opacity-0 transition-all duration-700" style="transition-delay: 1000ms;">
+                    8+
+                </div>
+                <div class="text-primary-200 text-sm md:text-base font-medium">
+                    Industry Awards
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Stats animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.remove('translate-y-4', 'opacity-0');
+                        entry.target.classList.add('translate-y-0', 'opacity-100');
+                    }
+                });
+            }, {
+                threshold: 0.5,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            statNumbers.forEach(stat => {
+                observer.observe(stat);
+            });
+        });
+    </script>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Our Clients Say</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Trusted by industry leaders worldwide
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Testimonial 1 -->
+            <div class="bg-white rounded-xl shadow-lg p-8 transform transition-all duration-500 hover:scale-105">
+                <div class="flex items-center mb-4">
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <blockquote class="text-gray-600 mb-6 leading-relaxed">
+                    "Given my past experiences with other logistics companies, I can say without exception that the services provided by Elite Exchange Delivery greatly exceed industry standards."
+                </blockquote>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-semibold mr-4">
+                        MP
+                    </div>
+                    <div>
+                        <div class="font-semibold text-gray-900">Monique Pete</div>
+                        <div class="text-sm text-gray-500">Logistics Manager, Martrax Inc.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="bg-white rounded-xl shadow-lg p-8 transform transition-all duration-500 hover:scale-105">
+                <div class="flex items-center mb-4">
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <blockquote class="text-gray-600 mb-6 leading-relaxed">
+                    "More than once, Elite Exchange Delivery has 'saved the day', delivering our cargo on time with short notice. They have won my gratitude and loyalty with their 'can do' approach."
+                </blockquote>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-semibold mr-4">
+                        SA
+                    </div>
+                    <div>
+                        <div class="font-semibold text-gray-900">Steve Anderson</div>
+                        <div class="text-sm text-gray-500">President/Owner, Duplication Factory</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="bg-white rounded-xl shadow-lg p-8 transform transition-all duration-500 hover:scale-105">
+                <div class="flex items-center mb-4">
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <blockquote class="text-gray-600 mb-6 leading-relaxed">
+                    "I am very pleased with the service provided by Elite Exchange Delivery. They find good carriers and use them regularly so we get a high level of service. Their communication is outstanding."
+                </blockquote>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-semibold mr-4">
+                        CB
+                    </div>
+                    <div>
+                        <div class="font-semibold text-gray-900">Cathy Beckman</div>
+                        <div class="text-sm text-gray-500">Logistics Team, Oxea Chemicals</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partners Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Trusted Partners</h2>
+            <p class="text-gray-600">Working with industry leaders worldwide</p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-8 items-center opacity-60 hover:opacity-100 transition-opacity duration-300">
+            <div class="flex justify-center">
+                <img src="{{ asset('temp/custom/images/content/partner-01.png') }}" alt="Partner Logo" class="h-12 object-contain filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex justify-center">
+                <img src="{{ asset('temp/custom/images/content/partner-02.png') }}" alt="Partner Logo" class="h-12 object-contain filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex justify-center">
+                <img src="{{ asset('temp/custom/images/content/partner-03.png') }}" alt="Partner Logo" class="h-12 object-contain filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex justify-center">
+                <img src="{{ asset('temp/custom/images/content/partner-04.png') }}" alt="Partner Logo" class="h-12 object-contain filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
+            <div class="flex justify-center">
+                <img src="{{ asset('temp/custom/images/content/partner-05.png') }}" alt="Partner Logo" class="h-12 object-contain filter grayscale hover:grayscale-0 transition-all duration-300">
+            </div>
         </div>
     </div>
 </section>

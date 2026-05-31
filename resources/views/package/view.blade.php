@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Package Tracking | FedEx</title>
+    <title>Advanced Package Tracking | Elite Exchange Delivery</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -542,8 +542,7 @@
                 <div class="d-flex justify-content-between align-items-center py-3">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-shipping-fast fa-2x text-white me-2"></i>
-                        <a href="{{route('homepage')}}" class="logo"> <img src="./assets/images/logo.png" width="80"
-                                height="50"></a>
+                        <a href="{{route('homepage')}}" class="logo"> <img src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}" alt="Elite Exchange Delivery Logo" style="height: 50px; width: auto;"></a>
                     </div>
                     <div>
                         <span class="text-white-50">{{ date('l, F j, Y') }}</span>
@@ -897,7 +896,7 @@
 
                                 <div class="detail-item">
                                     <div class="detail-label">Carrier</div>
-                                    <div>FedEx Express</div>
+                                    <div>Elite Exchange Delivery</div>
                                 </div>
                                 <div class="detail-item">
                                     <div class="detail-label">Service</div>
@@ -1000,13 +999,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <h5>FedEx TrackPro</h5>
+                        <h5>Elite Exchange Delivery TrackPro</h5>
                         <p>Your trusted partner for fast and reliable shipping solutions worldwide.</p>
                     </div>
                     <div class="col-md-6 text-md-end">
                         <p>Need help? Contact our support team 24/7</p>
-                        <p><i class="fas fa-phone me-2"></i> +1(318) 491-5463</p>
-                        <p><i class="fas fa-envelope me-2"></i> support@expressairdelivery.com</p>
+                        <p><i class="fas fa-phone me-2"></i> +13154893120</p>
+                        <p><i class="fas fa-envelope me-2"></i> info@eliteexchange.com</p>
                     </div>
                 </div>
             </div>
