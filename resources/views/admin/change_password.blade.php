@@ -3,9 +3,6 @@
 <div class="main-panel">
     <div class="content bg-light">
         <div class="page-inner">
-            @if(session('message'))
-            <div class="alert alert-success mb-2">{{ session('message') }}</div>
-            @endif
             <div class="mt-2 mb-4">
                 <h1 class="title1 text-dark">Change Admin Password</h1>
             </div>

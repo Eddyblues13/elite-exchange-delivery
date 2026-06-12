@@ -7,13 +7,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="description" content="Elite Exchange Delivery is a global logistics service provider offering premium shipping, courier, and tracking services worldwide." />
-    <meta name="keywords" content="logistics, shipping, freight, courier, transport, global delivery, package tracking" />
+    <meta name="description"
+        content="Elite Exchange Delivery is a global logistics service provider offering premium shipping, courier, and tracking services worldwide." />
+    <meta name="keywords"
+        content="logistics, shipping, freight, courier, transport, global delivery, package tracking" />
     <meta name="author" content="Elite Exchange Delivery" />
     <meta name="robots" content="index, follow" />
 
     <!-- Modern Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com/"></script>
@@ -21,7 +24,8 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link href="{{ asset('storage/app/public/photos/IyA8g3PbeS8qpth26urr4z3KxykAHNidvWy202zD.png') }}" rel="shortcut icon">
+    <link href="{{ asset('storage/app/public/photos/IyA8g3PbeS8qpth26urr4z3KxykAHNidvWy202zD.png') }}"
+        rel="shortcut icon">
     <title>@yield('title', 'Welcome to Elite Exchange Delivery - Premium Global Shipping Solutions')</title>
 
     <script>
@@ -119,12 +123,14 @@
 
 <body class="font-inter bg-gray-50" x-data="{ mobileMenuOpen: false, searchOpen: false }" x-cloak>
     <!-- iOS-Compatible Preloader -->
-    <div id="preloader" class="fixed inset-0 bg-white z-[9999] flex items-center justify-center" style="-webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);">
+    <div id="preloader" class="fixed inset-0 bg-white z-[9999] flex items-center justify-center"
+        style="-webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);">
         <div class="text-center">
             <!-- Simplified Animated Logo Container -->
             <div class="w-24 h-24 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
                 <!-- Company Initial or Small Logo -->
-                <img src="{{ asset('storage/app/public/photos/IyA8g3PbeS8qpth26urr4z3KxykAHNidvWy202zD.png') }}" alt="Logo" class="w-12 h-12 object-contain animate-bounce">
+                <img src="{{ asset('storage/app/public/photos/IyA8g3PbeS8qpth26urr4z3KxykAHNidvWy202zD.png') }}"
+                    alt="Logo" class="w-12 h-12 object-contain animate-bounce">
             </div>
 
             <!-- Simple Loading Spinner (more compatible across devices) -->
@@ -171,48 +177,67 @@
                     <!-- Logo -->
                     <div class="flex-shrink-0 flex items-center">
                         <a href="{{ route('homepage') }}" class="flex items-center">
-                            <img src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}" alt="Elite Exchange Delivery" class="h-24 w-auto -my-6 object-contain">
+                            <img src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}"
+                                alt="Elite Exchange Delivery" class="h-24 w-auto -my-6 object-contain">
                         </a>
                     </div>
 
                     <!-- Desktop Navigation -->
                     <div class="hidden lg:flex items-center space-x-8">
-                        <a href="{{ route('homepage') }}" class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors border-b-2 border-transparent hover:border-primary-600">
+                        <a href="{{ route('homepage') }}"
+                            class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors border-b-2 border-transparent hover:border-primary-600">
                             Home
                         </a>
-                        <a href="{{ route('about') }}" class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors border-b-2 border-transparent hover:border-primary-600">
+                        <a href="{{ route('about') }}"
+                            class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors border-b-2 border-transparent hover:border-primary-600">
                             About
                         </a>
-                        <div class="relative" x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false">
-                            <button class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors border-b-2 border-transparent hover:border-primary-600 flex items-center">
+                        <div class="relative" x-data="{ open: false }" @mouseenter="open = true"
+                            @mouseleave="open = false">
+                            <button
+                                class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors border-b-2 border-transparent hover:border-primary-600 flex items-center">
                                 Services
                                 <i class="fas fa-chevron-down ml-1 text-xs"></i>
                             </button>
-                            <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-1" class="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2">
-                                <a href="{{ route('services') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+                            <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 translate-y-1"
+                                x-transition:enter-end="opacity-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 translate-y-1"
+                                class="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2">
+                                <a href="{{ route('services') }}"
+                                    class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
                                     <i class="fas fa-ship mr-3 text-primary-600"></i>Sea/Ocean Freight
                                 </a>
-                                <a href="{{ route('services') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+                                <a href="{{ route('services') }}"
+                                    class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
                                     <i class="fas fa-truck mr-3 text-primary-600"></i>Road Transportation
                                 </a>
-                                <a href="{{ route('services') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+                                <a href="{{ route('services') }}"
+                                    class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
                                     <i class="fas fa-plane mr-3 text-primary-600"></i>Air Freight
                                 </a>
-                                <a href="{{ route('services') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+                                <a href="{{ route('services') }}"
+                                    class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
                                     <i class="fas fa-warehouse mr-3 text-primary-600"></i>Warehousing
                                 </a>
-                                <a href="{{ route('services') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+                                <a href="{{ route('services') }}"
+                                    class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
                                     <i class="fas fa-box mr-3 text-primary-600"></i>Packaging & Storage
                                 </a>
-                                <a href="{{ route('diplomatic') }}" class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+                                <a href="{{ route('diplomatic') }}"
+                                    class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">
                                     <i class="fas fa-shield-alt mr-3 text-primary-600"></i>Diplomatic Services
                                 </a>
                             </div>
                         </div>
-                        <a href="{{ route('track') }}" class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors border-b-2 border-transparent hover:border-primary-600">
+                        <a href="{{ route('track') }}"
+                            class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors border-b-2 border-transparent hover:border-primary-600">
                             Track Shipment
                         </a>
-                        <a href="{{ route('contact') }}" class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors border-b-2 border-transparent hover:border-primary-600">
+                        <a href="{{ route('contact') }}"
+                            class="text-gray-700 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors border-b-2 border-transparent hover:border-primary-600">
                             Contact
                         </a>
                     </div>
@@ -221,36 +246,52 @@
                     <div class="hidden lg:flex items-center space-x-4">
                         <!-- Quick Track Search -->
                         <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" class="p-2 text-gray-500 hover:text-primary-600 transition-colors">
+                            <button @click="open = !open"
+                                class="p-2 text-gray-500 hover:text-primary-600 transition-colors">
                                 <i class="fas fa-search text-lg"></i>
                             </button>
                             <!-- Dropdown for tracking -->
-                            <div x-show="open" x-cloak style="display: none; position: absolute; right: 0; top: 100%; z-index: 9999; margin-top: 0.5rem;" class="w-80 bg-white rounded-lg shadow-2xl border border-gray-200 p-4">
+                            <div x-show="open" x-cloak
+                                style="display: none; position: absolute; right: 0; top: 100%; z-index: 9999; margin-top: 0.5rem;"
+                                class="w-80 bg-white rounded-lg shadow-2xl border border-gray-200 p-4">
                                 <form method="POST" action="{{ route('package') }}" class="space-y-3">
                                     @csrf
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Track Your Shipment</label>
-                                        <input type="text" name="search" placeholder="Enter tracking number..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" required>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Track Your
+                                            Shipment</label>
+                                        <input type="text" name="search" placeholder="Enter tracking number..."
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                                            required>
                                     </div>
-                                    <button type="submit" class="w-full bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                                    <button type="submit"
+                                        class="w-full bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 transition-colors font-medium">
                                         <i class="fas fa-search mr-2"></i>Track Now
                                     </button>
                                 </form>
                             </div>
                         </div>
 
+                        <!-- Register Package Button -->
+                        <a href="{{ route('register') }}"
+                            class="bg-white border border-primary-600 text-primary-700 px-6 py-2 rounded-lg hover:bg-primary-50 transition-colors font-medium">
+                            <i class="fas fa-box mr-1"></i> Register
+                        </a>
+
                         <!-- Get Quote Button -->
-                        <a href="{{ route('contact') }}" class="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                        <a href="{{ route('contact') }}"
+                            class="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium">
                             Get Quote
                         </a>
                     </div>
 
                     <!-- iOS-Compatible Mobile Menu Button -->
                     <div class="lg:hidden flex items-center space-x-2">
-                        <button type="button" @click="searchOpen = !searchOpen" class="p-3 text-gray-500 hover:text-primary-600 transition-colors">
+                        <button type="button" @click="searchOpen = !searchOpen"
+                            class="p-3 text-gray-500 hover:text-primary-600 transition-colors">
                             <i class="fas fa-search text-lg"></i>
                         </button>
-                        <button type="button" @click="mobileMenuOpen = !mobileMenuOpen" class="p-3 text-gray-500 hover:text-primary-600 transition-colors" aria-label="Toggle menu">
+                        <button type="button" @click="mobileMenuOpen = !mobileMenuOpen"
+                            class="p-3 text-gray-500 hover:text-primary-600 transition-colors" aria-label="Toggle menu">
                             <i class="fas fa-bars text-xl" x-show="!mobileMenuOpen" x-cloak></i>
                             <i class="fas fa-times text-xl" x-show="mobileMenuOpen" x-cloak></i>
                         </button>
@@ -259,62 +300,96 @@
             </div>
 
             <!-- Mobile Search -->
-            <div x-show="searchOpen" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-1" class="lg:hidden border-t border-gray-200 bg-gray-50 px-4 py-4">
+            <div x-show="searchOpen" x-cloak x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-1"
+                class="lg:hidden border-t border-gray-200 bg-gray-50 px-4 py-4">
                 <form method="POST" action="{{ route('package') }}" class="space-y-3">
                     @csrf
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Track Your Shipment</label>
-                        <input type="text" name="search" placeholder="Enter tracking number..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" required>
+                        <input type="text" name="search" placeholder="Enter tracking number..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                            required>
                     </div>
-                    <button type="submit" class="w-full bg-primary-600 text-white py-3 px-4 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                    <button type="submit"
+                        class="w-full bg-primary-600 text-white py-3 px-4 rounded-lg hover:bg-primary-700 transition-colors font-medium">
                         <i class="fas fa-search mr-2"></i>Track Now
                     </button>
                 </form>
             </div>
 
             <!-- iOS-Compatible Mobile Navigation Menu -->
-            <div x-show="mobileMenuOpen" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-0" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-0" class="lg:hidden border-t border-gray-200 bg-white" style="transform: translateZ(0); -webkit-overflow-scrolling: touch;">
+            <div x-show="mobileMenuOpen" x-cloak x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 translate-y-0" x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-0"
+                class="lg:hidden border-t border-gray-200 bg-white"
+                style="transform: translateZ(0); -webkit-overflow-scrolling: touch;">
                 <div class="px-4 py-6 space-y-2">
-                    <a href="{{ route('homepage') }}" class="block px-3 py-2 text-gray-900 font-medium hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
+                    <a href="{{ route('homepage') }}"
+                        class="block px-3 py-2 text-gray-900 font-medium hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
                         Home
                     </a>
-                    <a href="{{ route('about') }}" class="block px-3 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
+                    <a href="{{ route('about') }}"
+                        class="block px-3 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
                         About
                     </a>
                     <div x-data="{ servicesOpen: false }">
-                        <button @click="servicesOpen = !servicesOpen" class="w-full flex items-center justify-between px-3 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
+                        <button @click="servicesOpen = !servicesOpen"
+                            class="w-full flex items-center justify-between px-3 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
                             Services
-                            <i class="fas fa-chevron-down text-xs transition-transform" :class="servicesOpen ? 'rotate-180' : ''"></i>
+                            <i class="fas fa-chevron-down text-xs transition-transform"
+                                :class="servicesOpen ? 'rotate-180' : ''"></i>
                         </button>
-                        <div x-show="servicesOpen" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-1" class="pl-6 mt-2 space-y-2">
-                            <a href="{{ route('services') }}" class="block px-3 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
+                        <div x-show="servicesOpen" x-cloak x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 -translate-y-1"
+                            x-transition:enter-end="opacity-100 translate-y-0"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 translate-y-0"
+                            x-transition:leave-end="opacity-0 -translate-y-1" class="pl-6 mt-2 space-y-2">
+                            <a href="{{ route('services') }}"
+                                class="block px-3 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
                                 <i class="fas fa-ship mr-2 text-primary-600"></i>Sea/Ocean Freight
                             </a>
-                            <a href="{{ route('services') }}" class="block px-3 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
+                            <a href="{{ route('services') }}"
+                                class="block px-3 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
                                 <i class="fas fa-truck mr-2 text-primary-600"></i>Road Transportation
                             </a>
-                            <a href="{{ route('services') }}" class="block px-3 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
+                            <a href="{{ route('services') }}"
+                                class="block px-3 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
                                 <i class="fas fa-plane mr-2 text-primary-600"></i>Air Freight
                             </a>
-                            <a href="{{ route('services') }}" class="block px-3 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
+                            <a href="{{ route('services') }}"
+                                class="block px-3 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
                                 <i class="fas fa-warehouse mr-2 text-primary-600"></i>Warehousing
                             </a>
-                            <a href="{{ route('services') }}" class="block px-3 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
+                            <a href="{{ route('services') }}"
+                                class="block px-3 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
                                 <i class="fas fa-box mr-2 text-primary-600"></i>Packaging & Storage
                             </a>
-                            <a href="{{ route('diplomatic') }}" class="block px-3 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
+                            <a href="{{ route('diplomatic') }}"
+                                class="block px-3 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
                                 <i class="fas fa-shield-alt mr-2 text-primary-600"></i>Diplomatic Services
                             </a>
                         </div>
                     </div>
-                    <a href="{{ route('track') }}" class="block px-3 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
+                    <a href="{{ route('track') }}"
+                        class="block px-3 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
                         Track Shipment
                     </a>
-                    <a href="{{ route('contact') }}" class="block px-3 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
+                    <a href="{{ route('contact') }}"
+                        class="block px-3 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg transition-colors">
                         Contact
                     </a>
-                    <div class="pt-4 border-t border-gray-200">
-                        <a href="{{ route('contact') }}" class="block w-full text-center bg-primary-600 text-white py-3 px-4 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+                    <div class="pt-4 border-t border-gray-200 space-y-3">
+                        <a href="{{ route('register') }}"
+                            class="block w-full text-center bg-white border border-primary-600 text-primary-700 py-3 px-4 rounded-lg hover:bg-primary-50 transition-colors font-medium">
+                            <i class="fas fa-box mr-1"></i> Register
+                        </a>
+                        <a href="{{ route('contact') }}"
+                            class="block w-full text-center bg-primary-600 text-white py-3 px-4 rounded-lg hover:bg-primary-700 transition-colors font-medium">
                             Get Quote
                         </a>
                     </div>
@@ -362,23 +437,30 @@
                 <!-- Company Info -->
                 <div class="lg:col-span-2">
                     <div class="mb-6">
-                        <img src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}" alt="Elite Exchange Delivery" class="h-24 w-auto -my-6 object-contain mb-4 filter brightness-0 invert">
+                        <img src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}"
+                            alt="Elite Exchange Delivery"
+                            class="h-24 w-auto -my-6 object-contain mb-4 filter brightness-0 invert">
                     </div>
                     <h3 class="text-xl font-semibold mb-4 text-white">Elite Exchange Delivery</h3>
                     <p class="text-gray-300 mb-6 leading-relaxed">
-                        Providing Smart Logistics Solutions Across The World. We deliver excellence in shipping, courier services, and package tracking with our global network of trusted partners.
+                        Providing Smart Logistics Solutions Across The World. We deliver excellence in shipping, courier
+                        services, and package tracking with our global network of trusted partners.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors">
+                        <a href="#"
+                            class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors">
                             <i class="fab fa-facebook-f text-white"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors">
+                        <a href="#"
+                            class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors">
                             <i class="fab fa-twitter text-white"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors">
+                        <a href="#"
+                            class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors">
                             <i class="fab fa-linkedin-in text-white"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors">
+                        <a href="#"
+                            class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors">
                             <i class="fab fa-instagram text-white"></i>
                         </a>
                     </div>
@@ -389,37 +471,43 @@
                     <h4 class="text-lg font-semibold mb-6 text-white">Quick Links</h4>
                     <ul class="space-y-3">
                         <li>
-                            <a href="{{ route('homepage') }}" class="text-gray-300 hover:text-primary-400 transition-colors flex items-center">
+                            <a href="{{ route('homepage') }}"
+                                class="text-gray-300 hover:text-primary-400 transition-colors flex items-center">
                                 <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i>
                                 Home
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('about') }}" class="text-gray-300 hover:text-primary-400 transition-colors flex items-center">
+                            <a href="{{ route('about') }}"
+                                class="text-gray-300 hover:text-primary-400 transition-colors flex items-center">
                                 <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i>
                                 About Us
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('services') }}" class="text-gray-300 hover:text-primary-400 transition-colors flex items-center">
+                            <a href="{{ route('services') }}"
+                                class="text-gray-300 hover:text-primary-400 transition-colors flex items-center">
                                 <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i>
                                 Our Services
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('track') }}" class="text-gray-300 hover:text-primary-400 transition-colors flex items-center">
+                            <a href="{{ route('track') }}"
+                                class="text-gray-300 hover:text-primary-400 transition-colors flex items-center">
                                 <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i>
                                 Track Shipment
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('contact') }}" class="text-gray-300 hover:text-primary-400 transition-colors flex items-center">
+                            <a href="{{ route('contact') }}"
+                                class="text-gray-300 hover:text-primary-400 transition-colors flex items-center">
                                 <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i>
                                 Contact Us
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('diplomatic') }}" class="text-gray-300 hover:text-primary-400 transition-colors flex items-center">
+                            <a href="{{ route('diplomatic') }}"
+                                class="text-gray-300 hover:text-primary-400 transition-colors flex items-center">
                                 <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i>
                                 Diplomatic Services
                             </a>
@@ -432,18 +520,21 @@
                     <h4 class="text-lg font-semibold mb-6 text-white">Contact Info</h4>
                     <div class="space-y-4">
                         <div class="flex items-start space-x-3">
-                            <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <div
+                                class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                                 <i class="fas fa-envelope text-white text-sm"></i>
                             </div>
                             <div>
                                 <p class="text-gray-400 text-sm">Email Us</p>
-                                <a href="mailto:info@eliteexchange.com" class="text-white hover:text-primary-400 transition-colors">
+                                <a href="mailto:info@eliteexchange.com"
+                                    class="text-white hover:text-primary-400 transition-colors">
                                     info@eliteexchange.com
                                 </a>
                             </div>
                         </div>
                         <div class="flex items-start space-x-3">
-                            <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <div
+                                class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                                 <i class="fas fa-phone text-white text-sm"></i>
                             </div>
                             <div>
@@ -452,7 +543,8 @@
                             </div>
                         </div>
                         <div class="flex items-start space-x-3">
-                            <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <div
+                                class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                                 <i class="fas fa-clock text-white text-sm"></i>
                             </div>
                             <div>
@@ -467,8 +559,10 @@
                         <h5 class="text-sm font-semibold mb-3 text-white">Quick Track</h5>
                         <form method="POST" action="{{ route('package') }}" class="space-y-2">
                             @csrf
-                            <input type="text" name="search" placeholder="Enter tracking number..." class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm">
-                            <button type="submit" class="w-full bg-primary-600 text-white py-2 px-3 rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium">
+                            <input type="text" name="search" placeholder="Enter tracking number..."
+                                class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm">
+                            <button type="submit"
+                                class="w-full bg-primary-600 text-white py-2 px-3 rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium">
                                 <i class="fas fa-search mr-1"></i>Track
                             </button>
                         </form>
@@ -483,7 +577,8 @@
                 <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
                     <div class="text-center md:text-left">
                         <p class="text-gray-400 text-sm">
-                            Copyright &copy; <span id="currentYear"></span> Elite Exchange Delivery. All rights reserved.
+                            Copyright &copy; <span id="currentYear"></span> Elite Exchange Delivery. All rights
+                            reserved.
                         </p>
                     </div>
                     <div class="flex items-center space-x-6 text-sm">

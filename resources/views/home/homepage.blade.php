@@ -54,6 +54,9 @@
                 <a href="{{ route('about') }}" class="bg-primary-600 text-white px-8 py-4 rounded-lg hover:bg-primary-700 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                     Learn More
                 </a>
+                <a href="{{ route('register') }}" class="bg-white text-primary-700 px-8 py-4 rounded-lg hover:bg-primary-50 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    <i class="fas fa-box mr-2"></i>Register
+                </a>
                 <a href="{{ route('contact') }}" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-gray-900 transition-all duration-300 font-semibold text-lg">
                     Contact Us <i class="fas fa-arrow-right ml-2"></i>
                 </a>

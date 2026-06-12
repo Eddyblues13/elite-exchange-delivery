@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
-    <meta name="csrf-token" content="ialsmxvxbFVMvehWybzdppDZtGxGJ4kODeqmi07p">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Sellar | Admin Dashboard</title>
 
     <!-- Favicon -->
@@ -50,7 +50,34 @@
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.1/dist/alpine.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
+    <script>
+        $(document).ready(function () {
+            toastr.options = {
+                positionClass: 'toast-top-right',
+                progressBar: true,
+                closeButton: true,
+                timeOut: 5000,
+                preventDuplicates: true
+            };
+            @if(session('error'))
+                toastr.error(@json(session('error')));
+            @endif
+            @if(session('success'))
+                toastr.success(@json(session('success')));
+            @endif
+            @if(session('message'))
+                toastr.success(@json(session('message')));
+            @endif
+            @if(session('warning'))
+                toastr.warning(@json(session('warning')));
+            @endif
+            @if($errors->any())
+                @foreach($errors->all() as $flashError)
+                    toastr.error(@json($flashError));
+                @endforeach
+            @endif
+        });
+    </script>
 
 </head>
 
@@ -177,6 +204,18 @@
                                 <a href="{{route('admin.packages.index')}}">
                                     <i class="fas fa-cubes " aria-hidden="true"></i>
                                     <p>Edit Package</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('admin.packages.send-email.index')}}">
+                                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                                    <p>Send Email</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('admin.compose-email')}}">
+                                    <i class="fas fa-pen-fancy" aria-hidden="true"></i>
+                                    <p>Compose Email</p>
                                 </a>
                             </li>
                             {{-- <li class="nav-item">

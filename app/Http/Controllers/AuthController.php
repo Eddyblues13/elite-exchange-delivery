@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Admin;
 use App\Models\UniqueId;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -59,25 +58,6 @@ class AuthController extends Controller
 
         return view('name-input', compact('access_code'));
     }
-
-
-    // public function showNameInput($access_code)
-    // {
-    //     // Assuming `access_code` is a unique field, not the primary key (id)
-    //     $admin = Admin::where('unique_id', $access_code)->first();
-
-    //     if (!$admin) {
-    //         Auth::logout();
-    //         request()->session()->invalidate();
-    //         request()->session()->regenerateToken();
-
-    //         return redirect()->route('connection.failed')->withErrors([
-    //             'access_code' => 'Invalid access code. Please try again.'
-    //         ]);
-    //     }
-
-    //     return view('name-input', compact('access_code'));
-    // }
 
     public function connectionFailed()
     {

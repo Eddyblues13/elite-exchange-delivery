@@ -47,7 +47,11 @@ class Package extends Model
         'step3_date',
         'step4_name',
         'step4_date',
-        'notes'
+        'notes',
+        'image_url',
+        'image_public_id',
+        'video_url',
+        'video_public_id'
     ];
 
 
@@ -60,6 +64,10 @@ class Package extends Model
         'step4_date' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'image_url' => 'array',
+        'image_public_id' => 'array',
+        'video_url' => 'array',
+        'video_public_id' => 'array',
     ];
 
 

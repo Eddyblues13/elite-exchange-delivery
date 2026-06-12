@@ -28,9 +28,8 @@
                 <div class="nk-block nk-block-middle nk-auth-body">
                     <center class="brand-logo pb-5">
                         <a href="" class="logo-link">
-                            <img class="logo-light logo-img logo-img-lg" src="{{asset('images/logo.png')}}" alt="logo">
-                            <img class="logo-dark logo-img logo-img-lg" src="{{asset('images/logo.png')}}"
-                                alt="logo-dark">
+                            <img class="logo-light logo-img logo-img-lg" src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}" alt="Elite Exchange Delivery" style="max-height: 80px; width: auto;">
+                            <img class="logo-dark logo-img logo-img-lg" src="{{ asset('storage/app/public/photos/UWLujxX2EYUBZ5IhnOrBR8FxQuNqooOHlshPBM64.png') }}" alt="Elite Exchange Delivery" style="max-height: 80px; width: auto;">
                         </a>
                     </center>
 
@@ -43,16 +42,6 @@
                             </div>
                         </div>
                     </div><!-- .nk-block-head -->
-
-                    @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
 
                     <form action="{{ route('admin.login') }}" method="post">
                         @csrf
@@ -100,7 +89,13 @@
                     </form><!-- form -->
                 </div><!-- .nk-block -->
 
-                <div class="nk-block nk-auth-footer" style="margin-top:80px;">
+                <div class="nk-block nk-auth-footer" style="margin-top:40px;">
+                    <div class="text-center mb-3">
+                        <p class="text-muted mb-2">Want to ship a package?</p>
+                        <a href="{{ route('register') }}" class="btn btn-outline-primary btn-block">
+                            <em class="icon ni ni-package mr-1"></em> Register a Package
+                        </a>
+                    </div>
                     <div class="mt-3">
                         <p>&copy; {{ date('Y') }}. All Rights Reserved.</p>
                     </div>
@@ -113,6 +108,22 @@
     <script src="{{ asset('admin/assets/js/bundle.js?ver=2.4.0') }}"></script>
     <script src="{{ asset('admin/assets/js/scripts.js?ver=2.4.0') }}"></script>
     <script src="{{ asset('admin/assets/js/vendors/sweetalert.js') }}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            toastr.options = { positionClass: 'toast-top-right', progressBar: true, closeButton: true, timeOut: 5000 };
+            @if($errors->any())
+                @foreach($errors->all() as $flashError)
+                    toastr.error(@json($flashError));
+                @endforeach
+            @endif
+            @if(session('error'))
+                toastr.error(@json(session('error')));
+            @endif
+        });
+    </script>
 </body>
 
 </html>

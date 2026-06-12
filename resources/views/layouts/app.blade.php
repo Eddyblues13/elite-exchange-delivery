@@ -6,7 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Elite Exchange Delivery - Global Logistics & Shipping')</title>
+    <title>@yield('title', 'Cheap Express Logistics - Global Logistics & Shipping')</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="@yield('meta_description', 'Cheap Express Logistics offers global shipping, air freight, ocean freight, road freight, express delivery, and real-time package tracking to 150+ countries. Get a free quote today.')">
+    <meta name="keywords"
+        content="@yield('meta_keywords', 'logistics, shipping, freight, air freight, ocean freight, road freight, package tracking, international shipping, express delivery, customs clearance, warehousing, global logistics')">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Cheap Express Logistics">
+    <link rel="canonical" href="@yield('canonical', url()->current())">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title', 'Cheap Express Logistics - Global Logistics & Shipping')">
+    <meta property="og:description"
+        content="@yield('meta_description', 'Cheap Express Logistics offers global shipping, air freight, ocean freight, road freight, express delivery, and real-time package tracking to 150+ countries.')">
+    <meta property="og:image" content="@yield('og_image', asset('images/hero-picture.jpg'))">
+    <meta property="og:site_name" content="Cheap Express Logistics">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', 'Cheap Express Logistics - Global Logistics & Shipping')">
+    <meta name="twitter:description"
+        content="@yield('meta_description', 'Cheap Express Logistics offers global shipping, air freight, ocean freight, road freight, express delivery, and real-time package tracking to 150+ countries.')">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/hero-picture.jpg'))">
+
+    @stack('seo')
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,20 +49,20 @@
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #1f2937;
+            background: #f1f5f9;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #4f46e5;
-            border-radius: 3px;
+            background: #6366f1;
+            border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #4338ca;
+            background: #4f46e5;
         }
     </style>
 
@@ -46,6 +74,9 @@
 
     <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -103,15 +134,22 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827;
-            color: #f9fafb;
+            background-color: #f8fafc;
+            color: #0f172a;
         }
 
         .card {
-            background: rgba(17, 24, 39, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
             border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
 
         .hero-bg {
@@ -127,33 +165,35 @@
         }
 
         .text-text-primary {
-            color: #f9fafb;
+            color: #0f172a;
         }
 
         .text-text-secondary {
-            color: #9ca3af;
+            color: #475569;
         }
 
         .form-input,
         .form-select,
         .form-textarea {
-            background: rgba(31, 41, 55, 0.8);
-            border: 1px solid rgba(75, 85, 99, 0.5);
-            color: #f9fafb;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
             transition: all 0.3s ease;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
         .form-input:focus,
         .form-select:focus,
         .form-textarea:focus {
             border-color: #4f46e5;
-            ring-color: #4f46e5;
-            background: rgba(31, 41, 55, 1);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            background: #ffffff;
         }
 
         .form-input::placeholder,
         .form-textarea::placeholder {
-            color: #6b7280;
+            color: #94a3b8;
         }
 
         /* Custom button styles */
@@ -246,9 +286,9 @@
             top: 64px;
             left: 0;
             right: 0;
-            background: rgba(17, 24, 39, 0.98);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
             transform: translateY(-100%);
             opacity: 0;
             transition: all 0.3s ease;
@@ -291,40 +331,47 @@
 </head>
 
 <body class="antialiased">
+    <div class="gtranslate_wrapper"></div>
+    <script>
+        window.gtranslateSettings = {"default_language":"en","detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right","switcher_vertical_position":"middle","alt_flags":{"en":"usa","pt":"brazil","es":"colombia","fr":"quebec"}}
+    </script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-800">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center">
                     <a href="{{ route('homepage') }}" class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
+                        <div
+                            class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center shadow-md shadow-indigo-500/20">
                             <i data-feather="package" class="h-6 w-6 text-white"></i>
                         </div>
-                        <span class="text-xl font-bold text-white">Elite Exchange</span>
+                        <span class="text-xl font-bold text-gray-900 tracking-tight">Cheap Express Logistics</span>
                     </a>
                 </div>
 
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="{{ route('homepage') }}"
-                        class="nav-link text-text-secondary hover:text-white transition-colors duration-200">
+                        class="nav-link text-gray-600 font-medium hover:text-indigo-600 transition-colors duration-200">
                         Home
                     </a>
                     <a href="{{ route('about') }}"
-                        class="nav-link text-text-secondary hover:text-white transition-colors duration-200">
+                        class="nav-link text-gray-600 font-medium hover:text-indigo-600 transition-colors duration-200">
                         About
                     </a>
                     <a href="{{ route('services') }}"
-                        class="nav-link text-text-secondary hover:text-white transition-colors duration-200">
+                        class="nav-link text-gray-600 font-medium hover:text-indigo-600 transition-colors duration-200">
                         Services
                     </a>
                     <a href="{{ route('track') }}"
-                        class="nav-link text-text-secondary hover:text-white transition-colors duration-200">
+                        class="nav-link text-gray-600 font-medium hover:text-indigo-600 transition-colors duration-200">
                         Track
                     </a>
                     <a href="{{ route('contact') }}"
-                        class="nav-link text-text-secondary hover:text-white transition-colors duration-200">
+                        class="nav-link text-gray-600 font-medium hover:text-indigo-600 transition-colors duration-200">
                         Contact
                     </a>
 
@@ -334,23 +381,25 @@
                         Dashboard
                     </a>
                     @else
+                    {{--
                     <div class="flex items-center space-x-4">
                         <a href="{{ route('admin.login') }}"
-                            class="text-text-secondary hover:text-white transition-colors duration-200">
+                            class="text-gray-600 font-medium hover:text-indigo-600 transition-colors duration-200">
                             Login
                         </a>
                         <a href="{{ route('register') }}"
-                            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200">
+                            class="bg-indigo-600 text-white font-medium px-5 py-2.5 rounded-xl hover:bg-indigo-700 shadow-md shadow-indigo-500/20 transition-all duration-200 hover:-translate-y-0.5">
                             Register
                         </a>
                     </div>
+                    --}}
                     @endauth
                 </div>
 
                 <!-- Mobile menu button -->
                 <div class="md:hidden">
                     <button type="button" id="mobileMenuButton"
-                        class="text-text-secondary hover:text-white transition-colors duration-200 p-2">
+                        class="text-gray-600 hover:text-indigo-600 transition-colors duration-200 p-2">
                         <i data-feather="menu" class="h-6 w-6" id="menuIcon"></i>
                     </button>
                 </div>
@@ -361,42 +410,44 @@
         <div id="mobileMenu" class="mobile-menu md:hidden">
             <div class="container mx-auto px-4 py-6 space-y-4">
                 <a href="{{ route('homepage') }}"
-                    class="block nav-link text-text-secondary hover:text-white transition-colors duration-200 py-3 text-lg">
+                    class="block nav-link text-gray-700 hover:text-indigo-600 transition-colors duration-200 py-3 text-lg font-medium">
                     Home
                 </a>
                 <a href="{{ route('about') }}"
-                    class="block nav-link text-text-secondary hover:text-white transition-colors duration-200 py-3 text-lg">
+                    class="block nav-link text-gray-700 hover:text-indigo-600 transition-colors duration-200 py-3 text-lg font-medium">
                     About
                 </a>
                 <a href="{{ route('services') }}"
-                    class="block nav-link text-text-secondary hover:text-white transition-colors duration-200 py-3 text-lg">
+                    class="block nav-link text-gray-700 hover:text-indigo-600 transition-colors duration-200 py-3 text-lg font-medium">
                     Services
                 </a>
                 <a href="{{ route('track') }}"
-                    class="block nav-link text-text-secondary hover:text-white transition-colors duration-200 py-3 text-lg">
+                    class="block nav-link text-gray-700 hover:text-indigo-600 transition-colors duration-200 py-3 text-lg font-medium">
                     Track
                 </a>
                 <a href="{{ route('contact') }}"
-                    class="block nav-link text-text-secondary hover:text-white transition-colors duration-200 py-3 text-lg">
+                    class="block nav-link text-gray-700 hover:text-indigo-600 transition-colors duration-200 py-3 text-lg font-medium">
                     Contact
                 </a>
 
                 @auth
                 <a href="{{ route('admin.dashboard') }}"
-                    class="block bg-indigo-600 text-white px-4 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200 text-center text-lg mt-4">
+                    class="block bg-indigo-600 text-white px-4 py-3 rounded-xl hover:bg-indigo-700 shadow-md transition-colors duration-200 text-center text-lg mt-4 font-medium">
                     Dashboard
                 </a>
                 @else
-                <div class="space-y-3 pt-4 border-t border-gray-700">
+                {{--
+                <div class="space-y-3 pt-4 border-t border-gray-200">
                     <a href="{{ route('admin.login') }}"
-                        class="block text-text-secondary hover:text-white transition-colors duration-200 py-3 text-center text-lg">
+                        class="block text-gray-700 hover:text-indigo-600 transition-colors duration-200 py-3 text-center text-lg font-medium">
                         Login
                     </a>
                     <a href="{{ route('register') }}"
-                        class="block bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors duration-200 text-center text-lg">
+                        class="block bg-indigo-600 text-white px-4 py-3 rounded-xl hover:bg-indigo-700 shadow-md transition-colors duration-200 text-center text-lg font-medium">
                         Register
                     </a>
                 </div>
+                --}}
                 @endauth
             </div>
         </div>
@@ -411,7 +462,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 border-t border-gray-800">
+    <footer class="bg-white border-t border-gray-200 mt-20">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Company Info -->
@@ -420,23 +471,23 @@
                         <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
                             <i data-feather="package" class="h-6 w-6 text-white"></i>
                         </div>
-                        <span class="text-xl font-bold text-white">Elite Exchange Delivery</span>
+                        <span class="text-xl font-bold text-gray-900">Cheap Express Logistics</span>
                     </div>
                     <p class="text-text-secondary mb-4 max-w-md">
                         Your trusted partner for global logistics and shipping solutions.
                         Delivering excellence across 150+ countries with unmatched reliability.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-text-secondary hover:text-white transition-colors duration-200">
+                        <a href="#" class="text-text-secondary hover:text-indigo-600 transition-colors duration-200">
                             <i data-feather="facebook" class="h-5 w-5"></i>
                         </a>
-                        <a href="#" class="text-text-secondary hover:text-white transition-colors duration-200">
+                        <a href="#" class="text-text-secondary hover:text-indigo-600 transition-colors duration-200">
                             <i data-feather="twitter" class="h-5 w-5"></i>
                         </a>
-                        <a href="#" class="text-text-secondary hover:text-white transition-colors duration-200">
+                        <a href="#" class="text-text-secondary hover:text-indigo-600 transition-colors duration-200">
                             <i data-feather="linkedin" class="h-5 w-5"></i>
                         </a>
-                        <a href="#" class="text-text-secondary hover:text-white transition-colors duration-200">
+                        <a href="#" class="text-text-secondary hover:text-indigo-600 transition-colors duration-200">
                             <i data-feather="instagram" class="h-5 w-5"></i>
                         </a>
                     </div>
@@ -444,60 +495,67 @@
 
                 <!-- Quick Links -->
                 <div>
-                    <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
                     <ul class="space-y-2">
                         <li><a href="{{ route('homepage') }}"
-                                class="text-text-secondary hover:text-white transition-colors duration-200">Home</a>
+                                class="text-text-secondary hover:text-indigo-600 transition-colors duration-200">Home</a>
                         </li>
                         <li><a href="{{ route('about') }}"
-                                class="text-text-secondary hover:text-white transition-colors duration-200">About Us</a>
+                                class="text-text-secondary hover:text-indigo-600 transition-colors duration-200">About
+                                Us</a>
                         </li>
                         <li><a href="{{ route('services') }}"
-                                class="text-text-secondary hover:text-white transition-colors duration-200">Services</a>
+                                class="text-text-secondary hover:text-indigo-600 transition-colors duration-200">Services</a>
                         </li>
                         <li><a href="{{ route('track') }}"
-                                class="text-text-secondary hover:text-white transition-colors duration-200">Track
+                                class="text-text-secondary hover:text-indigo-600 transition-colors duration-200">Track
                                 Shipment</a></li>
                         <li><a href="{{ route('contact') }}"
-                                class="text-text-secondary hover:text-white transition-colors duration-200">Contact</a>
+                                class="text-text-secondary hover:text-indigo-600 transition-colors duration-200">Contact</a>
                         </li>
                     </ul>
                 </div>
 
                 <!-- Contact Info -->
                 <div>
-                    <h3 class="text-lg font-semibold text-white mb-4">Contact Info</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Contact Info</h3>
                     <ul class="space-y-2 text-text-secondary">
-                        <li class="flex items-center space-x-2">
+                        {{-- <li class="flex items-center space-x-2">
                             <i data-feather="phone" class="h-4 w-4"></i>
                             <span>+13154893120</span>
-                        </li>
+                        </li> --}}
                         <li class="flex items-center space-x-2">
                             <i data-feather="mail" class="h-4 w-4"></i>
-                            <span>info@eliteexchange.com</span>
+                            <span>info@cheapexpresslogistics.org</span>
                         </li>
                         <li class="flex items-center space-x-2">
                             <i data-feather="map-pin" class="h-4 w-4"></i>
                             <span>123 Logistics St, City, State 12345</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i data-feather="send" class="h-4 w-4"></i>
+                            <a href="https://t.me/Cheap ExpressLogistics" target="_blank"
+                                class="hover:text-indigo-600 transition-colors duration-200">Telegram</a>
                         </li>
                     </ul>
                 </div>
             </div>
 
             <!-- Bottom Bar -->
-            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-text-secondary text-sm">
-                    © 2024 Elite Exchange Delivery. All rights reserved.
+                    © 2024 Cheap Express Logistics. All rights reserved.
                 </p>
                 <div class="flex space-x-6 mt-4 md:mt-0">
                     <a href="#"
-                        class="text-text-secondary hover:text-white text-sm transition-colors duration-200">Privacy
+                        class="text-text-secondary hover:text-indigo-600 text-sm transition-colors duration-200">Privacy
                         Policy</a>
                     <a href="#"
-                        class="text-text-secondary hover:text-white text-sm transition-colors duration-200">Terms of
+                        class="text-text-secondary hover:text-indigo-600 text-sm transition-colors duration-200">Terms
+                        of
                         Service</a>
                     <a href="#"
-                        class="text-text-secondary hover:text-white text-sm transition-colors duration-200">Cookie
+                        class="text-text-secondary hover:text-indigo-600 text-sm transition-colors duration-200">Cookie
                         Policy</a>
                 </div>
             </div>
@@ -682,7 +740,44 @@
         });
     </script>
 
+    <!-- Global Flash Toast Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if(session('error'))
+                showToast(@json(session('error')), 'error');
+            @endif
+            @if(session('success'))
+                showToast(@json(session('success')), 'success');
+            @endif
+            @if(session('warning'))
+                showToast(@json(session('warning')), 'warning');
+            @endif
+            @if(session('info'))
+                showToast(@json(session('info')), 'success');
+            @endif
+            @if(session('message'))
+                showToast(@json(session('message')), 'success');
+            @endif
+            @if($errors->any())
+                @foreach($errors->all() as $flashError)
+                    showToast(@json($flashError), 'error');
+                @endforeach
+            @endif
+        });
+    </script>
+
     @stack('scripts')
+
+    <!-- Begin of Chaport Live Chat code -->
+    <script type="text/javascript">
+        (function(w,d,v3){
+    w.chaportConfig = {
+      appId : '69cef60e3d9a0fc13a0c4609',
+    };
+
+    if(w.chaport)return;v3=w.chaport={};v3._q=[];v3._l={};v3.q=function(){v3._q.push(arguments)};v3.on=function(e,fn){if(!v3._l[e])v3._l[e]=[];v3._l[e].push(fn)};var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://app.chaport.com/javascripts/insert.js';var ss=d.getElementsByTagName('script')[0];ss.parentNode.insertBefore(s,ss)})(window, document);
+    </script>
+    <!-- End of Chaport Live Chat code -->
 </body>
 
 </html>

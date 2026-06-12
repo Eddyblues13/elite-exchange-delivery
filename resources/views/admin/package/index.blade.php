@@ -2,15 +2,6 @@
 <div class="main-panel">
     <div class="content bg-light">
         <div class="page-inner">
-            @if(session('message'))
-            <div class="alert alert-success alert-dismissible fade show mb-2" role="alert">
-                {{ session('message') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
-
             <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
                 <h1 class="title1 text-dark">Manage Packages</h1>
                 <a href="{{ route('admin.packages.create') }}" class="btn btn-primary shadow-sm">

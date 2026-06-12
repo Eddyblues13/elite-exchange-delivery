@@ -3,14 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Package;
 use Illuminate\Http\Request;
 use App\Models\TrackingLocation;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class ManageUserController extends Controller
 {

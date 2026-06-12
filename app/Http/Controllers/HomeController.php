@@ -29,21 +29,10 @@ class HomeController extends Controller
         return view('home.contact');
     }
 
-    public function contactSubmit(Request $request)
-    {
-        return back()->with('success', 'Your message has been sent successfully. We will get back to you soon.');
-    }
-
     public function track()
     {
 
         return view('home.track');
-    }
-
-    public function diplomatic()
-    {
-
-        return view('home.diplomatic');
     }
 
     public function how()
@@ -57,10 +46,10 @@ class HomeController extends Controller
 
         return view('home.destination');
     }
-    public function register()
-    {
 
-        return view('home.register');
+    public function diplomatic()
+    {
+        return view('home.diplomatic');
     }
     public function viewPackage(Request $request)
     {

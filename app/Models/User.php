@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -76,78 +74,4 @@ class User extends Authenticatable
         'step3_date' => 'datetime',
         'step4_date' => 'datetime'
     ];
-
-    public function isAdmin()
-    {
-        return $this->role === 'admin'; // Add role column to users table if needed
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
-    }
-
-    public function scopePending($query)
-    {
-        return $query->where('status', 'pending');
-    }
-
-    /**
-     * Get the current progress step name
-     */
-    public function getCurrentStepNameAttribute()
-    {
-        return $this->{'step' . $this->progress_step . '_name'} ?? null;
-    }
-
-    /**
-     * Get the current step date
-     */
-    public function getCurrentStepDateAttribute()
-    {
-        return $this->{'step' . $this->progress_step . '_date'} ?? null;
-    }
-
-    /**
-     * Advance to the next progress step
-     */
-    public function advanceProgressStep()
-    {
-        if ($this->progress_step < 4) {
-            $this->progress_step++;
-            $this->progress_percentage = $this->progress_step * 25;
-            $this->{'step' . $this->progress_step . '_date'} = now();
-            $this->save();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Set a specific step as complete
-     */
-    public function completeStep($stepNumber)
-    {
-        if ($stepNumber >= 1 && $stepNumber <= 4) {
-            $this->progress_step = max($this->progress_step, $stepNumber);
-            $this->progress_percentage = $this->progress_step * 25;
-            $this->{'step' . $stepNumber . '_date'} = now();
-            $this->save();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Reset all progress tracking
-     */
-    public function resetProgress()
-    {
-        $this->progress_step = 1;
-        $this->progress_percentage = 25;
-        for ($i = 1; $i <= 4; $i++) {
-            $this->{'step' . $i . '_date'} = $i === 1 ? now() : null;
-        }
-        $this->save();
-    }
 }
