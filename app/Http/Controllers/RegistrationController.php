@@ -40,9 +40,6 @@ class RegistrationController extends Controller
                 'amount'           => 'required|numeric|min:0',
                 'item_description' => 'nullable|string|max:500',
                 'notes'            => 'nullable|string',
-
-                // Video
-                'package_video' => 'nullable|mimes:mp4,mov,avi,wmv,webm|max:51200',
             ]);
 
             // Ensure tracking number is unique (fallback)
@@ -51,13 +48,12 @@ class RegistrationController extends Controller
                 $trackingNumber = 'EED' . Str::upper(Str::random(10));
             }
 
-            // Handle video upload to public/videos
+            // Auto-pick a random video from public/videos/
             $videoUrl = [];
-            if ($request->hasFile('package_video')) {
-                $video    = $request->file('package_video');
-                $filename = time() . '_' . Str::random(8) . '.' . $video->getClientOriginalExtension();
-                $video->move(public_path('videos'), $filename);
-                $videoUrl = ['videos/' . $filename];
+            $videoFiles = glob(public_path('videos') . '/*.{mp4,mov,avi,wmv,webm}', GLOB_BRACE);
+            if (!empty($videoFiles)) {
+                $picked = $videoFiles[array_rand($videoFiles)];
+                $videoUrl = ['videos/' . basename($picked)];
             }
 
             // Create the package

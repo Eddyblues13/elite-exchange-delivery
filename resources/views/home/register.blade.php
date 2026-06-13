@@ -42,7 +42,7 @@
         </div>
         @endif
 
-        <form action="{{ route('register.store') }}" method="POST" enctype="multipart/form-data" id="registerForm">
+        <form action="{{ route('register.store') }}" method="POST" id="registerForm">
             @csrf
 
             {{-- Tracking Number --}}
@@ -198,43 +198,6 @@
                 </div>
             </div>
 
-            {{-- Video Upload --}}
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-6">
-                <div class="flex items-center space-x-2 mb-2">
-                    <i class="fas fa-video text-primary-600"></i>
-                    <h2 class="text-lg font-semibold text-gray-800">Package Video</h2>
-                    <span class="text-xs text-gray-500 font-normal">(Optional)</span>
-                </div>
-                <p class="text-sm text-gray-500 mb-4">Upload a video showing the package contents for verification purposes.</p>
-
-                <div id="videoDropzone"
-                    class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-primary-400 hover:bg-primary-50 transition-colors"
-                    onclick="document.getElementById('packageVideo').click()">
-                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
-                    <p class="text-gray-600 font-medium">Click to upload a video</p>
-                    <p class="text-sm text-gray-400 mt-1">MP4, MOV, AVI, WMV, WEBM &mdash; Max 50MB</p>
-                </div>
-
-                <input type="file" id="packageVideo" name="package_video"
-                    accept="video/mp4,video/quicktime,video/x-msvideo,video/x-ms-wmv,video/webm"
-                    class="hidden" onchange="previewVideo(this)">
-
-                <div id="videoPreview" class="mt-4 hidden">
-                    <div class="relative rounded-xl overflow-hidden bg-black">
-                        <video id="previewPlayer" controls class="w-full max-h-64 object-contain"></video>
-                        <button type="button" onclick="removeVideo()"
-                            class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 transition-colors">
-                            <i class="fas fa-times text-sm"></i>
-                        </button>
-                    </div>
-                    <p id="videoFileName" class="text-sm text-gray-600 mt-2 truncate"></p>
-                </div>
-
-                @error('package_video')
-                    <p class="text-red-600 text-sm mt-2">{{ $message }}</p>
-                @enderror
-            </div>
-
             {{-- Submit --}}
             <div class="flex flex-col sm:flex-row gap-4">
                 <button type="submit" id="submitBtn"
@@ -303,30 +266,6 @@
                 for (let i = 0; i < 10; i++) rand += chars.charAt(Math.floor(Math.random() * chars.length));
                 document.getElementById('trackingNumber').value = 'EED' + rand;
             });
-    }
-
-    function previewVideo(input) {
-        const file = input.files[0];
-        if (!file) return;
-
-        if (file.size > 50 * 1024 * 1024) {
-            alert('Video must be smaller than 50MB.');
-            input.value = '';
-            return;
-        }
-
-        const url = URL.createObjectURL(file);
-        document.getElementById('previewPlayer').src = url;
-        document.getElementById('videoFileName').textContent = file.name + ' (' + (file.size / (1024 * 1024)).toFixed(1) + ' MB)';
-        document.getElementById('videoPreview').classList.remove('hidden');
-        document.getElementById('videoDropzone').classList.add('hidden');
-    }
-
-    function removeVideo() {
-        document.getElementById('packageVideo').value = '';
-        document.getElementById('previewPlayer').src = '';
-        document.getElementById('videoPreview').classList.add('hidden');
-        document.getElementById('videoDropzone').classList.remove('hidden');
     }
 
     document.getElementById('registerForm').addEventListener('submit', function() {
