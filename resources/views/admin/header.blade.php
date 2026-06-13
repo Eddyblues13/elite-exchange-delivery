@@ -226,8 +226,8 @@
                             </li> --}}
                             <li class="nav-item">
                                 <a href="{{route('admin.change-password')}}">
-                                    <i class="fas fa-cubes " aria-hidden="true"></i>
-                                    <p>Change Password</p>
+                                    <i class="fas fa-user-cog" aria-hidden="true"></i>
+                                    <p>Account Settings</p>
                                 </a>
                             </li>
 

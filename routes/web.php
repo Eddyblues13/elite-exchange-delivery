@@ -86,6 +86,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 });
 
 Route::prefix('admin')->middleware(['admin'])->group(function () {
-    Route::get('/change-password', [AdminController::class, 'showChangePasswordForm'])->name('admin.change-password');
+    Route::get('/account-settings', [AdminController::class, 'showChangePasswordForm'])->name('admin.change-password');
     Route::put('/{admin}/change-password', [AdminController::class, 'changePassword'])->name('admin.change-password.post');
+    Route::put('/update-email', [AdminController::class, 'updateEmail'])->name('admin.update-email');
 });

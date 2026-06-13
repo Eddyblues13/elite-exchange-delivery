@@ -16,6 +16,43 @@ class AdminController extends Controller
         return view('admin.change_password'); // This should match your blade file name
     }
 
+    public function updateEmail(Request $request)
+    {
+        $admin = auth('admin')->user();
+
+        try {
+            $request->validate([
+                'email'            => ['required', 'email', 'unique:admins,email,' . $admin->id],
+                'current_password' => ['required', 'current_password:admin'],
+            ]);
+
+            $admin->update(['email' => $request->email]);
+
+            Log::info("Admin ID {$admin->id} updated their email to {$request->email}.");
+
+            return response()->json([
+                'type'    => 'success',
+                'message' => 'Email updated successfully!'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $errors     = $e->errors();
+            $firstError = collect($errors)->first()[0];
+
+            return response()->json([
+                'type'    => 'validation_error',
+                'message' => $firstError,
+                'errors'  => $errors
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error('Email update error for Admin ID ' . $admin->id . ': ' . $e->getMessage());
+
+            return response()->json([
+                'type'    => 'server_error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function changePassword(Request $request, Admin $admin)
     {
         try {
