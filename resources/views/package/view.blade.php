@@ -495,6 +495,45 @@
     <!-- Main content -->
     <div class="trk-main" style="margin-top: 1.5rem;">
 
+        <!-- Video (shown at top if present) -->
+        @if(!empty($package->video_url) && count($package->video_url) > 0)
+        <div class="trk-card" style="overflow:hidden;">
+            <div class="trk-card-header">
+                <div class="trk-card-title">
+                    <div class="trk-card-title-icon" style="background:#faf5ff;color:#7c3aed;"><i class="fas fa-video"></i></div>
+                    Package Video
+                </div>
+                <span style="font-size:0.78rem;color:#64748b;">{{ count($package->video_url) }} video{{ count($package->video_url) != 1 ? 's' : '' }}</span>
+            </div>
+            <!-- Responsive 16:9 main player -->
+            @php
+                $primaryVideo = $package->video_url[0];
+                $primaryVideoSrc = str_starts_with($primaryVideo, 'http') ? $primaryVideo : asset($primaryVideo);
+            @endphp
+            <div style="position:relative;width:100%;padding-top:56.25%;background:#000;">
+                <video id="mainVideoPlayer" controls autoplay muted playsinline
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;display:block;">
+                    <source src="{{ $primaryVideoSrc }}" type="video/mp4">
+                </video>
+            </div>
+            <!-- Extra video thumbnails -->
+            @if(count($package->video_url) > 1)
+            <div style="padding:0.75rem 1rem;display:flex;gap:10px;flex-wrap:wrap;border-top:1px solid #f1f5f9;background:#f8fafc;">
+                @foreach($package->video_url as $i => $vUrl)
+                @php $vSrc = str_starts_with($vUrl, 'http') ? $vUrl : asset($vUrl); @endphp
+                <div onclick="switchVideo('{{ $vSrc }}')"
+                    style="width:140px;height:88px;border-radius:10px;overflow:hidden;border:2px solid {{ $i===0 ? '#7c3aed' : '#e2e8f0' }};cursor:pointer;flex-shrink:0;transition:border-color 0.2s;"
+                    onmouseover="this.style.borderColor='#7c3aed'" onmouseout="this.style.borderColor='#e2e8f0'">
+                    <video style="width:100%;height:100%;object-fit:cover;pointer-events:none;" muted preload="metadata">
+                        <source src="{{ $vSrc }}" type="video/mp4">
+                    </video>
+                </div>
+                @endforeach
+            </div>
+            @endif
+        </div>
+        @endif
+
         <!-- Status alert -->
         <div class="trk-alert">
             <i class="fas fa-info-circle"></i>
@@ -794,26 +833,6 @@
         </div>
         @endif
 
-        <!-- Videos -->
-        @if(!empty($package->video_url) && count($package->video_url) > 0)
-        <div class="trk-card">
-            <div class="trk-card-header">
-                <div class="trk-card-title">
-                    <div class="trk-card-title-icon" style="background:#faf5ff;color:#7c3aed;"><i class="fas fa-video"></i></div>
-                    Package Videos
-                </div>
-            </div>
-            <div class="trk-card-body">
-                <div class="media-grid">
-                    @foreach($package->video_url as $videoUrl)
-                    <div class="media-thumb" style="width:220px;height:140px;">
-                        <video controls style="width:100%;height:100%;object-fit:cover;"><source src="{{ $videoUrl }}" type="video/mp4"></video>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-        @endif
 
         <!-- Action buttons -->
         <div class="d-flex justify-content-end gap-2 mb-2" style="flex-wrap:wrap;">
@@ -985,6 +1004,17 @@
                 }
             });
         });
+
+        // Video thumbnail switcher
+        window.switchVideo = function(src) {
+            const player = document.getElementById('mainVideoPlayer');
+            if (!player) return;
+            player.pause();
+            player.src = src;
+            player.load();
+            player.play().catch(() => {});
+            player.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
 
         document.getElementById('printBtn').addEventListener('click', () => window.print());
         document.getElementById('refreshBtn').addEventListener('click', function() {
